@@ -8,5 +8,10 @@ venv/
 .pytest_cache/
 server.log
 server_err.log
-test_*.py
 openspec/changes/archive/
+
+# AI Agent metadata & local tooling
+.agents/
+.kiro/
+.opencode/
+skills-lock.json

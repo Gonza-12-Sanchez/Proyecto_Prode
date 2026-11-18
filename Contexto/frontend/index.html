@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prode — Torneos de Pronósticos</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>⚽ Prode</h1>
+    <div class="subtitle">Torneos de Pronósticos — MVP Frontend</div>
+  </div>
+</header>
+
+<nav id="nav">
+  <button class="active" data-tab="auth">🔐 Auth</button>
+  <button data-tab="leagues">⚽ Ligas</button>
+  <button data-tab="tournaments">🏆 Torneos</button>
+  <button data-tab="predict">📝 Pronosticar</button>
+  <button data-tab="leaderboard">📊 Leaderboard</button>
+</nav>
+
+<!-- TAB: AUTH -->
+<div id="tab-auth" class="tab active">
+  <div class="card">
+    <h3>🔐 Autenticación</h3>
+    <div id="auth-status" class="mb-16"></div>
+    <div class="form-row">
+      <div>
+        <label>Email</label>
+        <input type="email" id="auth-email" placeholder="tu@email.com">
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Username</label>
+        <input type="text" id="auth-username" placeholder="3-30 chars (a-z, 0-9, _, -)">
+      </div>
+      <div>
+        <label>Password</label>
+        <input type="password" id="auth-password" placeholder="mín 8 chars" value="Password123!">
+      </div>
+    </div>
+    <div class="flex">
+      <button id="btn-register">Registrarse</button>
+      <button class="secondary" id="btn-login">Iniciar Sesión</button>
+    </div>
+  </div>
+  <div class="card">
+    <h3>👤 Perfil (GET /auth/me)</h3>
+    <button class="secondary" id="btn-load-profile">Cargar Mi Perfil</button>
+    <div id="profile-data" class="mt-8"></div>
+  </div>
+</div>
+
+<!-- TAB: LEAGUES -->
+<div id="tab-leagues" class="tab">
+  <div class="card">
+    <h3>⚽ Ligas Disponibles</h3>
+    <button class="secondary" id="btn-load-leagues">Cargar Ligas</button>
+    <table id="leagues-table" class="hidden">
+      <thead><tr><th>ID</th><th>Nombre</th><th>País</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB: TOURNAMENTS -->
+<div id="tab-tournaments" class="tab">
+  <div class="card">
+    <h3>🏆 Crear Torneo</h3>
+    <div class="form-row">
+      <div>
+        <label>Nombre del Torneo</label>
+        <input type="text" id="tourn-name" placeholder="Prode Amigos">
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <label>Liga</label>
+        <select id="tourn-league-id">
+          <option value="">— Cargando ligas... —</option>
+        </select>
+      </div>
+      <div>
+        <label>Max Participantes</label>
+        <select id="tourn-max">
+          <option value="10">10 (Free)</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+    </div>
+    <button id="btn-create-tournament">Crear Torneo</button>
+  </div>
+  <div class="card">
+    <h3>🎫 Unirse por Código</h3>
+    <div class="form-row">
+      <div>
+        <label>Código de Invitación (8 chars)</label>
+        <input type="text" id="join-code" placeholder="ABC12345">
+      </div>
+    </div>
+    <button class="secondary" id="btn-join-tournament">Unirse</button>
+  </div>
+  <div class="card">
+    <h3>📋 Mis Torneos</h3>
+    <button class="secondary" id="btn-load-tournaments">Cargar Torneos</button>
+    <table id="tournaments-table" class="hidden">
+      <thead><tr><th>ID</th><th>Nombre</th><th>Liga</th><th>Estado</th><th>Invitación</th><th></th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- TAB: PREDICT -->
+<div id="tab-predict" class="tab">
+  <div class="card">
+    <h3>📝 Pronosticar</h3>
+    <div class="form-row">
+      <div>
+        <label>Seleccionar Torneo</label>
+        <select id="predict-tournament">
+          <option value="">— Elegir torneo —</option>
+        </select>
+      </div>
+    </div>
+    <button class="secondary" id="btn-load-matches">Cargar Partidos</button>
+    <div id="matches-list" class="mt-8"></div>
+  </div>
+</div>
+
+<!-- TAB: LEADERBOARD -->
+<div id="tab-leaderboard" class="tab">
+  <div class="card">
+    <h3>📊 Leaderboard</h3>
+    <div class="form-row">
+      <div>
+        <label>Seleccionar Torneo</label>
+        <select id="lb-tournament">
+          <option value="">— Elegir torneo —</option>
+        </select>
+      </div>
+    </div>
+    <button class="secondary" id="btn-load-leaderboard">Cargar Leaderboard</button>
+    <div id="leaderboard-data" class="mt-8"></div>
+  </div>
+</div>
+
+<script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

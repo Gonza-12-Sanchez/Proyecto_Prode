@@ -1,0 +1,161 @@
+{
+  "version": 5,
+  "step": "discovery",
+  "owner": "active-orchestrator",
+  "discovery": {
+    "created_by": "discovery-research",
+    "status": "approved",
+    "approved_on": "2026-11-17",
+    "approved_by": "user",
+    "document": "discovery/discovery.md",
+    "sources": [
+      "https://prodeenlinea.com/faq/",
+      "https://prode.io/en/faq",
+      "https://www.kicktipp.com/",
+      "https://www.kicktipp.com/info/service/help/2/213",
+      "https://www.superbru.com/worldcup_predictor/",
+      "https://www.superbru.com/premium"
+    ],
+    "competitors": [
+      {
+        "name": "Prode En Línea",
+        "notes_file": "discovery/sources/prode-en-linea.md"
+      },
+      {
+        "name": "Prode.io",
+        "notes_file": "discovery/sources/prode-io.md"
+      },
+      {
+        "name": "Kicktipp",
+        "notes_file": "discovery/sources/kicktipp.md"
+      },
+      {
+        "name": "Superbru",
+        "notes_file": "discovery/sources/superbru.md"
+      }
+    ],
+    "problema": "Organizar prodes con amigos sin planillas, simplificar la carga de pronósticos y recordar partidos. Visión comercial para empresas y público general con suscripciones por definir.",
+    "usuarios": [
+      "Participantes: amigos y conocidos que ya juegan prodes en el piloto",
+      "Creadores de torneos privados",
+      "Administrador de PRODE para resultados y correcciones",
+      "Empresas y sus empleados, como evolución comercial",
+      "Público general con planes o suscripciones futuras"
+    ],
+    "casos_de_uso": [
+      "Crear torneo y elegir ligas con temporada completa o selección de jornadas/partidos",
+      "Invitar y unirse mediante enlace/código privado",
+      "Cargar fecha completa con pronósticos independientes por torneo",
+      "Recibir recordatorio por partido sin pronóstico",
+      "Consultar resultado válido, puntos y ranking",
+      "Cargar/corregir resultados con administración central y trazabilidad",
+      "Publicar, actualizar, revertir y recuperar el producto mediante guía operativa"
+    ],
+    "funcionalidades_necesarias": [
+      "MVP web móvil gratuito y jugable con amigos",
+      "Cuentas y permisos, con mecanismo de autenticación pendiente",
+      "Torneos privados multiliga e invitaciones",
+      "Alcance temporada o jornadas/partidos seleccionados",
+      "Carga de fecha completa y edición temporalmente limitada",
+      "Pronósticos independientes por torneo",
+      "Puntuación 3 exacto o 1 ganador/empate, sin acumular",
+      "Ranking con desempate por exactos y posición compartida restante",
+      "Recordatorios antes de partidos sin pronóstico",
+      "Administración central de resultados y correcciones visibles",
+      "Guía de mantenimiento con recuperación de datos probada antes del piloto"
+    ],
+    "funcionalidades_opcionales": [
+      "Aplicaciones Android e iPhone",
+      "Noticias relevantes de fútbol",
+      "Minijuegos",
+      "Oferta empresarial",
+      "Planes y suscripciones para público general"
+    ],
+    "reglas_de_negocio": [
+      "El creador elige ligas y alcance; límites de ligas/personas pendientes",
+      "Ingreso privado por enlace o código, sin aprobación individual",
+      "Un pronóstico independiente por participante, torneo y partido, sin propagación entre torneos",
+      "3 puntos por exacto o 1 por ganador/empate sin exacto; categorías excluyentes",
+      "Cerrar edición y revelar pronósticos ajenos al inicio del partido",
+      "Congelar ligas, partidos y reglas al primer partido del torneo",
+      "Ranking por puntos, después más exactos; igualdad restante comparte posición",
+      "Ingreso tardío permitido sólo para partidos futuros desde ingreso, sin retroactivos",
+      "Criterio de resultado en eliminatorias configurable por creador antes de inicio; opciones exactas pendientes",
+      "Aplazado pendiente y editable hasta nuevo inicio si no comenzó",
+      "Cancelado definitivo sin puntos",
+      "Corrección de resultado recalcula puntos/ranking y deja registro visible",
+      "Suspendido tras comenzar bloqueado y pendiente de resolución",
+      "Resultados administrados por PRODE, no cada creador",
+      "Recordatorio antes de cada partido sin pronóstico, horario configurable y desactivable; anticipación/deduplicación pendientes"
+    ],
+    "integraciones": [
+      "Dominio Namecheap obtenido por GitHub Student, gratuito un año según usuario; hosting/DNS no verificados",
+      "Alojamiento gratuito web/API/PostgreSQL por seleccionar",
+      "API gratuita de fútbol si cubre competencia y temporada; carga administrativa alternativa aceptada",
+      "Programación y envío de recordatorios web móvil por seleccionar",
+      "Autenticación y correo transaccional por definir"
+    ],
+    "restricciones": [
+      "Sin objetivo ni requisitos académicos",
+      "MVP con servicios gratuitos dentro de cuotas; sin servicios pagos autorizados",
+      "Primera versión web jugable, no sólo demo",
+      "Fútbol argentino prioritario; competencias iniciales por definir",
+      "Stack aprobado React, TypeScript, Vite, Python, FastAPI y PostgreSQL",
+      "Equipo, dedicación y plazo abiertos",
+      "Límites de ligas/participantes y monetización posterior pendientes",
+      "Contexto es referencia histórica; eliminar sólo al completar toda fundación"
+    ],
+    "riesgos": [
+      "API gratuita sin temporada vigente o cuota suficiente",
+      "Servidor gratuito suspendido y recordatorios no ejecutados",
+      "Duplicación o falta de avisos por múltiples torneos/permisos/dispositivos",
+      "Puntuación incorrecta o recálculo duplicado",
+      "Permisos o cierre temporal aplicados sólo en frontend",
+      "Calendarios multiliga incompletos y cierre de temporada ambiguo",
+      "Uso recurrente y facilidad de carga aún no validados con piloto",
+      "Responsable sin experiencia previa en mantenimiento/despliegue comercial",
+      "Expansión B2B/suscripciones aumenta alcance antes de validar MVP"
+    ],
+    "preguntas_abiertas": [
+      "Competencias argentinas y cobertura de temporada inicial",
+      "Delimitación y cierre de temporada multiliga; calendario incompleto frente a congelación",
+      "Opciones de eliminatorias y tratamiento de alargue/penales",
+      "Horarios, reprogramación e ingreso al instante de cierre",
+      "Anticipación y deduplicación de recordatorios y compatibilidad PWA",
+      "Proveedores gratuitos, autenticación, ORM, migraciones y tareas programadas",
+      "Estados de torneo y permisos finos de creadores tras inicio",
+      "Visibilidad de correcciones y numeración de puestos empatados",
+      "Responsable, calendario, tamaño del piloto y métricas de validación",
+      "Oferta empresarial, aislamiento, roles, planes, precios, titular de suscripción y cobros",
+      "Límites comerciales de ligas/personas",
+      "Momento y alcance de móvil, noticias y minijuegos"
+    ],
+    "stack_aprobado": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "Python",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "mantenimiento": {
+      "status": "approved",
+      "entregables": [
+        "Guía de publicación",
+        "Guía de actualización",
+        "Revisión de errores",
+        "Reversión de versión",
+        "Respaldo y restauración",
+        "Recuperación probada antes del piloto"
+      ],
+      "pendiente": [
+        "Proveedores",
+        "Frecuencia y retención de copias",
+        "Responsables",
+        "Alertas",
+        "Rutina periódica"
+      ]
+    },
+    "vision_comercial": "B2B para empresas y sus empleados, y B2C público general con suscripciones; planes, precios y funciones por definir."
+  }
+}

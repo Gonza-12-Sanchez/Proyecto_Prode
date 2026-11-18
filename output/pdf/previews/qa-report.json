@@ -1,0 +1,110 @@
+{
+  "pages": 11,
+  "issues": [],
+  "links": [
+    "https://prodeenlinea.com/faq/",
+    "https://prode.io/en/faq",
+    "https://www.kicktipp.com/",
+    "https://www.kicktipp.com/info/service/help/2/213",
+    "https://www.superbru.com/worldcup_predictor/",
+    "https://www.superbru.com/premium",
+    "https://vite.dev/guide/static-deploy",
+    "https://fastapi.tiangolo.com/deployment/concepts/",
+    "https://fastapi.tiangolo.com/tutorial/bigger-applications/",
+    "https://docs.expo.dev/workflow/web/",
+    "https://docs.expo.dev/router/advanced/platform-specific-modules/",
+    "https://nextjs.org/docs/app/guides/static-exports",
+    "https://supabase.com/docs/guides/getting-started/architecture",
+    "https://supabase.com/docs/guides/database/postgres/row-level-security",
+    "https://supabase.com/pricing",
+    "https://render.com/docs/free",
+    "https://www.api-football.com/pricing",
+    "https://www.api-football.com/coverage",
+    "https://developer.apple.com/documentation/usernotifications/sending-web-push-notifications-in-web-apps-and-browsers",
+    "https://developer.apple.com/documentation/usernotifications/sending-web-push-notifications-in-web-apps-and-browsers",
+    "https://developer.apple.com/help/account/membership/program-enrollment/",
+    "https://support.google.com/googleplay/android-developer/answer/6112435?hl=es",
+    "https://education.github.com/pack",
+    "https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting/",
+    "https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting/"
+  ],
+  "outline_entries": 14,
+  "page_chars": [
+    [
+      1,
+      526
+    ],
+    [
+      2,
+      2430
+    ],
+    [
+      3,
+      3066
+    ],
+    [
+      4,
+      2606
+    ],
+    [
+      5,
+      2277
+    ],
+    [
+      6,
+      2614
+    ],
+    [
+      7,
+      2278
+    ],
+    [
+      8,
+      2681
+    ],
+    [
+      9,
+      3079
+    ],
+    [
+      10,
+      1948
+    ],
+    [
+      11,
+      3018
+    ]
+  ],
+  "rule_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17
+  ],
+  "replacement_chars": 0,
+  "bad_uri_punctuation": [],
+  "required_terms": {
+    "React": true,
+    "TypeScript": true,
+    "Vite": true,
+    "FastAPI": true,
+    "PostgreSQL": true,
+    "Mantenimiento": true,
+    "Preguntas abiertas": true,
+    "empresas": true,
+    "suscripciones": true
+  }
+}
