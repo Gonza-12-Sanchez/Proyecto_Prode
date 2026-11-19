@@ -215,7 +215,7 @@ def parse_markdown(text, styles, width):
         if heading:
             level = len(heading.group(1))-1
             title = heading.group(2)
-            if level == 1 and (title.startswith("Anexo") or (re.match(r"^(\d+)\.", title) and int(re.match(r"^(\d+)\.", title).group(1)) >= 12) or title.startswith("Fuentes")):
+            if level == 1 and (title.startswith("Anexo") or title.startswith("12. ")):
                 out.append(PageBreak())
             out.append(Paragraph(inline(title), styles[f"h{level}"]))
             i += 1

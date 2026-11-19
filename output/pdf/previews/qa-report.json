@@ -1,7 +1,7 @@
 {
   "revision": 2,
   "pdf": "C:\\Users\\GonziChan\\Desktop\\Proyecto_Prode\\output\\pdf\\PRODE-discovery-aprobado.pdf",
-  "pages": 20,
+  "pages": 18,
   "issues": [],
   "rule_ids": [
     1,
@@ -162,34 +162,26 @@
     ],
     [
       13,
-      1641
+      2951
     ],
     [
       14,
-      2991
+      3272
     ],
     [
       15,
-      530
+      3298
     ],
     [
       16,
-      3006
+      2543
     ],
     [
       17,
-      2095
-    ],
-    [
-      18,
-      1969
-    ],
-    [
-      19,
       3148
     ],
     [
-      20,
+      18,
       614
     ]
   ],
@@ -207,18 +199,18 @@
     "10. Riesgos, mantenimiento y validación": 10,
     "11. Preguntas abiertas": 11,
     "12. Despliegue gratuito: responsabilidades y alternativas": 12,
-    "13. Autenticación aprobada: sólo Google mediante Supabase Auth": 14,
-    "14. Operación del despliegue, recordatorios y producción móvil": 16,
-    "15. Ruta práctica de aprendizaje": 18,
-    "Fuentes y precedencia": 19,
-    "Continuidad de la fundación": 20
+    "13. Autenticación aprobada: sólo Google mediante Supabase Auth": 13,
+    "14. Operación del despliegue, recordatorios y producción móvil": 14,
+    "15. Ruta práctica de aprendizaje": 16,
+    "Fuentes y precedencia": 17,
+    "Continuidad de la fundación": 18
   },
   "feature_pages": {
     "autenticación": [
       2,
       6,
-      14,
-      16
+      13,
+      14
     ],
     "Google": [
       1,
@@ -230,9 +222,10 @@
       9,
       10,
       11,
+      13,
       14,
-      17,
-      19
+      15,
+      17
     ],
     "despliegue": [
       2,
@@ -242,21 +235,22 @@
       11,
       12,
       13,
+      14,
+      15,
       16,
-      18,
-      19
+      17
     ],
     "SQLite": [
       3,
       12,
       13,
-      19
+      17
     ],
     "mantenimiento": [
       2,
       3,
       10,
-      16
+      15
     ]
   }
 }
