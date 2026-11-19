@@ -43,6 +43,7 @@
       "Público general con planes o suscripciones futuras"
     ],
     "casos_de_uso": [
+      "Entrar con cuenta Google mediante Supabase Auth sin contraseña adicional de PRODE",
       "Crear torneo y elegir ligas con temporada completa o selección de jornadas/partidos",
       "Invitar y unirse mediante enlace/código privado",
       "Cargar fecha completa con pronósticos independientes por torneo",
@@ -53,7 +54,7 @@
     ],
     "funcionalidades_necesarias": [
       "MVP web móvil gratuito y jugable con amigos",
-      "Cuentas y permisos, con mecanismo de autenticación pendiente",
+      "Acceso sólo Google mediante Supabase Auth; permisos de negocio en FastAPI",
       "Torneos privados multiliga e invitaciones",
       "Alcance temporada o jornadas/partidos seleccionados",
       "Carga de fecha completa y edición temporalmente limitada",
@@ -86,14 +87,15 @@
       "Corrección de resultado recalcula puntos/ranking y deja registro visible",
       "Suspendido tras comenzar bloqueado y pendiente de resolución",
       "Resultados administrados por PRODE, no cada creador",
-      "Recordatorio antes de cada partido sin pronóstico, horario configurable y desactivable; anticipación/deduplicación pendientes"
+      "Recordatorio antes de cada partido sin pronóstico, horario configurable y desactivable; anticipación/deduplicación pendientes",
+      "Acceso del MVP únicamente por Google mediante Supabase Auth; sin contraseña propia de PRODE. FastAPI valida identidad y autoriza operaciones."
     ],
     "integraciones": [
       "Dominio Namecheap obtenido por GitHub Student, gratuito un año según usuario; hosting/DNS no verificados",
       "Alojamiento gratuito web/API/PostgreSQL por seleccionar",
       "API gratuita de fútbol si cubre competencia y temporada; carga administrativa alternativa aceptada",
       "Programación y envío de recordatorios web móvil por seleccionar",
-      "Autenticación y correo transaccional por definir"
+      "Supabase Auth aprobado con Google como único acceso; sin correo/contraseña propio del MVP. Detalles de sesión y otros correos por justificar."
     ],
     "restricciones": [
       "Sin objetivo ni requisitos académicos",
@@ -103,7 +105,8 @@
       "Stack aprobado React, TypeScript, Vite, Python, FastAPI y PostgreSQL",
       "Equipo, dedicación y plazo abiertos",
       "Límites de ligas/participantes y monetización posterior pendientes",
-      "Contexto es referencia histórica; eliminar sólo al completar toda fundación"
+      "Contexto es referencia histórica; eliminar sólo al completar toda fundación",
+      "Supabase Auth con Google es el único acceso del MVP; no adopta automáticamente proveedor PostgreSQL ni alojamiento."
     ],
     "riesgos": [
       "API gratuita sin temporada vigente o cuota suficiente",
@@ -114,7 +117,8 @@
       "Calendarios multiliga incompletos y cierre de temporada ambiguo",
       "Uso recurrente y facilidad de carga aún no validados con piloto",
       "Responsable sin experiencia previa en mantenimiento/despliegue comercial",
-      "Expansión B2B/suscripciones aumenta alcance antes de validar MVP"
+      "Expansión B2B/suscripciones aumenta alcance antes de validar MVP",
+      "Identidad no verificada o confusión entre autenticación y permisos; participante sin acceso a Google."
     ],
     "preguntas_abiertas": [
       "Competencias argentinas y cobertura de temporada inicial",
@@ -122,13 +126,14 @@
       "Opciones de eliminatorias y tratamiento de alargue/penales",
       "Horarios, reprogramación e ingreso al instante de cierre",
       "Anticipación y deduplicación de recordatorios y compatibilidad PWA",
-      "Proveedores gratuitos, autenticación, ORM, migraciones y tareas programadas",
+      "Proveedores/regiones web/API/PostgreSQL, ORM, migraciones y tareas; Google vía Supabase Auth ya aprobado",
       "Estados de torneo y permisos finos de creadores tras inicio",
       "Visibilidad de correcciones y numeración de puestos empatados",
       "Responsable, calendario, tamaño del piloto y métricas de validación",
       "Oferta empresarial, aislamiento, roles, planes, precios, titular de suscripción y cobros",
       "Límites comerciales de ligas/personas",
-      "Momento y alcance de móvil, noticias y minijuegos"
+      "Momento y alcance de móvil, noticias y minijuegos",
+      "Configuración Google/callbacks y ciclo seguro de sesión en FastAPI; identidad estable, perfil y soporte ante pérdida de acceso."
     ],
     "stack_aprobado": [
       "React",
@@ -154,8 +159,89 @@
         "Responsables",
         "Alertas",
         "Rutina periódica"
+      ],
+      "aprendizaje": [
+        "Fundamentos web MDN",
+        "Publicación Vite",
+        "Despliegue FastAPI",
+        "PostgreSQL respaldo y restauración",
+        "CI/CD Full Stack Open",
+        "Contenedores Docker",
+        "Publicación móvil cuando corresponda"
       ]
     },
-    "vision_comercial": "B2B para empresas y sus empleados, y B2C público general con suscripciones; planes, precios y funciones por definir."
+    "vision_comercial": "B2B para empresas y sus empleados, y B2C público general con suscripciones; planes, precios y funciones por definir.",
+    "revision": 2,
+    "updated_on": "2026-11-18",
+    "update_authorized_by": "user",
+    "update_scope": "Ampliación de despliegue, producción, mantenimiento y aprendizaje; acceso del MVP sólo Google mediante Supabase Auth.",
+    "autenticacion": {
+      "status": "approved",
+      "approved_on": "2026-11-18",
+      "approved_by": "user",
+      "provider": "Supabase Auth",
+      "mvp_methods": [
+        "Google"
+      ],
+      "password_prode": false,
+      "out_of_mvp": [
+        "Registro por correo/contraseña de PRODE",
+        "Recuperación de contraseña propia de PRODE",
+        "Otros métodos de acceso"
+      ],
+      "responsabilidades_fastapi": [
+        "Validar identidad/sesión",
+        "Autorizar por pertenencia y rol",
+        "Aplicar cierre de pronósticos y permisos administrativos"
+      ],
+      "pendiente": [
+        "Google y callbacks por entorno",
+        "Validación, renovación y revocación de sesión",
+        "Identificador estable verificado y perfil PRODE",
+        "Soporte ante pérdida de acceso"
+      ],
+      "database_provider_adopted": false
+    },
+    "despliegue": {
+      "status": "options_evaluated",
+      "verified_on": "2026-11-18",
+      "guide": "discovery/despliegue-y-aprendizaje.md",
+      "routes": [
+        "Frontend separado de API y PostgreSQL",
+        "React servido por FastAPI y PostgreSQL externo"
+      ],
+      "candidates": {
+        "frontend": [
+          "Cloudflare Pages"
+        ],
+        "api": [
+          "Render Free"
+        ],
+        "postgresql": [
+          "Neon Free",
+          "Supabase PostgreSQL Free"
+        ]
+      },
+      "sqlite": "Alternativa evaluada para un servicio con disco persistente; no adoptada. PostgreSQL sigue aprobado.",
+      "pending": [
+        "Proveedores y regiones",
+        "Despliegue conjunto o separado",
+        "DNS",
+        "Programación de recordatorios",
+        "Cuotas, copias y recuperación"
+      ]
+    },
+    "technical_sources": [
+      "https://supabase.com/docs/guides/auth/social-sign-in/auth-google",
+      "https://developers.google.com/identity/gsi/web/guides/verify-google-id-token",
+      "https://supabase.com/docs/guides/auth/auth-smtp",
+      "https://developers.cloudflare.com/pages/platform/limits/",
+      "https://render.com/docs/free",
+      "https://neon.com/pricing",
+      "https://supabase.com/pricing",
+      "https://www.sqlite.org/whentouse.html",
+      "https://docs.railway.com/pricing/free-trial#data-retention",
+      "https://fullstackopen.com/es/part11/introduccion_a_ci_cd/"
+    ]
   }
 }

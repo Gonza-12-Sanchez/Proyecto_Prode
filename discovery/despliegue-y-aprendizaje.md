@@ -1,8 +1,10 @@
 # PRODE - Guía de despliegue y aprendizaje
 
 **Fecha de consulta:** 18 de noviembre de 2026.  
-**Estado:** anexo educativo y propuesta de recorrido; proveedores todavía no elegidos.  
+**Estado:** anexo educativo; proveedores de alojamiento/base todavía no elegidos. Autenticación decidida en Discovery revisión 2.  
 **Relación con Discovery:** complementa el Discovery aprobado el 17 de noviembre; no modifica sus decisiones ni afirma que la aplicación esté desplegada.
+
+**Decisión vigente, 18/11/2026:** el Discovery revisión 2 aprueba Supabase Auth con Google como único acceso del MVP. No hay correo/contraseña propio de PRODE. Los detalles técnicos de sesión siguen pendientes; los proveedores de alojamiento y PostgreSQL no quedan adoptados. Las comparaciones siguientes conservan su contexto histórico y deben leerse con esa decisión.
 
 El stack acordado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. Primero construiremos una web jugable con amigos, apuntando a no pagar servicios durante las pruebas. Android/iPhone y la comercialización para empresas o suscriptores son una evolución posterior.
 
@@ -90,8 +92,8 @@ Gratis significa que podemos operar dentro de las condiciones del plan, no que h
 ### Cómo elegir Neon o Supabase
 
 - Si sólo necesitamos alojar PostgreSQL para una API FastAPI propia, Neon es una opción directa para evaluar.
-- Si también queremos comparar autenticación y otros componentes gestionados, Supabase merece una evaluación conjunta.
-- En ambos casos las reglas de PRODE siguen requiriendo diseño y pruebas. Elegir proveedor de base no decide automáticamente cómo autenticaremos a los usuarios.
+- Supabase Auth ya fue elegido para Google; su PostgreSQL y otros componentes se evaluarán por separado.
+- En ambos casos las reglas de PRODE siguen requiriendo diseño y pruebas. Elegir proveedor de base no modifica la decisión de acceso Google mediante Supabase Auth.
 - La conexión necesita SSL, límites de conexiones y, cuando corresponda, un pooler. En Supabase hay diferencias entre conexión directa IPv6 y modos de pooler IPv4: debemos usar la modalidad compatible con el alojamiento real. [Conexiones de Supabase](https://supabase.com/docs/guides/database/connecting-to-postgres)
 
 El backup no queda resuelto por tener la base fuera de Render. Necesitamos exportar, guardar una copia fuera del mismo proyecto y demostrar que puede restaurarse.
@@ -241,7 +243,7 @@ Full Stack Open ofrece ejercicios profundos, pero su parte 11 recomienda haber c
 
 1. Proveedor y región de web, API y PostgreSQL, comparando latencia y compatibilidad.
 2. Despliegue conjunto o separado y direcciones definitivas.
-3. Identidad propia o gestionada, con permisos de negocio verificados en FastAPI.
+3. Detalles de integración de Google/Supabase Auth y sesión, con permisos de negocio verificados en FastAPI.
 4. Programador y servicio de notificaciones, comportamiento ante pausas y cuotas.
 5. Configuración DNS real del dominio y servicios que ya puedan depender de él.
 6. Copias, retención, recuperación y responsable de operación.
@@ -249,6 +251,82 @@ Full Stack Open ofrece ejercicios profundos, pero su parte 11 recomienda haber c
 8. Más adelante, tecnología móvil, publicación en tiendas y presupuesto comercial.
 
 Elegir estas opciones no requiere cambiar el stack aprobado. Las decisiones concretas se documentarán en la arquitectura y el roadmap; esta guía nos da criterios para discutirlas.
+
+## 12. Qué hace cada proveedor y qué tendríamos que hacer nosotros
+
+**Comparación ampliada:** 18 de noviembre de 2026. Es orientación para elegir alojamiento; no se crearon cuentas, no se adoptó un proveedor ni se hizo un despliegue. PostgreSQL sigue siendo la base aprobada: no se adoptó SQLite.
+
+### Cloudflare Pages: publicar las pantallas
+
+Pages recibiría el proyecto web, ejecutaría su compilación y publicaría el resultado. Su panel permite conectar el repositorio, configurar la compilación, consultar el historial y asociar un dominio. El plan Free admite 500 compilaciones mensuales; no significa 500 visitas ni 500 usuarios. [Límites de Pages](https://developers.cloudflare.com/pages/platform/limits/)
+
+- **Lo que resolvería:** entregar los archivos React/Vite y gestionar la publicación de la web.
+- **Lo que haríamos nosotros:** desarrollar la interfaz, definir cómo se compila, indicar la URL pública de la API y comprobar que funciona con esa API.
+- **Lo que no reemplaza:** la API Python, la base de datos ni nuestras pruebas.
+- **Uso concreto:** una persona abre la web y ve las pantallas aunque la API todavía esté despertando; las operaciones que requieren datos esperan a la API.
+
+Podemos mantener el dominio registrado en Namecheap. Para un subdominio como `app.tudominio.me`, Pages admite asociarlo en su panel y configurar un CNAME con el proveedor DNS actual; el dominio raíz tiene requisitos distintos de zona y nameservers. No hace falta transferir el registro del dominio. [Dominios en Pages](https://developers.cloudflare.com/pages/configuration/custom-domains/)
+
+### Render Free: ejecutar FastAPI
+
+El panel de Render permite conectar un repositorio, definir instalación y arranque, guardar variables del servidor, revisar registros y consultar despliegues. Su recorrido oficial de FastAPI muestra esos pasos; los comandos se ajustarán a la estructura real del MVP. [FastAPI en Render](https://render.com/docs/deploy-fastapi)
+
+- **Lo que resolvería:** ejecutar el programa Python y darle una dirección accesible por HTTPS.
+- **Lo que haríamos nosotros:** programar las reglas, gestionar permisos, configurar conexiones, migraciones y pruebas, y revisar fallos.
+- **Límite de inactividad:** Free se suspende tras 15 minutos sin tráfico; una nueva solicitud lo reactiva y puede esperar aproximadamente un minuto. [Render Free](https://render.com/docs/free) · [Preguntas frecuentes](https://render.com/docs/faq)
+- **Cuota de ejecución:** se comparten 750 horas gratuitas por workspace y mes; varios servicios pueden consumir esa misma cuota. [Render Free](https://render.com/docs/free)
+- **Disco efímero:** los archivos locales se pierden al reiniciar, redesplegar o suspender. La base y las copias duraderas deben vivir fuera de ese disco. [Persistencia en Free](https://render.com/docs/free)
+
+El comportamiento al agotar cuotas importa para apuntar a costo cero. Render documenta que, sin método de pago, superar transferencia puede suspender servicios y superar minutos de compilación puede impedir nuevas publicaciones. Con método de pago puede haber cargos suplementarios según el recurso y los límites configurados. Las horas gratuitas agotadas suspenden los servicios Free hasta el período siguiente. Revisar cuotas y facturación es parte del piloto, no asumir que toda cuenta Free bloquea cualquier cargo adicional. [Condiciones de Render Free](https://render.com/docs/free)
+
+### Neon Free: alojar PostgreSQL
+
+El panel de Neon permite crear el proyecto, elegir región, obtener la conexión, consultar datos y observar consumo. FastAPI usaría esa conexión cifrada para guardar y leer los pronósticos; el navegador no recibe la contraseña.
+
+- **Oferta consultada:** 1 GB de almacenamiento y 100 CU-horas mensuales por proyecto. [Neon: planes](https://neon.com/pricing)
+- **Inactividad:** el cómputo gratuito se suspende después de cinco minutos sin actividad; se reactiva cuando se necesita. Eso no equivale a borrar los datos. [Neon: planes](https://neon.com/pricing)
+- **Recuperación limitada:** el historial Free llega hasta seis horas o 1 GB de cambios, según el límite alcanzado. No sustituye una copia independiente y probada. [Neon: planes](https://neon.com/pricing)
+- **Nuestra responsabilidad:** modelo de datos, migraciones, consultas, permisos, límites de conexiones y respaldos.
+
+CU-horas es capacidad multiplicada por tiempo activo, no cantidad de jugadores. Consultar constantemente la base desde un cron puede mantenerla activa y gastar cuota; debemos medir antes de afirmar que los recordatorios caben gratis.
+
+### Supabase Free: PostgreSQL con servicios adicionales opcionales
+
+Su panel reúne base, usuarios de autenticación si los habilitamos, almacenamiento y otras herramientas. Podemos usar solamente PostgreSQL para FastAPI; elegir Supabase no nos obliga a trasladar toda la lógica a sus funciones ni adopta automáticamente su sistema de login. [Arquitectura de Supabase](https://supabase.com/docs/guides/getting-started/architecture)
+
+- **Oferta consultada:** 500 MB de base y 5 GB de transferencia saliente incluidos. [Supabase: planes](https://supabase.com/pricing)
+- **Inactividad:** un proyecto Free puede pausarse por baja actividad durante una semana; requiere restaurarlo cuando corresponda. [Pausas](https://supabase.com/docs/guides/platform/free-project-pausing)
+- **Copias:** no contar con los respaldos diarios administrados de planes pagos; preparar exportaciones y restauraciones propias. [Backups](https://supabase.com/docs/guides/platform/backups)
+- **Nuestra responsabilidad:** la misma disciplina de datos y operación, más configurar los servicios opcionales que decidamos usar.
+
+Si en una evolución se habilitan flujos por correo en Supabase Auth, habría que configurar su envío para destinatarios reales; no considerar su SMTP por defecto como correo de producción ya resuelto. La decisión vigente es sólo Google mediante Supabase Auth. El correo/contraseña se compara como evolución, no como requisito del MVP. [Correo de Supabase Auth](https://supabase.com/docs/guides/auth/auth-smtp)
+
+Para una API y reglas propias en FastAPI, Neon es un candidato centrado en PostgreSQL. Supabase resulta especialmente interesante si también queremos evaluar identidad u otros servicios gestionados. No elegiría por la cantidad de funciones anunciadas, sino por cuáles necesitamos, sus límites y lo que estamos dispuestos a mantener.
+
+### Dos recorridos concretos para comparar
+
+| Recorrido | Cómo quedaría | Ventaja | Costo de complejidad |
+|---|---|---|---|
+| Tres servicios, propuesta orientativa | Pages publica React; Render ejecuta FastAPI; Neon guarda PostgreSQL. | La web puede abrir mientras la API despierta; interfaz y servidor se actualizan por separado. | Tres paneles y coordinación entre web y API. |
+| Dos servicios, alternativa | Render ejecuta FastAPI y sirve el build de React; Neon guarda PostgreSQL. | Un panel menos y una sola dirección para interfaz/API. | Cuando Render duerme, también espera la carga de la web; la publicación debe preparar ambas partes. |
+
+Supabase puede reemplazar a Neon en cualquiera de las dos rutas si termina siendo la base elegida; no hace falta contratar ambas. La alternativa conjunta sigue usando React/Vite, FastAPI y PostgreSQL. [Frontend servido por FastAPI](https://fastapi.tiangolo.com/tutorial/frontend/)
+
+Mi recomendación orientativa para aprender y probar sería evaluar primero **Pages + Render + Neon**, y elegir la ruta de dos servicios si reducir paneles pesa más que la espera inicial de la web. Ninguna de las dos garantiza disponibilidad continua ni recordatorios puntuales con recursos gratuitos; esos comportamientos se verificarán antes del piloto.
+
+### Qué conectaríamos y cómo comprobarlo
+
+1. Publicar una API mínima de ensayo y leer su registro de inicio.
+2. Crear la base de ensayo, colocar su conexión sólo en secretos de la API y comprobar una escritura y lectura.
+3. Publicar el build web con la URL pública de la API y probarlo desde otro dispositivo.
+4. Si los orígenes son distintos, configurar CORS para la web. CORS no autentica usuarios ni protege por sí solo los pronósticos. [FastAPI: CORS](https://fastapi.tiangolo.com/tutorial/cors/)
+5. Probar reinicio y nueva publicación: los datos deben sobrevivir en PostgreSQL.
+6. Ensayar exportación y restauración en un destino separado; después asociar el dominio y verificar HTTPS.
+7. Definir la automatización: conectar Git permite autodespliegues, pero no configura por sí solo pruebas que bloqueen cambios incorrectos. [Pages: Git](https://developers.cloudflare.com/pages/configuration/git-integration/) · [Render: despliegues](https://render.com/docs/deploys)
+
+La dirección pública de la API es visible; la contraseña de PostgreSQL y claves administrativas son secretos del servidor. Las variables `VITE_*` llegan al navegador: nunca colocar esos secretos allí. [Variables de Vite](https://vite.dev/guide/env-and-mode/)
+
+Este recorrido es una propuesta de práctica, no una puesta en marcha realizada. Antes de ejecutarlo faltan seleccionar proveedor/región, revisar condiciones de las cuentas y acordar cómo probaremos recordatorios, copias y consumo.
 
 ## Fuentes y notas de vigencia
 

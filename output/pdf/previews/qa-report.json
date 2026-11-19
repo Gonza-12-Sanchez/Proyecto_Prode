@@ -1,7 +1,89 @@
 {
-  "pages": 11,
+  "revision": 2,
+  "pdf": "C:\\Users\\GonziChan\\Desktop\\Proyecto_Prode\\output\\pdf\\PRODE-discovery-aprobado.pdf",
+  "pages": 20,
   "issues": [],
+  "rule_ids": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18
+  ],
+  "required_terms": {
+    "Google": true,
+    "Supabase Auth": true,
+    "Cloudflare": true,
+    "Render": true,
+    "Neon": true,
+    "SQLite": true,
+    "PostgreSQL": true,
+    "mantenimiento": true,
+    "Docker": true,
+    "Full Stack Open": true,
+    "FastAPI": true,
+    "Vite": true
+  },
+  "outline_entries": 18,
   "links": [
+    "https://vite.dev/guide/static-deploy",
+    "https://fastapi.tiangolo.com/tutorial/frontend/",
+    "https://fastapi.tiangolo.com/tutorial/frontend/",
+    "https://developers.cloudflare.com/pages/platform/limits/",
+    "https://render.com/docs/free",
+    "https://neon.com/pricing",
+    "https://supabase.com/pricing",
+    "https://supabase.com/docs/guides/platform/backups",
+    "https://www.sqlite.org/whentouse.html",
+    "https://render.com/docs/disks",
+    "https://docs.railway.com/volumes/reference",
+    "https://docs.railway.com/pricing/free-trial#data-retention",
+    "https://help.pythonanywhere.com/pages/ASGICommandLine/",
+    "https://supabase.com/docs/guides/auth/social-sign-in/auth-google",
+    "https://developers.google.com/identity/gsi/web/guides/verify-google-id-token",
+    "https://supabase.com/pricing",
+    "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+    "https://supabase.com/docs/guides/auth/auth-smtp",
+    "https://developer.apple.com/app-store/review/guidelines/#login-services",
+    "https://developers.cloudflare.com/pages/configuration/custom-domains/",
+    "https://vite.dev/guide/env-and-mode/",
+    "https://fastapi.tiangolo.com/tutorial/cors/",
+    "https://supabase.com/docs/guides/database/connecting-to-postgres",
+    "https://fastapi.tiangolo.com/deployment/concepts/",
+    "https://www.postgresql.org/docs/current/backup-dump.html",
+    "https://developers.cloudflare.com/workers/configuration/cron-triggers/",
+    "https://developer.apple.com/documentation/usernotifications/sending-web-push-notifications-in-web-apps-and-browsers",
+    "https://docs.expo.dev/build/introduction/",
+    "https://docs.expo.dev/submit/introduction/",
+    "https://docs.expo.dev/eas-update/runtime-versions/",
+    "https://support.google.com/googleplay/android-developer/answer/6112435?hl=es",
+    "https://support.google.com/googleplay/android-developer/answer/14151465?hl=es",
+    "https://developer.apple.com/help/account/membership/program-enrollment/",
+    "https://developer.apple.com/help/app-store-connect/test-a-beta-version/testflight-overview/",
+    "https://developer.mozilla.org/es/docs/Learn_web_development/Howto/Web_mechanics/How_does_the_Internet_work",
+    "https://developer.mozilla.org/es/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_domain_name",
+    "https://vite.dev/guide/static-deploy",
+    "https://fastapi.tiangolo.com/es/deployment/",
+    "https://www.postgresql.org/docs/current/backup-dump.html",
+    "https://fullstackopen.com/es/part11/introduccion_a_ci_cd/",
+    "https://docs.docker.com/get-started/",
+    "https://fullstackopen.com/es/part12/",
+    "https://fullstackopen.com/es/part12/",
+    "https://docs.expo.dev/build/introduction/",
+    "https://fullstackopen.com/es/part0/informacion_general/",
     "https://prodeenlinea.com/faq/",
     "https://prode.io/en/faq",
     "https://www.kicktipp.com/",
@@ -28,83 +110,153 @@
     "https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting/",
     "https://www.namecheap.com/support/knowledgebase/article.aspx/9837/46/how-to-connect-a-domain-to-a-server-or-hosting/"
   ],
-  "outline_entries": 14,
+  "unique_links": 55,
   "page_chars": [
     [
       1,
-      526
+      645
     ],
     [
       2,
-      2430
+      3291
     ],
     [
       3,
-      3066
+      2897
     ],
     [
       4,
-      2606
+      2547
     ],
     [
       5,
-      2277
+      2925
     ],
     [
       6,
-      2614
+      709
     ],
     [
       7,
-      2278
+      3187
     ],
     [
       8,
-      2681
+      2174
     ],
     [
       9,
-      3079
+      2815
     ],
     [
       10,
-      1948
+      2916
     ],
     [
       11,
-      3018
+      2779
+    ],
+    [
+      12,
+      2676
+    ],
+    [
+      13,
+      1641
+    ],
+    [
+      14,
+      2991
+    ],
+    [
+      15,
+      530
+    ],
+    [
+      16,
+      3006
+    ],
+    [
+      17,
+      2095
+    ],
+    [
+      18,
+      1969
+    ],
+    [
+      19,
+      3148
+    ],
+    [
+      20,
+      614
     ]
   ],
-  "rule_ids": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17
-  ],
-  "replacement_chars": 0,
-  "bad_uri_punctuation": [],
-  "required_terms": {
-    "React": true,
-    "TypeScript": true,
-    "Vite": true,
-    "FastAPI": true,
-    "PostgreSQL": true,
-    "Mantenimiento": true,
-    "Preguntas abiertas": true,
-    "empresas": true,
-    "suscripciones": true
+  "section_pages": {
+    "Resumen ejecutivo": 3,
+    "1. Problema que resuelve": 3,
+    "2. Usuarios y roles": 4,
+    "3. Casos de uso": 4,
+    "4. Competidores y soluciones existentes": 4,
+    "5. Funcionalidades necesarias para la primera versión": 5,
+    "6. Funcionalidades opcionales y evolución": 6,
+    "7. Reglas de negocio aprobadas": 7,
+    "8. Integraciones y orientación técnica": 8,
+    "9. Restricciones y decisiones de alcance": 9,
+    "10. Riesgos, mantenimiento y validación": 10,
+    "11. Preguntas abiertas": 11,
+    "12. Despliegue gratuito: responsabilidades y alternativas": 12,
+    "13. Autenticación aprobada: sólo Google mediante Supabase Auth": 14,
+    "14. Operación del despliegue, recordatorios y producción móvil": 16,
+    "15. Ruta práctica de aprendizaje": 18,
+    "Fuentes y precedencia": 19,
+    "Continuidad de la fundación": 20
+  },
+  "feature_pages": {
+    "autenticación": [
+      2,
+      6,
+      14,
+      16
+    ],
+    "Google": [
+      1,
+      2,
+      3,
+      5,
+      7,
+      8,
+      9,
+      10,
+      11,
+      14,
+      17,
+      19
+    ],
+    "despliegue": [
+      2,
+      3,
+      9,
+      10,
+      11,
+      12,
+      13,
+      16,
+      18,
+      19
+    ],
+    "SQLite": [
+      3,
+      12,
+      13,
+      19
+    ],
+    "mantenimiento": [
+      2,
+      3,
+      10,
+      16
+    ]
   }
 }
