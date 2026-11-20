@@ -271,11 +271,11 @@ def main():
              HRFlowable(width="18%", thickness=3, color=GOLD, hAlign="LEFT", spaceAfter=25),
              Paragraph("Una plataforma para pronosticar fútbol con amigos, con evolución hacia empresas y suscripciones.", cover_desc),
              Spacer(1, 8*mm),
-             Paragraph("<b>Primera etapa</b><br/>MVP web móvil gratuito, jugable con amigos.", styles["quote"]),
+             Paragraph("<b>Primera etapa</b><br/>MVP web para celular y computadora, jugable con amigos. Objetivo de costo cero sujeto a validación.", styles["quote"]),
              Paragraph("<b>Base tecnológica confirmada</b><br/>React + TypeScript + Vite / FastAPI / PostgreSQL", styles["quote"]),
-             Paragraph("<b>Acceso del MVP</b><br/>Sólo Google, gestionado por Supabase Auth. Sin correo y contraseña de PRODE.", styles["quote"]),
+             Paragraph("<b>Acceso del MVP</b><br/>Calendario y marcadores públicos. Prodes privados con Google mediante Supabase Auth.", styles["quote"]),
              Spacer(1, 12*mm), Paragraph(f"Actualizado: {updated} · Revisión {revision}", styles["body"]),
-             Paragraph("Estado: Discovery aprobado por el usuario. La fundación continúa; la Knowledge Base, el diseño y el roadmap se elaborarán en las siguientes fases.", styles["small"]),
+             Paragraph("Estado: Discovery aprobado por el usuario. El roadmap usará este documento como fuente, sin generar una KB de diez archivos. La arquitectura se detallará por change y el diseño se resolverá antes de implementar pantallas.", styles["small"]),
              PageBreak(), Paragraph("Contenido", styles["h1"])]
     toc = TableOfContents()
     toc.levelStyles = [styles["toc"]]

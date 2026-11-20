@@ -1,0 +1,524 @@
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+1
+PRODUCTO / ESTRATEGIA / OPERACIÓN
+PRODE
+Discovery aprobado
+Una plataforma para pronosticar fútbol con amigos, con evolución hacia empresas
+y suscripciones.
+Primera etapa
+MVP web para celular y computadora, jugable con amigos. Objetivo de costo cero sujeto a validación.
+Base tecnológica confirmada
+React + TypeScript + Vite / FastAPI / PostgreSQL
+Acceso del MVP
+Calendario y marcadores públicos. Prodes privados con Google mediante Supabase Auth.
+Actualizado: 19 de noviembre de 2026 · Revisión 3
+Estado: Discovery aprobado por el usuario. El roadmap usará este documento como fuente, sin generar una KB de diez
+archivos. La arquitectura se detallará por change y el diseño se resolverá antes de implementar pantallas.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+2
+Contenido
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 3
+Resumen ejecutivo
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+1. Problema que resuelve
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+2. Usuarios y roles
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 4
+3. Casos de uso
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 5
+4. Competidores y soluciones existentes
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 6
+5. Funcionalidades necesarias para la primera versión
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+6. Funcionalidades opcionales y evolución
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 7
+7. Reglas de negocio aprobadas
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 8
+8. Integraciones y orientación técnica
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 9
+9. Restricciones y decisiones de alcance
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+10. Riesgos, mantenimiento y validación
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 10
+11. Preguntas abiertas y validaciones del roadmap
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+Fuentes y precedencia
+ .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  . 11
+Continuidad de la fundación
+Cómo leer este documento
+Las decisiones confirmadas describen lo acordado. Las propuestas y preguntas abiertas se mantienen
+identificadas para evitar convertirlas en compromisos. Los ejemplos de proveedores son alternativas, no
+servicios contratados.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+3
+Fecha original: 17 de noviembre de 2026 Actualización: 19 de noviembre de 2026 Revisión: 3 Estado:
+Discovery cerrado y resumen final aprobado por el usuario el 19 de noviembre de 2026. Alcance del
+documento: fuente canónica de producto para el roadmap del MVP. La aprobación define qué construir;
+no acredita integraciones operativas, software implementado ni finalización de toda la fundación.
+Resumen ejecutivo
+PRODE es un producto de pronósticos de fútbol para competir con amigos y conocidos. Su visión
+comercial contempla empresas y sus empleados, además del público general mediante planes o
+suscripciones por definir. No tiene objetivos ni requisitos académicos. El beneficio estudiantil utilizado para
+registrar el dominio no cambia ese propósito.
+El MVP será una web cómoda en celular y computadora, jugable por un grupo real, con objetivo de utilizar
+servicios gratuitos dentro de sus cuotas. Compartirá una sola competencia argentina entre el calendario
+público y los prodes privados: la temporada de Primera División/Liga Profesional vigente cuando comience
+el piloto. El alcance anual incluye Apertura y Clausura con sus eliminatorias, sin Trofeo de Campeones. Se
+juega desde la creación del prode y desde el ingreso de cada persona, sin puntos retroactivos.
+El calendario se navega por días: hoy, mañana y selector de fecha. Los marcadores se muestran durante
+los encuentros, con una tolerancia objetivo de hasta cinco minutos de demora total por validar. El juego usa
+pronósticos propios de cada torneo, carga de una jornada completa, guardado explícito, puntuación por
+resultados confirmados y ranking. El acceso para jugar es sólo Google mediante Supabase Auth. Los
+recordatorios son notificaciones web, configurables por usuario y agrupadas por partido.
+La API deportiva será la única fuente de resultados. No se habilitan carga manual, edición administrativa de
+marcadores ni puntuación manual como alternativa. Información incompleta o inconsistente queda
+pendiente; correcciones del proveedor recalculan automáticamente los puntos. Todavía no se eligió ni
+validó ese proveedor. Tampoco se confirmó la combinación de alojamiento y ejecución de tareas necesaria
+para sostener costo cero.
+El stack aprobado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. Por decisión del usuario,
+se pasa de este Discovery al roadmap sin generar la KB de diez archivos. Este documento conserva las
+decisiones de producto; el roadmap referenciará sus secciones y cada change detallará la arquitectura,
+contratos y verificaciones que necesite. La política y el sistema visual deben resolverse antes de
+implementar UI; no se consideran desactivados ni aprobados por esta simplificación documental.
+Historial y precedencia de esta revisión
+Revisión
+Fecha
+Alcance
+1
+17/11/2026
+Discovery original: problema, usuarios, reglas,
+visión comercial, stack y mantenimiento.
+2
+18/11/2026
+Despliegue, aprendizaje y producción móvil;
+Google mediante Supabase Auth como único
+login.
+3
+19/11/2026
+MVP de una liga argentina, calendario público,
+alcance anual, reglas de 90 minutos,
+guardado, ranking, recordatorios y API como
+única fuente de resultados; cierre aprobado y
+roadmap directo.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+4
+La revisión 3 reemplaza para el MVP la configuración multiliga, la selección arbitraria de jornadas/partidos,
+la elección del creador sobre alargue y el fallback o edición manual de resultados de versiones anteriores.
+El registro de pendientes conserva el historial; sus entradas antiguas no prevalecen sobre este documento
+ni vuelven a abrir acuerdos confirmados. Las comprobaciones técnicas identificadas permanecen
+pendientes de ejecución.
+1. Problema que resuelve
+Los primeros usuarios ya organizan prodes entre amigos o conocidos. Sus molestias principales son cargar
+pronósticos en herramientas dispersas, mantener planillas, recordar los encuentros y comprobar puntos y
+posiciones. PRODE concentra la consulta de partidos y el juego del grupo en una misma experiencia móvil,
+accesible desde un enlace.
+El objetivo del piloto es comprobar si el grupo puede crear un prode, invitarse, completar pronósticos,
+entender sus puntos y volver a jugar en jornadas sucesivas. No se aprobaron tamaño de cohorte, plazo de
+lanzamiento ni umbrales numéricos de retención. Esos datos se acordarán al preparar la prueba, sin
+inventarlos como requisitos.
+Cada persona decide sus marcadores. No se incluyen pronósticos automáticos por inteligencia artificial,
+apuestas, premios ni pozos como parte del alcance acordado.
+2. Usuarios y roles
+Actor
+Alcance del MVP
+Visitante
+Consultar calendario, fixture y marcadores públicos sin iniciar sesión.
+Participante
+Acceder con Google, unirse por enlace/código, consultar sus grupos, guardar y editar
+sus pronósticos antes del cierre, consultar resultados revelados, puntos y ranking.
+Creador del prode
+Crear y organizar el torneo de la competencia habilitada e invitar al grupo. No
+modifica marcadores, puntajes ni el criterio de alcance congelado.
+Administración técnica de
+PRODE
+Operar el servicio, revisar registros y estados, y reintentar sincronización cuando
+corresponda. No edita resultados ni adjudica puntos manualmente.
+Empresa o suscriptor futuro
+Visión posterior; planes, aislamiento organizacional, roles internos y contratación
+quedan fuera del MVP.
+El rol de creador pertenece a un prode concreto; iniciar sesión no concede acceso a todos los torneos. Los
+datos y las operaciones privadas requieren identidad válida, membresía y permisos comprobados por
+FastAPI. Ser creador no otorga funciones de administración técnica.
+Los permisos concretos, el ciclo seguro de sesión y los controles de autorización se diseñarán y probarán
+en sus changes. Moderación avanzada, expulsiones y transferencia de propietario no se agregan como
+requisitos implícitos del piloto.
+3. Casos de uso
+ 1. Como visitante, quiero encontrar los partidos de hoy, mañana o de un día elegido, con horario, estado y
+ marcador, para seguir la competencia argentina.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+5
+2. Como usuario, quiero entrar mediante Google y crear un prode privado de la temporada habilitada, para
+ competir con mi grupo.
+3. Como creador, quiero compartir un enlace o código, para que otras personas se unan sin aprobación
+ individual.
+4. Como invitado, quiero retomar el torneo de destino después del login; si ya pertenezco, entrar sin
+ duplicar la membresía; si el código es inválido, comprender el error.
+5. Como participante, quiero cargar una jornada completa y pulsar «Guardar pronósticos», para confirmar
+ qué quedó registrado. Los pronósticos no se copian a otros prodes.
+6. Como participante, quiero que se guarden los partidos válidos aún abiertos aunque otro haya cerrado
+ durante la carga, identificando los cambios que se rechazaron.
+7. Como participante, quiero conservar los campos mientras siga abierta la pantalla si falla el envío, recibir
+ un aviso y poder reintentar. Sólo una confirmación del servidor acredita guardado.
+8. Como participante, quiero consultar mi pronóstico, el resultado válido y sus puntos, además del ranking
+ del grupo, para entender cómo se calcula mi posición.
+9. Como participante, quiero elegir la anticipación de mis recordatorios o desactivarlos, y recibir un solo
+ aviso por partido con los prodes donde todavía me falte pronosticar.
+10. Como responsable del producto, quiero recibir resultados completos desde la fuente, recalcular sus
+ correcciones y recuperar el servicio y sus datos mediante procedimientos probados.
+Estos recorridos son criterios de producto, no pruebas ya ejecutadas. El guardado ante fallos no implica
+borradores persistentes al cerrar o recargar el navegador ni modo de pronóstico sin conexión.
+4. Competidores y soluciones existentes
+Se investigaron páginas públicas y documentación oficial. No se crearon cuentas de competidores ni se
+certificaron sus recorridos autenticados, calidad de datos o retención. Las fichas completas quedan en
+discovery/sources/; funciones y precios publicados son observaciones históricas que pueden cambiar.
+Referencia
+Aprendizaje para PRODE
+Límite de la referencia
+Prode En Línea
+Grupos, ranking, cierre al inicio y revelación
+posterior; simplificar la comprensión de una
+fecha.
+La apertura directa falló; se consultó la FAQ
+indexada. No se adoptan límites ni reglas
+adicionales.
+Prode.io
+Puntuación excluyente por exacto/ganador
+y reglas claras.
+PRODE conserva pronósticos independientes
+por torneo, no un pronóstico global.
+Kicktipp
+Reglas visibles y experiencia de grupos.
+No se trasladan su configurabilidad, límites ni
+sistema de puntaje.
+Superbru
+Juego social y evolución móvil/comercial.
+No demuestra disposición a pagar por PRODE
+ni define su MVP.
+Promiedos
+Calendario por días, horarios y seguimiento
+de competencias.
+El usuario aprecia su organización y prefiere
+otra dirección visual. No se verificó una API
+reutilizable para PRODE.
+Potrero
+Referencia visual y minijuegos para una
+evolución de entretenimiento.
+Las funciones se obtuvieron de páginas
+públicas; no se probaron juegos. Minijuegos
+no integran el MVP.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+6
+Las fichas de Promiedos y Potrero documentan que los enlaces originales de Google no fueron accesibles
+y que los sitios se encontraron por búsqueda. Las opiniones de diseño pertenecen al usuario; no son una
+auditoría visual automatizada.
+La búsqueda posterior encontró anuncios de puntos o clasificaciones en vivo en TippBlitz y Kickfan, sin
+prueba de sus interfaces. El usuario decidió diferir esa funcionalidad: que exista en otros productos no la
+convierte en requisito del MVP.
+5. Funcionalidades necesarias para la primera versión
+Consulta pública y competencia compartida
+ - Web responsive para celular y computadora. Calendario público por días, con hoy, mañana y selección
+ de fecha.
+- Fixture y marcadores de la misma competencia argentina usada por los prodes, con equipos, horario,
+ estado y última actualización.
+- Seguimiento durante los partidos con tolerancia objetivo de hasta cinco minutos de demora total. Se debe
+ mostrar el estado de demora o indisponibilidad cuando corresponda; la meta requiere ensayo real.
+- Registros compartidos de partidos: un cambio de horario o resultado debe reflejarse coherentemente en
+ calendario y prodes, sin generar una consulta externa por cada visita o torneo creado.
+Juego privado y carga
+ - Acceso sólo con Google mediante Supabase Auth para crear, unirse y pronosticar; contenido de cada
+ prode restringido a sus participantes autorizados.
+- Creación de prodes privados de la temporada argentina vigente al piloto. Alcance anual de Apertura y
+ Clausura con eliminatorias, sin Trofeo de Campeones.
+- Invitación por enlace/código. Login conserva el destino; una membresía existente no se duplica; códigos
+ inválidos presentan un error claro.
+- Carga de jornada completa dentro de cada prode. Botón «Guardar pronósticos», confirmación y aviso al
+ salir con cambios pendientes.
+- Guardado parcial de pronósticos válidos de encuentros abiertos cuando alguno haya cerrado; detalle de
+ guardados y rechazados. Rechazar un cambio no borra el pronóstico válido ya guardado.
+- Recuperación de errores de envío conservando los campos mientras la vista siga abierta, aviso de fallo y
+ reintento. Sin autosave ni persistencia de borradores en navegador como requisito.
+Resultados, puntos y recordatorios
+ - Integración de una API deportiva como única fuente de resultados. Estado final y marcador completo de
+ 90 minutos más descuento habilitan puntuación automática.
+- Pronósticos independientes por torneo, reglas simples de 3/1/0 y ranking sólo con partidos finalizados.
+ Consulta del resultado válido y motivo de los puntos.
+- Correcciones posteriores de la API actualizan los puntos y el ranking sin duplicación, con rastro de
+ cambios de la fuente. No hay carga manual ni corrección administrativa de marcadores.
+- Web Push para partidos sin pronóstico guardado, con anticipación ajustable por usuario, 30 minutos
+ iniciales y opción de desactivar.
+- Un aviso por persona y partido agrupa sólo los prodes pendientes. Antes del envío se verifica si aún
+ faltan pronósticos; si ya están completos, no se avisa. No se incorpora correo al MVP.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+7
+- Guías de publicación, actualización, diagnóstico, reversión y respaldo/restauración; recuperación
+ probada antes de invitar al piloto.
+Los controles concretos de anticipación, permisos del navegador, compatibilidad y ejecución de envíos se
+diseñarán y ensayarán. No se fijaron nuevos mínimos o máximos de minutos ni límites comerciales de
+amigos/prodes; las cuotas técnicas se medirán antes del piloto.
+6. Funcionalidades opcionales y evolución
+Quedan fuera del MVP: prodes multiliga y selección personalizada de jornadas/partidos; noticias;
+minijuegos; estadísticas detalladas; ranking provisional durante partidos; aplicaciones nativas y publicación
+en tiendas; funciones para empresas, cobros y suscripciones. Son posibilidades para evaluar con uso real,
+no compromisos del primer lanzamiento. La visión comercial se conserva sin anticipar arquitectura de
+facturación ni límites de planes.
+7. Reglas de negocio aprobadas
+Estas reglas reemplazan las alternativas incompatibles del historial. Los controles deben aplicarse en
+servidor, independientemente de lo que muestre la interfaz.
+ID
+Regla
+RN-01
+El piloto usa Primera División argentina de la temporada vigente al comenzar a jugar: Apertura y Clausura
+con sus eliminatorias. Trofeo de Campeones queda excluido.
+RN-02
+Cada prode incluye todos los partidos futuros de ese alcance desde su creación. Cada participante suma
+sólo desde su ingreso y puede pronosticar encuentros futuros; no recibe puntos retroactivos.
+RN-03
+Los prodes son privados: cualquier persona autenticada que tenga un enlace o código válido puede
+unirse, también después del inicio, sin aprobación individual del creador. No se duplica su membresía.
+RN-04
+El calendario y los marcadores son públicos. Crear, unirse, pronosticar y consultar información privada
+requiere Google mediante Supabase Auth y autorización sobre el prode.
+RN-05
+Cada pronóstico pertenece a una persona, partido y prode. Es independiente de los pronósticos del
+mismo encuentro en otros torneos; no se propagan cambios automáticamente.
+RN-06
+Sólo cuenta el marcador a los 90 minutos más descuento. Se excluyen alargue y tanda de penales,
+también en eliminatorias. No es una opción configurable del creador en el MVP.
+RN-07
+Un marcador exacto otorga 3 puntos; acertar ganador o empate sin exactitud otorga 1; el resto, 0. Los
+premios no se acumulan.
+RN-08
+Se puntúa únicamente cuando la API informa un partido finalizado y entrega el marcador válido completo
+de los 90 minutos. Alcanzar el minuto 90 no basta si el encuentro sigue disputándose.
+RN-09
+El ranking se ordena por puntos y luego por cantidad de marcadores exactos. Si persiste el empate,
+comparten posición y se usan puestos consecutivos: 1.º, 1.º, 2.º. No hay ranking provisional en vivo.
+RN-10
+Cada pronóstico puede editarse hasta el inicio de su partido, usando la hora del servidor como autoridad.
+Desde ese momento queda bloqueado y se revelan los pronósticos ajenos de ese encuentro dentro del
+prode.
+RN-11
+Al empezar el primer partido del prode se congelan temporada, fases incluidas y reglas. Se conserva el
+criterio de selección; no se congela una lista incompleta de encuentros.
+RN-12
+El fixture incorpora los cruces oficiales que se definan y sus reprogramaciones. El creador no agrega ni
+elimina encuentros selectivamente después del comienzo.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+8
+ID
+Regla
+RN-13
+El cierre deportivo corresponde a la final del Clausura. Si quedan encuentros incluidos pendientes, el
+prode queda «finalizando» hasta su resolución oficial, sin sumar la edición siguiente ni declarar un
+ganador definitivo antes.
+RN-14
+Un encuentro reprogramado que no comenzó conserva sus pronósticos y permite editar hasta el nuevo
+inicio. Uno suspendido después de comenzar sigue bloqueado y pendiente de resolución. Una
+cancelación definitiva no otorga puntos.
+RN-15
+La API elegida es la única fuente de resultados. Sus correcciones recalculan puntos y ranking de manera
+consistente, sin duplicarlos y dejando registro del cambio recibido.
+RN-16
+Ante información incompleta, inconsistente o caída de la fuente, el resultado queda pendiente y se
+reintenta. El administrador puede diagnosticar y reintentar sincronizaciones, pero no editar marcadores ni
+asignar puntos manualmente.
+RN-17
+La carga por jornada usa «Guardar pronósticos», confirmación de lo guardado y aviso al salir con cambios
+pendientes. No se presupone guardado automático.
+RN-18
+Si algún partido se cierra antes de guardar, se guardan los cambios válidos de los que sigan abiertos y se
+identifica cada rechazo. Se conserva el pronóstico previamente guardado del encuentro cerrado.
+RN-19
+Tras un error de red, se conservan los campos mientras la vista siga abierta y se ofrece reintentar. No se
+promete persistencia al cerrar el navegador ni operación sin conexión.
+RN-20
+La invitación conserva su destino al completar Google; un código inválido muestra un error claro y una
+membresía existente no se duplica.
+RN-21
+El calendario muestra la última actualización y un estado de datos desactualizados cuando corresponda.
+No inventa resultados ante fallos. La tolerancia solicitada es hasta 5 minutos de demora total, sujeta a
+validación técnica.
+RN-22
+Los recordatorios son Web Push sólo para encuentros sin pronóstico guardado. Cada persona puede
+ajustar su anticipación, inicialmente 30 minutos, o desactivarlos. Los controles y límites concretos se
+diseñarán; no se acordó otro rango.
+RN-23
+Se emite un aviso por persona y partido, agrupando los prodes pendientes. Antes de enviar se revisa que
+aún falten pronósticos; si se completaron todos, no se envía. No se incorpora correo al MVP.
+RN-24
+El creador organiza e invita; el participante pronostica y consulta su prode; la administración técnica
+observa y mantiene las integraciones. Los permisos se verifican en servidor y no habilitan manipular
+resultados.
+8. Integraciones y orientación técnica
+La orientación aceptada es una web adaptable a celular y computadora con React, TypeScript y Vite; un
+backend Python/FastAPI; y PostgreSQL. Se busca aprender desarrollo completo y despliegue con una
+estructura que pueda evolucionar. El detalle de componentes, contratos, esquema y migraciones se
+decidirá en los changes correspondientes, no se considera implementado por este documento.
+Identidad aprobada: Google como único acceso del MVP, gestionado por Supabase Auth. No se
+desarrollará contraseña propia ni se ofrecerá acceso por email/contraseña. El backend verificará la
+identidad y los permisos de membresía/administración. La aprobación de Supabase Auth no equivale a
+elegir Supabase como proveedor de PostgreSQL.
+Datos deportivos pendientes de selección: una misma API podría abastecer fixture, estados en vivo y
+resultados finales si cumple la cobertura y las condiciones requeridas. El backend sincronizará una copia
+compartida: consultar el calendario o crear un prode no debe multiplicar llamadas al proveedor por cada
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+9
+usuario. El prode referencia partidos compartidos; sus pronósticos y permisos siguen siendo
+independientes. Frecuencia, caché y estrategia de reintentos dependen de cuotas y mediciones reales.
+OpenFoot es un candidato por investigar, no un proveedor adoptado: su documentación pública consultada
+anuncia Argentina 2026 y 5.000 consultas mensuales gratuitas. El intento de consultar su demostración
+falló por DNS en el entorno restringido y el reintento autorizado agotó 20 segundos sin respuesta
+HTTP/JSON. La prueba es inconclusa: no demuestra cobertura efectiva ni una caída del servicio.
+API-Football documenta para su plan gratuito de 2026 temporadas históricas 2022-2024; no satisface por sí
+sola la edición vigente del piloto. Toda condición comercial es una fotografía de investigación y debe
+verificarse antes de contratar o integrar.
+Despliegue pendiente de validación: se investigarán frontend estático, backend y PostgreSQL
+administrado dentro de niveles gratuitos. Render para web estática/API y Supabase o Neon para base de
+datos son alternativas, no decisiones cerradas. Tener varios proveedores no es un requisito del producto:
+se elegirá la combinación más sencilla que cumpla persistencia, disponibilidad, cuotas y operación.
+PostgreSQL sigue siendo la orientación aprobada; SQLite se evaluó para simplificar, pero alojarlo junto al
+servidor requiere almacenamiento persistente y respaldos reales y no garantiza costo cero.
+Recordatorios: Web Push requiere permiso, compatibilidad del dispositivo/navegador, suscripciones y un
+mecanismo de ejecución programada. Un backend gratuito que duerme no acredita recordatorios fiables.
+Se probará un programador o worker adecuado antes de confirmar el despliegue. No se promete envío
+efectivo a dispositivos que no otorguen permiso o no sean compatibles.
+El detalle pedagógico de proveedores, costos, publicación móvil y recursos de aprendizaje se conserva en
+Despliegue y aprendizaje. Es soporte de investigación; este Discovery gobierna el alcance actual.
+9. Restricciones y decisiones de alcance
+ - MVP jugable con amigos/conocidos, con aspiración de costo cero dentro de cuotas, sin garantía de
+ gratuidad de una combinación todavía no probada. Una prueba gratuita temporal no equivale a un plan
+gratuito permanente.
+- Una liga y una temporada anual; calendario por día -hoy, mañana y selección de fecha- y acceso web
+ adaptable. No se cambia a datos históricos, carga manual o resultados ficticios para aparentar cumplir el
+piloto.
+- El usuario dispone de un dominio obtenido mediante el beneficio estudiantil de GitHub en Namecheap.
+ Deben comprobarse renovación, control de DNS y conexión al hosting; el dominio no acredita
+alojamiento de los demás servicios.
+- No se establecieron fecha del piloto, presupuesto de producción, tamaño del equipo ni límites
+ comerciales de participantes/prodes. Se medirán las restricciones operativas antes de invitar usuarios.
+- El diseño visual y su política están pendientes. Antes del primer trabajo de UI se seguirá la skill
+ design-system para acordarlos; no se presume un sistema aprobado ni una exclusión permanente de
+mockups.
+- Por decisión explícita del usuario, el Discovery es la fuente directa del roadmap. No se genera la KB
+ redundante de diez archivos. La arquitectura detallada y las decisiones nuevas se documentarán por
+change.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+10
+10. Riesgos, mantenimiento y validación
+Riesgo
+Tratamiento requerido antes del piloto
+Datos gratuitos sin cobertura
+vigente, eliminatorias o
+marcador separado a 90
+minutos
+Probar la edición real y casos de tiempo extra/penales con respuestas verificables. Si
+no cumple, presentar opciones de alcance o presupuesto al usuario.
+Cuotas y demora en vivo
+Medir demora de origen, sincronización y presentación en conjunto; una consulta
+cada cinco minutos no garantiza una demora total de cinco. Modelar volumen de
+consultas compartidas y picos.
+Derechos de uso
+Verificar licencia, persistencia, caché, exhibición pública y condiciones del futuro uso
+comercial. Un endpoint accesible no acredita esos derechos.
+API interrumpida o correcciones
+tardías
+Mostrar última actualización, mantener pendientes, reintentar y recalcular desde la
+fuente con trazabilidad. Sin reemplazo manual de marcadores.
+Servicios gratuitos que duermen,
+pausan o cambian condiciones
+Ensayar arranque, persistencia, conexión y ejecución programada. Registrar límites y
+revisar alternativas antes de superar cuotas.
+Pérdida o exposición de datos
+Validar autorización de prodes privados, secretos y sesiones; respaldar y ensayar
+restauración de PostgreSQL. No confiar sólo en que el proveedor aloja la base.
+Web Push incompatible, sin
+permiso o duplicado
+Probar navegadores/dispositivos previstos, anticipación configurable, comprobación
+previa al envío y agrupación. Comunicar los estados de permiso sin prometer
+recepción universal.
+Operación desconocida para el
+desarrollador
+Preparar y practicar publicación, actualizaciones, migraciones, diagnóstico, rollback y
+recuperación; mantener instrucciones breves y ejecutables.
+El mantenimiento forma parte del MVP: registrar fallos de sincronización y tareas, verificar frescura del
+fixture/resultados, vigilar cuotas, revisar dependencias y comprobar que el envío programado funciona. Las
+guías deben identificar cómo detectar un problema y recuperarse. Antes del piloto se realizará al menos un
+ensayo de despliegue y recuperación con evidencia; este cierre de Discovery no afirma que ya se haya
+hecho.
+11. Preguntas abiertas y validaciones del roadmap
+El Discovery queda cerrado en sus decisiones de producto. Estas incertidumbres se convierten en tareas
+iniciales verificables del roadmap, no en funcionalidades automáticamente aprobadas:
+ 1. Fuente deportiva: ¿qué proveedor entrega la temporada vigente completa, cruces y reprogramaciones,
+ finales y marcador de 90 minutos separado? Obtener respuestas de muestra y comprobar derechos de
+persistencia/exhibición pública y viabilidad de costo cero.
+2. Actualización en vivo: medir el retraso total y calcular consultas para el calendario compartido,
+ resultados, correcciones y temporada completa; contrastarlo con la tolerancia de hasta cinco minutos y
+las cuotas reales.
+3. Alojamiento y ejecución: elegir y demostrar una combinación gratuita para frontend, FastAPI,
+ PostgreSQL y tareas programadas; probar suspensión/reactivación, persistencia, DNS, HTTPS,
+secretos y costos de renovación o exceso. No hay hosting cerrado todavía.
+
+PRODE
+DISCOVERY APROBADO / R3 / ACT 19 NOV 2026
+Fundación en curso | Decisiones confirmadas y asuntos abiertos
+11
+4. Web Push: comprobar compatibilidad y permisos en dispositivos del piloto, instalación cuando
+ corresponda, suscripciones, disparo programado, ajustes de anticipación, reintentos y prevención de
+duplicados. Definir controles y límites de configuración durante el diseño.
+5. Acceso y datos privados: probar Google/Supabase Auth, retorno a invitación, validación en FastAPI y
+ aislamiento entre prodes. Resolver contratos y persistencia por change con controles proporcionados al
+dominio.
+6. Operación y piloto: practicar migración, respaldo/restauración, actualización y reversión; preparar
+ diagnóstico de datos pendientes y cuotas. Elegir fecha/edición concreta al preparar el piloto y medir uso
+real antes de ampliar el alcance.
+7. Diseño: acordar política y sistema visual antes de implementar pantallas; definir estados vacíos,
+ errores, partidos sin horario confirmado y datos desactualizados en los changes de UI.
+Si una prueba demuestra incompatibilidad entre Argentina vigente, vivo y gratuidad, se presentará
+evidencia y opciones al usuario antes de modificar cualquiera de esas condiciones. La incertidumbre no
+autoriza un fallback manual ni una ampliación silenciosa del MVP.
+Fuentes y precedencia
+ - Este documento, revisión 3, consolida el cierre aprobado por el usuario el 19 de noviembre de 2026 y
+ reemplaza las decisiones incompatibles de revisiones anteriores. El PDF es su representación; ante una
+divergencia, corregirlo desde este Markdown.
+- Registro de dudas y decisiones: IDs, historial de conversación y pruebas pendientes. Las propuestas
+ históricas no prevalecen sobre las reglas vigentes de esta revisión.
+- Despliegue y aprendizaje: investigación técnica, enlaces oficiales, condiciones consultadas y recursos
+ para aprender. Validar nuevamente planes y cobertura antes de su adopción.
+- Referencias de producto: Prode En Línea, Prode.io, Kicktipp, Superbru, Promiedos y Potrero, investigado
+ a partir del enlace compartido por el usuario. Las notas originales permanecen en fuentes; una
+funcionalidad de referencia no implica incorporarla al MVP.
+- La documentación conservada en Contexto/ aporta antecedentes, pero no reemplaza estas decisiones
+ aprobadas.
+Continuidad de la fundación
+Siguiente entrega: CHANGES.md generado directamente desde este Discovery, con dependencias y
+validaciones tempranas de datos deportivos, despliegue gratuito y Web Push. No se crean diez archivos de
+KB ni se considera resuelta la arquitectura de cada change. La política visual se atenderá antes del primer
+trabajo de UI. Contexto/ se conserva hasta completar toda la fundación, conforme al pedido del usuario; el
+cierre del Discovery por sí solo no autoriza adelantar esa limpieza.

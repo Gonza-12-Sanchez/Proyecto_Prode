@@ -1,11 +1,11 @@
 {
   "version": 5,
-  "step": "discovery",
+  "step": "roadmap",
   "owner": "active-orchestrator",
   "discovery": {
     "created_by": "discovery-research",
     "status": "approved",
-    "approved_on": "2026-11-17",
+    "approved_on": "2026-11-19",
     "approved_by": "user",
     "document": "discovery/discovery.md",
     "sources": [
@@ -36,104 +36,110 @@
     ],
     "problema": "Organizar prodes con amigos sin planillas, simplificar la carga de pronósticos y recordar partidos. Visión comercial para empresas y público general con suscripciones por definir.",
     "usuarios": [
-      "Participantes: amigos y conocidos que ya juegan prodes en el piloto",
-      "Creadores de torneos privados",
-      "Administrador de PRODE para resultados y correcciones",
-      "Empresas y sus empleados, como evolución comercial",
-      "Público general con planes o suscripciones futuras"
+      "Participantes: amigos y conocidos del piloto",
+      "Creadores de prodes privados",
+      "Administrador técnico: observa y reintenta sincronización; no edita resultados",
+      "Empresas y público general como evolución comercial"
     ],
     "casos_de_uso": [
-      "Entrar con cuenta Google mediante Supabase Auth sin contraseña adicional de PRODE",
-      "Crear torneo y elegir ligas con temporada completa o selección de jornadas/partidos",
-      "Invitar y unirse mediante enlace/código privado",
-      "Cargar fecha completa con pronósticos independientes por torneo",
-      "Recibir recordatorio por partido sin pronóstico",
-      "Consultar resultado válido, puntos y ranking",
-      "Cargar/corregir resultados con administración central y trazabilidad",
-      "Publicar, actualizar, revertir y recuperar el producto mediante guía operativa"
+      "Consultar calendario público por día y marcadores en vivo",
+      "Entrar con Google mediante Supabase Auth",
+      "Crear prode anual argentino de partidos futuros e invitar por enlace/código",
+      "Unirse conservando destino tras Google y sin duplicar membresía",
+      "Guardar una jornada con pronósticos independientes por torneo y confirmación parcial",
+      "Consultar puntos y ranking con resultados finales válidos a 90 minutos",
+      "Configurar y recibir Web Push agrupado por partido pendiente",
+      "Operar sincronización, despliegue y recuperación sin editar marcadores"
     ],
     "funcionalidades_necesarias": [
-      "MVP web móvil gratuito y jugable con amigos",
-      "Acceso sólo Google mediante Supabase Auth; permisos de negocio en FastAPI",
-      "Torneos privados multiliga e invitaciones",
-      "Alcance temporada o jornadas/partidos seleccionados",
-      "Carga de fecha completa y edición temporalmente limitada",
-      "Pronósticos independientes por torneo",
-      "Puntuación 3 exacto o 1 ganador/empate, sin acumular",
-      "Ranking con desempate por exactos y posición compartida restante",
-      "Recordatorios antes de partidos sin pronóstico",
-      "Administración central de resultados y correcciones visibles",
-      "Guía de mantenimiento con recuperación de datos probada antes del piloto"
+      "Web adaptable jugable con amigos",
+      "Calendario público hoy/mañana/fecha y última actualización",
+      "Primera División argentina vigente al piloto: Apertura y Clausura con eliminatorias, sin Trofeo de Campeones",
+      "Google mediante Supabase Auth y permisos en FastAPI",
+      "Prodes privados con ingreso por enlace/código y partidos futuros",
+      "Carga por jornada con botón Guardar, cierre por partido y guardado parcial",
+      "Pronósticos independientes; puntuación 3/1/0 a 90 minutos",
+      "Ranking final por puntos/exactos, empate denso 1,1,2",
+      "API única de resultados, correcciones automáticas y pendientes ante fallos",
+      "Web Push ajustable por usuario, 30 minutos iniciales, desactivable y agrupado por partido",
+      "Guías operativas y restauración probada antes del piloto"
     ],
     "funcionalidades_opcionales": [
-      "Aplicaciones Android e iPhone",
-      "Noticias relevantes de fútbol",
+      "Multiliga y selección personalizada de encuentros",
+      "Noticias",
       "Minijuegos",
-      "Oferta empresarial",
-      "Planes y suscripciones para público general"
+      "Estadísticas detalladas",
+      "Ranking provisional en vivo",
+      "Aplicaciones nativas/tiendas Android e iPhone",
+      "Oferta empresarial y suscripciones/cobros"
     ],
     "reglas_de_negocio": [
-      "El creador elige ligas y alcance; límites de ligas/personas pendientes",
-      "Ingreso privado por enlace o código, sin aprobación individual",
-      "Un pronóstico independiente por participante, torneo y partido, sin propagación entre torneos",
-      "3 puntos por exacto o 1 por ganador/empate sin exacto; categorías excluyentes",
-      "Cerrar edición y revelar pronósticos ajenos al inicio del partido",
-      "Congelar ligas, partidos y reglas al primer partido del torneo",
-      "Ranking por puntos, después más exactos; igualdad restante comparte posición",
-      "Ingreso tardío permitido sólo para partidos futuros desde ingreso, sin retroactivos",
-      "Criterio de resultado en eliminatorias configurable por creador antes de inicio; opciones exactas pendientes",
-      "Aplazado pendiente y editable hasta nuevo inicio si no comenzó",
-      "Cancelado definitivo sin puntos",
-      "Corrección de resultado recalcula puntos/ranking y deja registro visible",
-      "Suspendido tras comenzar bloqueado y pendiente de resolución",
-      "Resultados administrados por PRODE, no cada creador",
-      "Recordatorio antes de cada partido sin pronóstico, horario configurable y desactivable; anticipación/deduplicación pendientes",
-      "Acceso del MVP únicamente por Google mediante Supabase Auth; sin contraseña propia de PRODE. FastAPI valida identidad y autoriza operaciones."
+      "RN-01: El piloto usa Primera División argentina de la temporada vigente al comenzar a jugar: Apertura y Clausura con sus eliminatorias. Trofeo de Campeones queda excluido.",
+      "RN-02: Cada prode incluye todos los partidos futuros de ese alcance desde su creación. Cada participante suma sólo desde su ingreso y puede pronosticar encuentros futuros; no recibe puntos retroactivos.",
+      "RN-03: Los prodes son privados: cualquier persona autenticada que tenga un enlace o código válido puede unirse, también después del inicio, sin aprobación individual del creador. No se duplica su membresía.",
+      "RN-04: El calendario y los marcadores son públicos. Crear, unirse, pronosticar y consultar información privada requiere Google mediante Supabase Auth y autorización sobre el prode.",
+      "RN-05: Cada pronóstico pertenece a una persona, partido y prode. Es independiente de los pronósticos del mismo encuentro en otros torneos; no se propagan cambios automáticamente.",
+      "RN-06: Sólo cuenta el marcador a los 90 minutos más descuento. Se excluyen alargue y tanda de penales, también en eliminatorias. No es una opción configurable del creador en el MVP.",
+      "RN-07: Un marcador exacto otorga 3 puntos; acertar ganador o empate sin exactitud otorga 1; el resto, 0. Los premios no se acumulan.",
+      "RN-08: Se puntúa únicamente cuando la API informa un partido finalizado y entrega el marcador válido completo de los 90 minutos. Alcanzar el minuto 90 no basta si el encuentro sigue disputándose.",
+      "RN-09: El ranking se ordena por puntos y luego por cantidad de marcadores exactos. Si persiste el empate, comparten posición y se usan puestos consecutivos: 1.º, 1.º, 2.º. No hay ranking provisional en vivo.",
+      "RN-10: Cada pronóstico puede editarse hasta el inicio de su partido, usando la hora del servidor como autoridad. Desde ese momento queda bloqueado y se revelan los pronósticos ajenos de ese encuentro dentro del prode.",
+      "RN-11: Al empezar el primer partido del prode se congelan temporada, fases incluidas y reglas. Se conserva el criterio de selección; no se congela una lista incompleta de encuentros.",
+      "RN-12: El fixture incorpora los cruces oficiales que se definan y sus reprogramaciones. El creador no agrega ni elimina encuentros selectivamente después del comienzo.",
+      "RN-13: El cierre deportivo corresponde a la final del Clausura. Si quedan encuentros incluidos pendientes, el prode queda «finalizando» hasta su resolución oficial, sin sumar la edición siguiente ni declarar un ganador definitivo antes.",
+      "RN-14: Un encuentro reprogramado que no comenzó conserva sus pronósticos y permite editar hasta el nuevo inicio. Uno suspendido después de comenzar sigue bloqueado y pendiente de resolución. Una cancelación definitiva no otorga puntos.",
+      "RN-15: La API elegida es la única fuente de resultados. Sus correcciones recalculan puntos y ranking de manera consistente, sin duplicarlos y dejando registro del cambio recibido.",
+      "RN-16: Ante información incompleta, inconsistente o caída de la fuente, el resultado queda pendiente y se reintenta. El administrador puede diagnosticar y reintentar sincronizaciones, pero no editar marcadores ni asignar puntos manualmente.",
+      "RN-17: La carga por jornada usa «Guardar pronósticos», confirmación de lo guardado y aviso al salir con cambios pendientes. No se presupone guardado automático.",
+      "RN-18: Si algún partido se cierra antes de guardar, se guardan los cambios válidos de los que sigan abiertos y se identifica cada rechazo. Se conserva el pronóstico previamente guardado del encuentro cerrado.",
+      "RN-19: Tras un error de red, se conservan los campos mientras la vista siga abierta y se ofrece reintentar. No se promete persistencia al cerrar el navegador ni operación sin conexión.",
+      "RN-20: La invitación conserva su destino al completar Google; un código inválido muestra un error claro y una membresía existente no se duplica.",
+      "RN-21: El calendario muestra la última actualización y un estado de datos desactualizados cuando corresponda. No inventa resultados ante fallos. La tolerancia solicitada es hasta 5 minutos de demora total, sujeta a validación técnica.",
+      "RN-22: Los recordatorios son Web Push sólo para encuentros sin pronóstico guardado. Cada persona puede ajustar su anticipación, inicialmente 30 minutos, o desactivarlos. Los controles y límites concretos se diseñarán; no se acordó otro rango.",
+      "RN-23: Se emite un aviso por persona y partido, agrupando los prodes pendientes. Antes de enviar se revisa que aún falten pronósticos; si se completaron todos, no se envía. No se incorpora correo al MVP.",
+      "RN-24: El creador organiza e invita; el participante pronostica y consulta su prode; la administración técnica observa y mantiene las integraciones. Los permisos se verifican en servidor y no habilitan manipular resultados."
     ],
     "integraciones": [
-      "Dominio Namecheap obtenido por GitHub Student, gratuito un año según usuario; hosting/DNS no verificados",
-      "Alojamiento gratuito web/API/PostgreSQL por seleccionar",
-      "API gratuita de fútbol si cubre competencia y temporada; carga administrativa alternativa aceptada",
-      "Programación y envío de recordatorios web móvil por seleccionar",
-      "Supabase Auth aprobado con Google como único acceso; sin correo/contraseña propio del MVP. Detalles de sesión y otros correos por justificar."
+      "Google mediante Supabase Auth aprobado; PostgreSQL y hosting no adoptados",
+      "API deportiva por validar: única fuente de resultados, sin fallback manual",
+      "OpenFoot candidato: consulta demo inconclusa por DNS/timeout20s; no cobertura operativa acreditada",
+      "API-Football Free consultada para 2026 limita temporadas a históricas 2022–2024; verificar condiciones antes de adopción",
+      "Frontend/FastAPI/PostgreSQL y scheduler gratuitos por seleccionar y demostrar",
+      "Web Push: compatibilidad, permisos y envío programado por probar",
+      "Dominio Namecheap obtenido mediante GitHub Student; DNS y renovación por verificar"
     ],
     "restricciones": [
-      "Sin objetivo ni requisitos académicos",
-      "MVP con servicios gratuitos dentro de cuotas; sin servicios pagos autorizados",
-      "Primera versión web jugable, no sólo demo",
-      "Fútbol argentino prioritario; competencias iniciales por definir",
-      "Stack aprobado React, TypeScript, Vite, Python, FastAPI y PostgreSQL",
-      "Equipo, dedicación y plazo abiertos",
-      "Límites de ligas/participantes y monetización posterior pendientes",
-      "Contexto es referencia histórica; eliminar sólo al completar toda fundación",
-      "Supabase Auth con Google es el único acceso del MVP; no adopta automáticamente proveedor PostgreSQL ni alojamiento."
+      "Producto comercial, sin requisitos académicos",
+      "MVP gratuito como objetivo sujeto a cuotas y pruebas; sin gasto autorizado",
+      "Una liga, temporada vigente al piloto, Apertura/Clausura con eliminatorias",
+      "Stack aprobado React/TypeScript/Vite/Python/FastAPI/PostgreSQL",
+      "Sin fecha, equipo ni límites comerciales inventados",
+      "Sin carga manual, datos históricos o ficticios como reemplazo silencioso",
+      "Discovery canónico directo a CHANGES; omitir KB de diez archivos por pedido explícito",
+      "Política visual pendiente antes de UI",
+      "Contexto se conserva hasta completar toda la fundación"
     ],
     "riesgos": [
-      "API gratuita sin temporada vigente o cuota suficiente",
-      "Servidor gratuito suspendido y recordatorios no ejecutados",
-      "Duplicación o falta de avisos por múltiples torneos/permisos/dispositivos",
-      "Puntuación incorrecta o recálculo duplicado",
-      "Permisos o cierre temporal aplicados sólo en frontend",
-      "Calendarios multiliga incompletos y cierre de temporada ambiguo",
-      "Uso recurrente y facilidad de carga aún no validados con piloto",
-      "Responsable sin experiencia previa en mantenimiento/despliegue comercial",
-      "Expansión B2B/suscripciones aumenta alcance antes de validar MVP",
-      "Identidad no verificada o confusión entre autenticación y permisos; participante sin acceso a Google."
+      "Cobertura y licencia de datos vigentes no acreditadas",
+      "Demora total hasta5min y cuota gratuita requieren medición conjunta",
+      "Backend dormido y scheduler no fiable",
+      "Push incompatible, sin permiso o duplicado",
+      "Errores de cierre temporal/autorización/puntuación/recálculo",
+      "Reprogramación, eliminatorias y encuentros pendientes al cierre",
+      "Pérdida de datos o recuperación no ensayada",
+      "Cuotas/costos de proveedores cambian",
+      "Mantenimiento y retención del piloto sin validar",
+      "Expansión comercial prematura"
     ],
     "preguntas_abiertas": [
-      "Competencias argentinas y cobertura de temporada inicial",
-      "Delimitación y cierre de temporada multiliga; calendario incompleto frente a congelación",
-      "Opciones de eliminatorias y tratamiento de alargue/penales",
-      "Horarios, reprogramación e ingreso al instante de cierre",
-      "Anticipación y deduplicación de recordatorios y compatibilidad PWA",
-      "Proveedores/regiones web/API/PostgreSQL, ORM, migraciones y tareas; Google vía Supabase Auth ya aprobado",
-      "Estados de torneo y permisos finos de creadores tras inicio",
-      "Visibilidad de correcciones y numeración de puestos empatados",
-      "Responsable, calendario, tamaño del piloto y métricas de validación",
-      "Oferta empresarial, aislamiento, roles, planes, precios, titular de suscripción y cobros",
-      "Límites comerciales de ligas/personas",
-      "Momento y alcance de móvil, noticias y minijuegos",
-      "Configuración Google/callbacks y ciclo seguro de sesión en FastAPI; identidad estable, perfil y soporte ante pérdida de acceso."
+      "API: edición vigente completa, eliminatorias, 90 minutos separados, licencia/persistencia/exhibición pública",
+      "Medir frescura total<=5min y consultas compartidas frente a cuotas",
+      "Probar hosting gratuito, persistencia, HTTPS/DNS y ejecución programada",
+      "Validar Web Push y controles de anticipación sin inventar rango",
+      "Diseñar contratos/esquema/migraciones y sesiones/autorización por change",
+      "Ensayar respaldo/restauración, despliegue, actualización, rollback y diagnóstico",
+      "Definir política/sistema visual antes de UI",
+      "Elegir fecha y edición concreta al preparar piloto; límites comerciales y evolución quedan fuera del MVP"
     ],
     "stack_aprobado": [
       "React",
@@ -171,10 +177,10 @@
       ]
     },
     "vision_comercial": "B2B para empresas y sus empleados, y B2C público general con suscripciones; planes, precios y funciones por definir.",
-    "revision": 2,
-    "updated_on": "2026-11-18",
+    "revision": 3,
+    "updated_on": "2026-11-19",
     "update_authorized_by": "user",
-    "update_scope": "Ampliación de despliegue, producción, mantenimiento y aprendizaje; acceso del MVP sólo Google mediante Supabase Auth.",
+    "update_scope": "Cierre aprobado del MVP argentino anual, calendario público, resultados sólo API, 90 minutos, ranking final, Google y Web Push configurable; roadmap directo sin KB redundante.",
     "autenticacion": {
       "status": "approved",
       "approved_on": "2026-11-18",
@@ -203,8 +209,8 @@
       "database_provider_adopted": false
     },
     "despliegue": {
-      "status": "options_evaluated",
-      "verified_on": "2026-11-18",
+      "status": "pending_validation",
+      "verified_on": "2026-11-19",
       "guide": "discovery/despliegue-y-aprendizaje.md",
       "routes": [
         "Frontend separado de API y PostgreSQL",
@@ -229,7 +235,9 @@
         "DNS",
         "Programación de recordatorios",
         "Cuotas, copias y recuperación"
-      ]
+      ],
+      "provider_selected": false,
+      "free_operation_verified": false
     },
     "technical_sources": [
       "https://supabase.com/docs/guides/auth/social-sign-in/auth-google",
@@ -242,6 +250,47 @@
       "https://www.sqlite.org/whentouse.html",
       "https://docs.railway.com/pricing/free-trial#data-retention",
       "https://fullstackopen.com/es/part11/introduccion_a_ci_cd/"
+    ],
+    "initial_approved_on": "2026-11-17",
+    "closed": true,
+    "workflow_override": {
+      "approved_on": "2026-11-19",
+      "architecture_per_change": true,
+      "next_output": "CHANGES.md",
+      "preserve_context_until_foundation_complete": true,
+      "approved_by": "user",
+      "skip_ten_file_kb": true,
+      "canonical_source": "discovery/discovery.md"
+    }
+  },
+  "kb": {
+    "skipped": true,
+    "approved_by": "user",
+    "approved_on": "2026-11-19",
+    "reason": "Roadmap directo desde Discovery canonico aprobado, sin KB redundante de diez archivos",
+    "canonical_source": "discovery/discovery.md"
+  },
+  "roadmap": {
+    "created_by": "roadmap-generator",
+    "source": "CHANGES.md",
+    "changes_file": "CHANGES.md",
+    "changes": [
+      "C-01",
+      "C-02",
+      "C-03",
+      "C-04",
+      "C-05",
+      "C-06",
+      "C-07",
+      "C-08",
+      "C-09",
+      "C-10",
+      "C-11",
+      "C-12",
+      "C-13",
+      "C-14",
+      "C-15",
+      "C-16"
     ]
   }
 }

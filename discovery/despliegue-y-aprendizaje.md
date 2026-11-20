@@ -1,10 +1,12 @@
-# PRODE - Guía de despliegue y aprendizaje
+﻿# PRODE - Guía de despliegue y aprendizaje
 
-**Fecha de consulta:** 18 de noviembre de 2026.  
-**Estado:** anexo educativo; proveedores de alojamiento/base todavía no elegidos. Autenticación decidida en Discovery revisión 2.  
-**Relación con Discovery:** complementa el Discovery aprobado el 17 de noviembre; no modifica sus decisiones ni afirma que la aplicación esté desplegada.
+**Fecha de consulta de esta investigación:** 18 de noviembre de 2026. **Precedencia actualizada:** 19 de noviembre de 2026.  
+**Estado:** anexo educativo de investigación y alternativas; proveedores de alojamiento, PostgreSQL y datos de fútbol todavía no elegidos.  
+**Fuente de decisiones vigente:** [Discovery, revisión 3](discovery.md), aprobado el 19 de noviembre de 2026. Esta guía se subordina a ese alcance; no acredita implementación ni despliegue.
 
-**Decisión vigente, 18/11/2026:** el Discovery revisión 2 aprueba Supabase Auth con Google como único acceso del MVP. No hay correo/contraseña propio de PRODE. Los detalles técnicos de sesión siguen pendientes; los proveedores de alojamiento y PostgreSQL no quedan adoptados. Las comparaciones siguientes conservan su contexto histórico y deben leerse con esa decisión.
+**Decisiones vigentes:** API como única fuente de resultados del MVP, sin carga ni corrección manual de marcadores. Sólo Google mediante Supabase Auth; sin correo/contraseña propia. El roadmap se elaborará directamente desde Discovery, sin crear una Knowledge Base de diez archivos. Los detalles técnicos de sesión y los proveedores siguen pendientes.
+
+Las comparaciones, precios, cuotas y referencias de datos siguientes conservan su fecha y contexto de investigación: deben verificarse antes de adoptar un servicio. No demuestran cobertura actual, operación desplegada ni viabilidad gratuita garantizada.
 
 El stack acordado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. Primero construiremos una web jugable con amigos, apuntando a no pagar servicios durante las pruebas. Android/iPhone y la comercialización para empresas o suscriptores son una evolución posterior.
 
@@ -66,7 +68,7 @@ Una pantalla podría ocultar el botón de edición después del inicio, pero es 
 
 Estos nombres son ilustrativos: no conocemos el nombre real del dominio ni configuramos DNS. Podemos empezar con las direcciones gratuitas que entrega cada plataforma y conectar el dominio después de comprobar que todo funciona.
 
-## 3. Una ruta gratuita viable para el piloto
+## 3. Una ruta candidata para intentar un piloto gratuito
 
 La siguiente combinación es una candidata para comparar, no una contratación ni una elección aprobada:
 
@@ -215,7 +217,7 @@ Para clientes o suscriptores propondría servicios gestionados con recursos y co
 
 **Servicios gestionados frente a VPS:** un VPS puede reducir el precio nominal de alojar varias piezas, pero agrega administración del sistema y responsabilidad de recuperación. Para nuestra etapa, evaluaría primero servicios gestionados. Docker puede ayudar a empaquetar la API de manera reproducible; no es obligatorio para el primer despliegue ni sustituye copias o monitoreo.
 
-La API de fútbol y sus derechos de uso/cobertura son un tema separado del alojamiento. Tener web, API y base gratuitas no garantiza que los resultados deportivos también lo sean. El fallback aprobado es carga administrativa de resultados, sin reemplazar partidos reales con resultados ficticios.
+La API de fútbol y sus derechos de uso/cobertura son un tema separado del alojamiento. Tener web, API y base gratuitas no garantiza que los resultados deportivos también lo sean. El alcance vigente usa la API como única fuente de resultados: si sus datos faltan, son inconsistentes o hay un fallo, el partido queda pendiente y se reintenta la sincronización. La carga/corrección manual discutida antes fue reemplazada explícitamente para el MVP; tampoco se introducen resultados ficticios como reales.
 
 Las suscripciones también necesitarán su propia decisión de producto y cobro. Antes de integrar pagos móviles habrá que revisar las reglas de las tiendas aplicables al producto y a su región; todavía no elegimos proveedor, comisión ni modalidad. Vender a empresas tampoco significa automáticamente necesitar un programa de distribución empresarial de Apple.
 
@@ -336,4 +338,4 @@ Las referencias enlazadas son documentación oficial consultada para esta guía.
 - [Nota de investigación: producción móvil y aprendizaje](sources/deploy-produccion-aprendizaje.md).
 - [Discovery aprobado](discovery.md): alcance de producto y decisiones vigentes.
 
-No se modificaron cuentas, DNS, servicios ni credenciales, ni se ejecutó un despliegue al redactar este anexo. La Knowledge Base y las fases siguientes de la fundación siguen pendientes.
+No se modificaron cuentas, DNS, servicios ni credenciales, ni se ejecutó un despliegue al redactar este anexo. El siguiente insumo de planificación es el Discovery revisión 3: el roadmap se adapta directamente desde él, sin exigir una Knowledge Base de diez archivos.
