@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "step": "roadmap",
+  "step": "find-skill",
   "owner": "active-orchestrator",
   "discovery": {
     "created_by": "discovery-research",
@@ -292,5 +292,49 @@
       "C-15",
       "C-16"
     ]
+  },
+  "skills": {
+    "created_by": "find-skill",
+    "status": "completed",
+    "recommended": [
+      {
+        "name": "supabase",
+        "repo": "supabase/agent-skills",
+        "installs_approx": 370300,
+        "source": "https://www.skills.sh/supabase/agent-skills/supabase",
+        "relevance": "Orientación oficial para Supabase Auth, sesiones y JWT. Aplica a C-05, con independencia del hosting de PostgreSQL."
+      },
+      {
+        "name": "github-actions-templates",
+        "repo": "wshobson/agents",
+        "installs_approx": 18400,
+        "source": "https://www.skills.sh/wshobson/agents/github-actions-templates",
+        "relevance": "Patrones reutilizables de CI para checks y build de C-03, si se confirma GitHub Actions."
+      },
+      {
+        "name": "cloudflare",
+        "repo": "cloudflare/skills",
+        "installs_approx": 162600,
+        "source": "https://www.skills.sh/cloudflare/skills/cloudflare",
+        "relevance": "Guía oficial para evaluar Pages y automatizaciones Workers si C-02 selecciona esa ruta."
+      }
+    ],
+    "installed": [
+      "supabase"
+    ],
+    "already_available": [
+      "vercel-react-best-practices",
+      "vite",
+      "typescript-advanced-types",
+      "fastapi",
+      "supabase-postgres-best-practices",
+      "postgresql-table-design",
+      "docker-patterns",
+      "security-and-hardening",
+      "test-driven-development",
+      "e2e-testing-patterns",
+      "playwright-cli"
+    ],
+    "evidence": "discovery/discovery.md + CHANGES.md"
   }
 }
