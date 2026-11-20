@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "step": "registry",
+  "step": "agents",
   "owner": "active-orchestrator",
   "discovery": {
     "created_by": "discovery-research",
@@ -343,5 +343,19 @@
     "skill_count": 14,
     "scope": "project",
     "skills_dir": ".agents/skills"
+  },
+  "agents": {
+    "created_by": "agent-instruction",
+    "files": [
+      "AGENTS.md"
+    ],
+    "reglas_applied": [
+      "Código. Usá TypeScript en modo estricto y `PascalCase` para los componentes de React. Anotá los tipos en los límites públicos de FastAPI y declará los modelos de entrada y salida.",
+      "Datos deportivos. Validá las respuestas del proveedor en el backend y compartí los registros de partidos entre calendario y prodes. Probá que los reintentos y las correcciones recalculen los puntos sin duplicarlos.",
+      "Acceso. Mantené el calendario público. FastAPI debe validar la identidad, la pertenencia al prode y los permisos para cada acción privada.",
+      "Pruebas. Simulá la API deportiva en las pruebas automatizadas. Usá PostgreSQL de prueba para verificar restricciones, transacciones y migraciones. Comprobá cobertura y demora con el proveedor real por separado.",
+      "Cierre de pronósticos. Usá la hora del servidor y el horario vigente del partido. Al guardar una jornada, persistí los pronósticos válidos que sigan abiertos e identificá los que se rechazaron por cierre.",
+      "Secretos. Configurá las credenciales fuera del código. Mantené las claves privadas de la API deportiva, PostgreSQL y Supabase en el entorno del servidor, fuera de `VITE_*` y de los logs."
+    ]
   }
 }
