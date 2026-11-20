@@ -1,9 +1,9 @@
 # PRODE - Discovery aprobado
 
 **Fecha original:** 17 de noviembre de 2026  
-**Actualización:** 19 de noviembre de 2026  
-**Revisión:** 3  
-**Estado:** Discovery cerrado y resumen final aprobado por el usuario el 19 de noviembre de 2026.  
+**Actualización:** 20 de noviembre de 2026  
+**Revisión:** 4  
+**Estado:** decisiones de producto cerradas y aprobadas el 19 de noviembre de 2026. Ampliación técnica de proveedores y APIs solicitada el 20 de noviembre de 2026; alternativas pendientes de validación, sin adopción de servicios.  
 **Alcance del documento:** fuente canónica de producto para el roadmap del MVP. La aprobación define qué construir; no acredita integraciones operativas, software implementado ni finalización de toda la fundación.
 
 ## Resumen ejecutivo
@@ -25,6 +25,7 @@ El stack aprobado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. P
 | 1 | 17/11/2026 | Discovery original: problema, usuarios, reglas, visión comercial, stack y mantenimiento. |
 | 2 | 18/11/2026 | Despliegue, aprendizaje y producción móvil; Google mediante Supabase Auth como único login. |
 | 3 | 19/11/2026 | MVP de una liga argentina, calendario público, alcance anual, reglas de 90 minutos, guardado, ranking, recordatorios y API como única fuente de resultados; cierre aprobado y roadmap directo. |
+| 4 | 20/11/2026 | Ampliación técnica solicitada: proveedores de alojamiento y APIs, límites, ventajas, riesgos y combinaciones recomendadas de forma condicional. No modifica las reglas aprobadas ni acredita servicios elegidos. |
 
 La revisión 3 reemplaza para el MVP la configuración multiliga, la selección arbitraria de jornadas/partidos, la elección del creador sobre alargue y el fallback o edición manual de resultados de versiones anteriores. El [registro de pendientes](pendientes-mvp.md) conserva el historial; sus entradas antiguas no prevalecen sobre este documento ni vuelven a abrir acuerdos confirmados. Las comprobaciones técnicas identificadas permanecen pendientes de ejecución.
 
@@ -147,19 +148,149 @@ Estas reglas reemplazan las alternativas incompatibles del historial. Los contro
 | RN-24 | El creador organiza e invita; el participante pronostica y consulta su prode; la administración técnica observa y mantiene las integraciones. Los permisos se verifican en servidor y no habilitan manipular resultados. |
 ## 8. Integraciones y orientación técnica
 
-La orientación aceptada es una web adaptable a celular y computadora con React, TypeScript y Vite; un backend Python/FastAPI; y PostgreSQL. Se busca aprender desarrollo completo y despliegue con una estructura que pueda evolucionar. El detalle de componentes, contratos, esquema y migraciones se decidirá en los changes correspondientes, no se considera implementado por este documento.
+### 8.1. Qué servicio necesitamos y cómo se conectan
 
-**Identidad aprobada:** Google como único acceso del MVP, gestionado por Supabase Auth. No se desarrollará contraseña propia ni se ofrecerá acceso por email/contraseña. El backend verificará la identidad y los permisos de membresía/administración. La aprobación de Supabase Auth no equivale a elegir Supabase como proveedor de PostgreSQL.
+El stack aceptado sigue siendo React + TypeScript + Vite, Python/FastAPI y PostgreSQL. Esta ampliación técnica fue solicitada el 20/11/2026: compara alternativas y condiciones consultadas ese día, sin contratar servicios ni adoptar proveedores de alojamiento o fútbol. Las decisiones de producto aprobadas el 19/11 siguen vigentes. Las cuotas pueden cambiar; se comprobarán de nuevo en C-01 y C-02 antes de integrar o desplegar.
 
-**Datos deportivos pendientes de selección:** una misma API podría abastecer fixture, estados en vivo y resultados finales si cumple la cobertura y las condiciones requeridas. El backend sincronizará una copia compartida: consultar el calendario o crear un prode no debe multiplicar llamadas al proveedor por cada usuario. El prode referencia partidos compartidos; sus pronósticos y permisos siguen siendo independientes. Frecuencia, caché y estrategia de reintentos dependen de cuotas y mediciones reales.
+| Componente | Responsabilidad en PRODE | Qué no resuelve por sí solo |
+|---|---|---|
+| Frontend | Sirve las pantallas React al navegador del celular o computadora. | No mantiene la base ni protege secretos de proveedores. |
+| FastAPI | Comprueba identidad/permisos, recibe pronósticos y sincroniza partidos. | Necesita alojamiento, conexión a PostgreSQL y ejecución programada fiable. |
+| PostgreSQL | Conserva partidos compartidos, prodes, miembros y pronósticos independientes. | No sustituye respaldos probados ni la lógica de puntuación. |
+| Supabase Auth + Google | Gestiona el acceso Google, único método del MVP ya aprobado. | No autoriza automáticamente la pertenencia a cada prode ni elige nuestro hosting de base. |
+| API deportiva | Entrega fixture, estados, marcadores y correcciones de una competencia. | No crea nuestros prodes ni calcula nuestros puntos. |
+| Programador de tareas y Web Push | Dispara sincronizaciones y avisos a dispositivos con permiso. | No garantiza recepción puntual ni que un servidor dormido responda inmediatamente. |
 
-OpenFoot es un candidato por investigar, no un proveedor adoptado: su documentación pública consultada anuncia Argentina 2026 y 5.000 consultas mensuales gratuitas. El intento de consultar su demostración falló por DNS en el entorno restringido y el reintento autorizado agotó 20 segundos sin respuesta HTTP/JSON. La prueba es inconclusa: no demuestra cobertura efectiva ni una caída del servicio. API-Football documenta para su plan gratuito de 2026 temporadas históricas 2022–2024; no satisface por sí sola la edición vigente del piloto. Toda condición comercial es una fotografía de investigación y debe verificarse antes de contratar o integrar.
+**Recorrido de una persona:** navegador → frontend → FastAPI → PostgreSQL. Google se completa mediante Supabase Auth y FastAPI valida la identidad y los permisos. La contraseña de PostgreSQL y la clave de fútbol quedan fuera del frontend.
 
-**Despliegue pendiente de validación:** se investigarán frontend estático, backend y PostgreSQL administrado dentro de niveles gratuitos. Render para web estática/API y Supabase o Neon para base de datos son alternativas, no decisiones cerradas. Tener varios proveedores no es un requisito del producto: se elegirá la combinación más sencilla que cumpla persistencia, disponibilidad, cuotas y operación. PostgreSQL sigue siendo la orientación aprobada; SQLite se evaluó para simplificar, pero alojarlo junto al servidor requiere almacenamiento persistente y respaldos reales y no garantiza costo cero.
+**Recorrido de los datos deportivos:** tarea programada → FastAPI → API deportiva → PostgreSQL compartido → calendario y prodes. Consultar el calendario, crear un torneo o entrar cien personas no debe generar cien consultas equivalentes al proveedor: todos leen los mismos partidos almacenados por PRODE. Cada torneo conserva sus propias reglas aprobadas, miembros y pronósticos; compartir el partido no comparte esos datos privados.
 
-**Recordatorios:** Web Push requiere permiso, compatibilidad del dispositivo/navegador, suscripciones y un mecanismo de ejecución programada. Un backend gratuito que duerme no acredita recordatorios fiables. Se probará un programador o worker adecuado antes de confirmar el despliegue. No se promete envío efectivo a dispositivos que no otorguen permiso o no sean compatibles.
+### 8.2. Frontend: alternativas para publicar React
 
-El detalle pedagógico de proveedores, costos, publicación móvil y recursos de aprendizaje se conserva en [Despliegue y aprendizaje](despliegue-y-aprendizaje.md). Es soporte de investigación; este Discovery gobierna el alcance actual.
+**Cloudflare Pages Free, candidata principal para frontend separado.** Publica el build estático de Vite por CDN, con integración Git, dominio propio y HTTPS. La documentación consultada indica 500 compilaciones mensuales, una simultánea, 20 minutos por compilación, 20.000 archivos y 25 MiB por archivo; las solicitudes a archivos estáticos son gratuitas y sin límite indicado. Pages Functions tiene cuotas distintas: cuenta como Workers, cuyo Free permite 100.000 solicitudes diarias. No hay que confundir ambas cosas. [Límites de Pages](https://developers.cloudflare.com/pages/platform/limits/) y [precio de Functions](https://developers.cloudflare.com/pages/functions/pricing/).
+
+- **Ventajas:** el calendario puede abrir su interfaz aunque la API esté despertando; despliegue estático sencillo y sin administrar un servidor para React.
+- **Limitaciones:** no ejecuta nuestro FastAPI convencional ni aloja PostgreSQL. Separar dominios requiere configurar correctamente comunicación, sesiones y callbacks. Que los archivos estén disponibles no significa que los datos estén actualizados.
+- **Cuándo conviene:** si priorizamos una apertura rápida de la web y separar la interfaz del proceso de backend.
+
+**Render Static Sites** permite estudiar frontend y API en un mismo proveedor, pero seguirían siendo despliegues distintos. Sirve para reducir paneles, no para eliminar el trabajo de configuración o las cuotas de cuenta. Otra posibilidad es servir React desde FastAPI, explicada en §8.6. [Servicios gratuitos de Render](https://render.com/docs/free).
+
+**Vercel:** Hobby está limitado a uso personal/no comercial según sus términos consultados. Como PRODE tiene finalidad comercial, no lo tomaríamos como alternativa gratuita por defecto sin comprobar expresamente la elegibilidad. Pro es una opción paga futura; no se necesita migrar a Next.js para usar el stack aprobado. [Términos de Vercel, sección 4](https://vercel.com/legal/terms).
+
+### 8.3. Backend: dónde ejecutar FastAPI
+
+**Render Free Web Service, candidata para el piloto.** Ofrece 750 horas de instancia gratuitas mensuales por workspace, compartidas entre sus servicios Free. Tras 15 minutos sin tráfico entrante el servicio duerme; el siguiente arranque puede tardar alrededor de un minuto. Su disco local es efímero y no admite disco persistente en Free. [Condiciones oficiales](https://render.com/docs/free).
+
+- **Ventajas:** publicación desde Git, logs, HTTPS y dominio personalizado sin administrar el sistema operativo; encaja con FastAPI.
+- **Limitaciones:** arranque en frío, recursos limitados y posibles reinicios. No guardar allí PostgreSQL, SQLite, archivos de usuario o copias que deban sobrevivir. Un planificador dentro del proceso no trabaja cuando duerme y pierde su estado en memoria al reiniciar.
+- **Cuotas y cargos:** agotar horas gratuitas puede suspender los servicios hasta el siguiente período. Superar transferencia o minutos de compilación tiene consecuencias de suspensión/facturación según la cuenta y su método de pago. Free no significa uso ilimitado ni bloqueo universal de sobrecostos.
+- **Cuándo conviene:** ensayo con amigos que toleren el arranque inicial, si C-02 demuestra las tareas y la frescura requerida. No demuestra disponibilidad continua para un producto vendido.
+
+**Render PostgreSQL Free no es nuestra base anual:** incluye 1 GB pero expira a los 30 días. Tampoco usaríamos la API dormida como único reloj de los avisos. Render Cron Jobs es una opción paga: su mínimo documentado es USD 1 mensual por job. [Cron Jobs](https://render.com/docs/cronjobs).
+
+### 8.4. PostgreSQL: comparar Supabase y Neon
+
+| Candidata Free | Límites consultados | Qué revisar para PRODE |
+|---|---|---|
+| Supabase | 500 MB de base por proyecto; dos proyectos activos; 50.000 usuarios activos mensuales de Auth; 5 GB de salida sin caché más 5 GB de salida con caché. | Son cuotas de recursos distintos, no capacidad garantizada de jugadores. Puede pausarse tras una semana de inactividad. Sin backups automáticos incluidos en Free. |
+| Neon | 1 GB de almacenamiento, 100 CU-h y 5 GB de salida por proyecto; cómputo a cero tras cinco minutos inactivo. Hasta 100 proyectos Free. | Los 100 proyectos no multiplican el límite de una sola base. CU-h mide cómputo activo, no usuarios ni horas de calendario. Consultas frecuentes pueden impedir el ahorro por suspensión. |
+
+**Supabase PostgreSQL Free.** Su ventaja aquí es reunir PostgreSQL y el Supabase Auth ya aprobado en un mismo proveedor. También permite estudiar Cron y funciones breves. No obliga a abandonar FastAPI: las reglas y autorización de PRODE siguen en el backend. Sus contras son la cuota pequeña, la pausa por inactividad y la necesidad de copias externas con restauración probada en Free. La modalidad de conexión y el pooler deben ser compatibles con el alojamiento elegido. Como referencia de evolución, Pro empieza en USD 25 mensuales e incluye el primer proyecto, 8 GB de disco y backups diarios con siete días de retención; no es el precio total de PRODE. [Planes de Supabase](https://supabase.com/pricing) y [facturación](https://supabase.com/docs/guides/platform/billing-on-supabase).
+
+**Neon Free.** Se centra en PostgreSQL, conexiones agrupadas y ramas para desarrollo; conserva portabilidad hacia otro PostgreSQL. Su ventaja es el margen de almacenamiento/cómputo publicado y aislar la base de la API. Sus contras son otro panel mientras Auth seguiría en Supabase, posibles esperas de reactivación y una recuperación Free corta: hasta seis horas o 1 GB de cambios, según el límite alcanzado. Esa ventana no sustituye un backup independiente. Launch se cobra por consumo: la página consultada anuncia USD 0,106 por CU-h y USD 0,35 por GB-mes, además de los conceptos aplicables; no presupuestar sólo almacenamiento. [Planes de Neon](https://neon.com/pricing).
+
+**Criterio recomendado:** evaluar primero Supabase PostgreSQL si reducir proveedores y reunir Auth/base/automatización pesa más. Comparar Neon si sus cuotas, conexión o comportamiento resultan mejores en la prueba. No usar ambos por costumbre. Ninguna base está adoptada: antes se debe probar permanencia de datos, conexión, límites, respaldo y recuperación.
+
+### 8.5. Alternativas para reunir más servicios
+
+**Railway Free merece evaluarse con sus condiciones actuales.** Ya no se describe sólo como un trial: el plan Free documenta USD 1 de crédito recurrente mensual sin tarjeta. El trial es distinto: USD 5 una vez, durante hasta 30 días. Free permite un proyecto y tres servicios, 0,5 GB de RAM por servicio y un volumen de 0,5 GB; no incluye dominio personalizado, Cron Jobs ni elección de región. Las aplicaciones/bases pueden dormir después de 5-10 minutos sin tráfico saliente. Al agotar el crédito se suspenden hasta el siguiente ciclo. La retención y recuperación del volumen deben confirmarse; no son un backup independiente. [Free Plan](https://docs.railway.com/pricing/free-plan) y [planes](https://docs.railway.com/pricing/plans).
+
+- **Ventajas:** agrupar web, FastAPI y PostgreSQL con volumen bajo un proveedor y un flujo de despliegue común.
+- **Contras:** no está demostrado que USD 1 alcance para este MVP, la suspensión afecta el piloto y el dominio gratuito que ya tenemos no puede conectarse mediante la opción de dominio personalizado de Free. PostgreSQL como servicio de instancia única conserva tareas de backup/operación a resolver.
+- **Evolución:** Hobby tiene base de USD 5 mensuales con USD 5 de consumo incluidos; se paga la diferencia si se supera. No equivale a todos los recursos ilimitados por USD 5.
+
+**Un VPS pago** puede reunir React, FastAPI, PostgreSQL y cron en una máquina: reduce paneles y da control sobre disco y procesos. A cambio, nosotros administramos sistema operativo, actualizaciones, firewall, HTTPS, monitoreo, respaldos y restauración; una caída afecta todo. DigitalOcean publica máquinas desde USD 4 mensuales con 512 MiB, pero esa cifra no dimensiona PRODE ni demuestra que alcance para la base y la aplicación. No es la recomendación inicial automática para alguien sin experiencia operativa. [Precios de Droplets](https://www.digitalocean.com/pricing/droplets).
+
+SQLite sigue siendo una alternativa evaluada y no adoptada: ponerla junto al servidor no crea un disco persistente gratis. En Render Free perderíamos lo guardado en su sistema de archivos efímero. La decisión de PostgreSQL se mantiene.
+
+### 8.6. Combinaciones de despliegue y recomendación por etapa
+
+| Ruta | Ventaja principal | Coste operativo o limitación |
+|---|---|---|
+| Pages + Render API + Supabase PG/Auth | Frontend disponible por separado; Auth/base en un proveedor. | Tres proveedores de alojamiento, además de la integración Google; configurar API y automatización. La API puede dormir. |
+| Render Static + Render API + Supabase PG/Auth | Dos proveedores de alojamiento/identidad, con web y API bajo Render. | Siguen siendo dos despliegues en Render; sus cuotas se comparten según recurso y cuenta. |
+| React servido por FastAPI + Supabase o Neon | Dos despliegues: aplicación y base; una sola dirección web/API. | Si FastAPI duerme, también espera la primera carga de React. Publicar la aplicación requiere compilar frontend y backend juntos. Auth sigue en Supabase aunque la base sea Neon. |
+| VPS con aplicación y PostgreSQL | Una máquina y control total de procesos y disco. | Pago desde el inicio, mantenimiento del servidor y riesgo de caída conjunta. Supabase Auth y API deportiva siguen siendo servicios externos. |
+
+El número de proveedores no es un objetivo del producto. **Recomendación para investigar el MVP:** Pages + Render Free + Supabase PostgreSQL/Auth, comparada con la ruta de React servido por FastAPI si reducir despliegues pesa más que la espera inicial. Neon es una alternativa a Supabase PostgreSQL, no un añadido obligatorio. Esta recomendación es condicional a C-01 y C-02: todavía no acredita costo cero, datos en vivo ni avisos fiables.
+
+**Producto avanzado:** la web puede seguir en una CDN; contratar API y ejecutor de tareas disponibles continuamente cuando la necesidad lo justifique, PostgreSQL con backups/recuperación y observabilidad adecuados, y una fuente deportiva con cobertura y derechos confirmados. Se puede evolucionar sin cambiar el stack ni migrar todos los servicios a la vez. No hay presupuesto total aprobado: se suman base, cómputo, tráfico, tareas, datos deportivos y renovación del dominio según consumo real.
+
+El dominio Namecheap es la dirección de acceso, no alojamiento de esos componentes. Su renovación al terminar el beneficio depende de la extensión y la cuenta del usuario; no se conoce todavía ese precio.
+
+### 8.7. Tareas programadas y límites reales de Web Push
+
+Hay que distinguir **quién despierta una tarea** de **quién la ejecuta**. La pestaña del usuario, un temporizador en un backend dormido o un service worker del navegador no son un reloj continuo y garantizado del servidor.
+
+- **Supabase Cron:** puede programar trabajo en PostgreSQL o invocar una función/endpoint autorizado. Si despierta FastAPI en Render, persiste su arranque en frío; si el proyecto Supabase se pausa tampoco hay continuidad garantizada. Una Edge Function breve podría ejecutar parte del trabajo, pero Free limita cada función a 256 MB, 150 segundos de tiempo transcurrido y dos segundos de CPU por solicitud. Deben probarse tareas pequeñas, idempotencia, reintentos y envío real. [Cron](https://supabase.com/docs/guides/cron) y [límites de Functions](https://supabase.com/docs/guides/functions/limits).
+- **Cloudflare Workers Cron:** alternativa para disparar trabajo independientemente de Render. Free permite cinco triggers y 100.000 solicitudes diarias; su límite de CPU es de 10 ms por ejecución. CPU no equivale a todo el tiempo transcurrido esperando red. Cron usa UTC. Debe probarse si el trabajo criptográfico de Web Push y las llamadas requeridas entran en sus límites, o limitarlo a invocar FastAPI. [Límites de Workers](https://developers.cloudflare.com/workers/platform/limits/) y [Cron Triggers](https://developers.cloudflare.com/workers/configuration/cron-triggers/).
+- **Ejecutor pago:** un worker/cron disponible continuamente simplifica la continuidad cuando se justifique el gasto. No convierte por sí solo Web Push en entrega garantizada.
+
+Se mantiene el recordatorio configurable, 30 minutos iniciales, desactivable, por usuario/partido y con prodes pendientes agrupados. El envío revisa otra vez lo que falta pronosticar. En iPhone/iPad, Web Push para aplicaciones añadidas a la pantalla de inicio requiere iOS/iPadOS 16.4 o posterior y permiso del usuario; para este mecanismo no se exige membresía del Apple Developer Program. Permisos, navegador, dispositivo y conectividad pueden impedir o retrasar la recepción. [Documentación de Apple](https://developer.apple.com/documentation/usernotifications/sending-web-push-notifications-in-web-apps-and-browsers).
+
+### 8.8. APIs deportivas: una fuente puede cubrir calendario y resultados
+
+No necesitamos una API para el calendario y otra para saber cómo terminó el partido si una sola ofrece fixture, horarios, estados en vivo, resultados y correcciones con cobertura suficiente. FastAPI los sincroniza y nuestro sistema construye el prode sobre esos partidos. Ninguna de las opciones siguientes está seleccionada ni se midió todavía su demora real para la Argentina del piloto.
+
+| Proveedor | Oferta consultada | Encaje inicial con nuestro MVP |
+|---|---|---|
+| OpenFoot | Starter USD 0, 5.000 solicitudes/mes y 60/minuto; anuncia Argentina 2026. | Candidata gratuita por investigar, con dudas de paginación, fases, marcador de 90 minutos y derechos comerciales. |
+| API-Football | Free 100 solicitudes/día y 10/minuto; acceso histórico limitado. Pro desde USD 19/mes, 7.500/día. | Free no cubre la temporada vigente según la restricción publicada; versión paga es candidata si comprobamos Argentina y licencia. |
+| Sportmonks | Gratis para ligas seleccionadas de Dinamarca y Escocia; Argentina anunciada en oferta paga desde EUR 29/mes. | Alternativa paga para evaluar cobertura detallada; el trial de 14 días no sostiene el piloto anual gratis. |
+| football-data.org | Free: doce competiciones, diez consultas/minuto y marcadores demorados. | Argentina no figura en la cobertura gratuita; no resuelve el alcance del piloto por cambiar sólo la frecuencia de consulta. |
+
+#### OpenFoot: posible costo cero, todavía sin demostrar
+
+Su [pricing](https://openfootapi.com/pricing) publica Starter con scores y fixtures; Developer por USD 14 mensuales, 250.000 consultas y 100/minuto, con SSE/webhooks; Pro por USD 39, dos millones y 250/minuto, explicita uso comercial. Que Pro lo mencione no permite inferir que Starter autorice nuestro uso comercial: debe confirmarse. La [cobertura publicada](https://openfootapi.com/coverage) enumera Liga Profesional Argentina 2026 con identificador `comp_liga_profesional_arg`; eso no demuestra por sí solo Apertura y Clausura, sus eliminatorias, todos los partidos ni latencia.
+
+**A favor:** oferta gratuita y cobertura argentina anunciada, atractivas para una primera prueba técnica. **En contra:** falta evidencia verificable del año deportivo completo y del marcador a los 90 minutos separado de alargue/penales. La [especificación OpenAPI](https://openfootapi.com/openapi.json), rotulada v1.0 beta, describe una vista previa máxima de cinco partidos y cursor de paginación que requiere Developer. Esa descripción necesita reconciliarse con la oferta Starter antes de asumir que podemos descargar una temporada completa gratis.
+
+Los [términos](https://openfootapi.com/terms) permiten caché/retención sin máximo publicado, pero la licencia y atribución de cada fuente siguen siendo condiciones independientes; tampoco hay SLA salvo acuerdo. Acceder a un endpoint no acredita derechos suficientes para exhibir y explotar sus datos en PRODE. Una respuesta de soporte sobre esos puntos debe conservarse como evidencia de C-01.
+
+El ensayo anterior de su demostración no obtuvo HTTP/JSON verificable: falló DNS en el entorno restringido y el reintento agotó 20 segundos. Fue inconcluso; no demuestra una caída general ni que su cobertura sea falsa. Tampoco demuestra que funcione. Se probará nuevamente sin convertir ese intento en una aprobación.
+
+#### API-Football: plan conocido, gratuidad incompatible con temporada vigente
+
+El [plan Free](https://www.api-football.com/pricing) ofrece 100 consultas diarias; la [restricción oficial de temporadas](https://www.api-football.com/news/post/how-to-get-all-data-from-a-league-with-api-football) indica que en 2026 sólo accede a 2022, 2023 y 2024, aplicando Year-4 a Year-2. Por eso no satisface el piloto vigente a costo cero. Pro publica USD 19 mensuales y 7.500 peticiones por día; no está contratado ni presupuestado. Las tasas documentadas son diez consultas/minuto en Free y 300/minuto en Pro. [Guía de cuotas](https://www.api-football.com/news/post/how-to-optimize-api-sports-calls-and-quota-usage).
+
+**A favor:** documentación de fixtures, estados y resultados; opción de volumen mayor mediante pago. **En contra:** Free histórico y cuota baja para seguimiento; la actualización nominal del endpoint no garantiza cobertura o demora en cada competencia. La [documentación v3](https://www.api-football.com/documentation-v3) indica actualizaciones de fixtures en 15 segundos, con disponibilidad variable según competición y datos que pueden llegar sólo al final. Debemos probar JSON argentino y distinguir finalización, alargue/penales y marcador válido de 90 minutos; no usar el total final indistintamente.
+
+Sus [términos](https://www.api-football.com/terms) tampoco conceden automáticamente todos los derechos sobre competiciones para exhibición/explotación comercial y limitan la reventa del feed; usos de fantasy u otros pueden requerir licencias adicionales. Pagar peticiones no sustituye revisar derechos para este producto.
+
+#### Sportmonks: alternativa paga con Argentina anunciada
+
+El [Free Plan](https://www.sportmonks.com/football-api/free-plan/) cubre ligas seleccionadas de Dinamarca y Escocia. Su [página argentina](https://www.sportmonks.com/football-api/primera-division-argentina/) anuncia fixtures y organización por etapas/rondas; la oferta comienza en EUR 29 mensuales para cinco ligas y publica 2.000 consultas por entidad/hora. El trial de 14 días es una evaluación temporal, no gratuidad permanente. [Oferta publicada](https://www.sportmonks.com/es/futbol-api/).
+
+**A favor:** cobertura argentina anunciada y modelo de etapas útil para las eliminatorias. **En contra:** no soluciona Argentina gratis; hay que confirmar qué plan incluye exactamente la edición y todos sus datos. Sus [campos de scores](https://docs.sportmonks.com/v3/tutorials-and-guides/tutorials/includes/scores) distinguen `2ND_HALF`, acumulado al concluir los 90 minutos, de `CURRENT`, que puede incluir alargue/penales. Es una señal técnica favorable, pendiente de validar en partidos argentinos reales y con estados finalizados. No acredita latencia, licencia o aptitud comercial completa sin comprobarlos.
+
+#### football-data.org: no encaja con la cobertura gratuita requerida
+
+Su [pricing](https://www.football-data.org/pricing) ofrece doce competiciones en Free, diez consultas por minuto y marcadores demorados. Free with Livescores cuesta EUR 12 mensuales y permite 20/minuto para esas mismas competiciones: no agrega automáticamente Argentina. La [cobertura publicada](https://www.football-data.org/coverage) no incluye la liga argentina en el alcance gratuito. **A favor:** propuesta sencilla para competiciones incluidas. **En contra:** no elegirla para este MVP esperando que una mejora de plan o más consultas resuelva una liga ausente sin confirmación expresa.
+
+### 8.9. Cuántas consultas gastaríamos y qué debemos medir
+
+**Ejemplo ilustrativo, no dimensionamiento aprobado:** una consulta compartida cada cinco minutos durante cuatro horas de juego consume 48 solicitudes. Repetir ese escenario veinte días da 960 mensuales; faltan precarga de fixture, partidos superpuestos, paginación, resultados posteriores, correcciones, reintentos y consultas fuera de esa ventana. Si el proveedor exige consultar cada encuentro por separado, el volumen crece según partidos. Cien usuarios leyendo nuestra copia no multiplican esas 48 llamadas externas por cien.
+
+Con 100 consultas al día, 24 horas consultando cada cinco minutos ya serían 288, antes de los demás usos. La cuota de 5.000 mensuales podría alcanzar para un patrón acotado y no para otro; se demuestra con un calendario real y endpoints concretos. Webhooks o SSE pueden cambiar el patrón, pero no eliminan límites, caídas o la necesidad de reconciliar resultados.
+
+**Frecuencia de consulta no equivale a demora total:** si el dato tarda dos minutos en aparecer en origen, el siguiente polling espera otros cinco y la API despierta durante uno, el usuario puede verlo unos ocho minutos después. Para apuntar a los cinco aceptados hay que medir origen, ejecución, consulta y refresco de pantalla conjuntamente y reservar margen. No se asegura ese objetivo a partir de una cuota anunciada.
+
+**Recomendación de fuente:** empezar C-01 por una prueba verificable de OpenFoot por su oferta gratuita anunciada, resolviendo antes las dudas de catálogo/paginación y derechos. API-Football y Sportmonks son alternativas pagas para comparar si la prueba gratuita no cumple. football-data.org no es candidata gratuita adecuada para Argentina según lo publicado. Si ninguna cumple temporada vigente, vivo, 90 minutos, licencia y costo cero, se presentan opciones de presupuesto o alcance al usuario: no se activa carga manual ni se sustituyen datos reales por históricos para aparentar cumplimiento.
+
+Antes de elegir se debe conservar evidencia de: temporada y fases incluidas; fixtures/cruces nuevos/reprogramaciones; partido finalizado con score de 90 minutos; cuota calculada y retraso observado; correcciones/cancelaciones; persistencia, atribución y exhibición pública/comercial. Una API técnicamente accesible puede no aprobar esas condiciones. La matriz y pruebas de C-01/C-02 son el punto de decisión, no esta comparación documental.
+
+El [anexo de despliegue y aprendizaje](despliegue-y-aprendizaje.md) conserva explicaciones, recursos y comparaciones históricas. Ante cifras antiguas, esta investigación del 20/11/2026 prevalece como referencia documental; ambas deben verificarse otra vez antes de adoptar servicios.
+
 
 ## 9. Restricciones y decisiones de alcance
 
@@ -200,7 +331,7 @@ Si una prueba demuestra incompatibilidad entre Argentina vigente, vivo y gratuid
 
 ## Fuentes y precedencia
 
-- Este documento, **revisión 3**, consolida el cierre aprobado por el usuario el 19 de noviembre de 2026 y reemplaza las decisiones incompatibles de revisiones anteriores. El PDF es su representación; ante una divergencia, corregirlo desde este Markdown.
+- Este documento, **revisión 4**, conserva el cierre de producto aprobado el 19 de noviembre de 2026 e incorpora la ampliación técnica solicitada el 20 de noviembre. No atribuye a esa ampliación una adopción de proveedores. Las reglas de producto reemplazan decisiones incompatibles de revisiones anteriores. El PDF es su representación; ante una divergencia, corregirlo desde este Markdown.
 - [Registro de dudas y decisiones](pendientes-mvp.md): IDs, historial de conversación y pruebas pendientes. Las propuestas históricas no prevalecen sobre las reglas vigentes de esta revisión.
 - [Despliegue y aprendizaje](despliegue-y-aprendizaje.md): investigación técnica, enlaces oficiales, condiciones consultadas y recursos para aprender. Validar nuevamente planes y cobertura antes de su adopción.
 - Referencias de producto: [Prode En Línea](https://prodeenlinea.com/faq/), [Prode.io](https://prode.io/en/faq), [Kicktipp](https://www.kicktipp.com/), [Superbru](https://www.superbru.com/worldcup_predictor/), [Promiedos](https://www.promiedos.com.ar/) y Potrero, investigado a partir del enlace compartido por el usuario. Las notas originales permanecen en [fuentes](sources/); una funcionalidad de referencia no implica incorporarla al MVP.
@@ -208,4 +339,4 @@ Si una prueba demuestra incompatibilidad entre Argentina vigente, vivo y gratuid
 
 ## Continuidad de la fundación
 
-Siguiente entrega: **CHANGES.md generado directamente desde este Discovery**, con dependencias y validaciones tempranas de datos deportivos, despliegue gratuito y Web Push. No se crean diez archivos de KB ni se considera resuelta la arquitectura de cada change. La política visual se atenderá antes del primer trabajo de UI. Contexto/ se conserva hasta completar toda la fundación, conforme al pedido del usuario; el cierre del Discovery por sí solo no autoriza adelantar esa limpieza.
+El roadmap **CHANGES.md ya está generado directamente desde este Discovery**, con dependencias y validaciones tempranas de datos deportivos, despliegue gratuito y Web Push. Esta ampliación no cambia sus 16 trabajos ni acredita la ejecución de C-01 o C-02. No se crean diez archivos de KB ni se considera resuelta la arquitectura de cada change. La política visual se atenderá antes del primer trabajo de UI. Contexto/ se conserva hasta completar toda la fundación, conforme al pedido del usuario; el cierre del Discovery por sí solo no autoriza adelantar esa limpieza.

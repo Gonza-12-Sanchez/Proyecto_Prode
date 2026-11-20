@@ -1,12 +1,12 @@
-﻿# PRODE - Guía de despliegue y aprendizaje
+# PRODE - Guía de despliegue y aprendizaje
 
-**Fecha de consulta de esta investigación:** 18 de noviembre de 2026. **Precedencia actualizada:** 19 de noviembre de 2026.  
+**Fecha de consulta de esta investigación:** 18 de noviembre de 2026. **Precedencia actualizada:** 20 de noviembre de 2026.  
 **Estado:** anexo educativo de investigación y alternativas; proveedores de alojamiento, PostgreSQL y datos de fútbol todavía no elegidos.  
-**Fuente de decisiones vigente:** [Discovery, revisión 3](discovery.md), aprobado el 19 de noviembre de 2026. Esta guía se subordina a ese alcance; no acredita implementación ni despliegue.
+**Fuente de decisiones vigente:** [Discovery, revisión 4](discovery.md), con producto aprobado el 19 de noviembre y ampliación técnica del 20 de noviembre de 2026. Esta guía se subordina a ese alcance; no acredita implementación ni despliegue.
 
 **Decisiones vigentes:** API como única fuente de resultados del MVP, sin carga ni corrección manual de marcadores. Sólo Google mediante Supabase Auth; sin correo/contraseña propia. El roadmap se elaborará directamente desde Discovery, sin crear una Knowledge Base de diez archivos. Los detalles técnicos de sesión y los proveedores siguen pendientes.
 
-Las comparaciones, precios, cuotas y referencias de datos siguientes conservan su fecha y contexto de investigación: deben verificarse antes de adoptar un servicio. No demuestran cobertura actual, operación desplegada ni viabilidad gratuita garantizada.
+Las comparaciones, precios, cuotas y referencias de datos siguientes conservan su fecha y contexto histórico de investigación. La comparación actualizada de proveedores, Railway Free y APIs está en la sección 8 del Discovery R4 (20/11/2026) y prevalece ante diferencias; no duplicamos sus tablas aquí. Todo debe verificarse antes de adoptar un servicio. No demuestran cobertura actual, operación desplegada ni viabilidad gratuita garantizada.
 
 El stack acordado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. Primero construiremos una web jugable con amigos, apuntando a no pagar servicios durante las pruebas. Android/iPhone y la comercialización para empresas o suscriptores son una evolución posterior.
 

@@ -4,7 +4,7 @@
 **Estado:** Discovery cerrado y resumen final aprobado el 19 de noviembre de 2026; validaciones técnicas pendientes en el roadmap.  
 **Propósito:** retomar el trabajo en distintas sesiones sin perder dudas, propuestas ni decisiones.
 
-Este registro acompaña al [Discovery canónico, revisión 3](discovery.md). Conserva los IDs, decisiones e historial de sesiones y funciona como índice de validaciones técnicas para el roadmap. Las alternativas históricas o propuestas no prevalecen sobre R3 ni amplían automáticamente el MVP. El PDF se genera desde ese Discovery; este registro no acredita implementación ni pruebas de proveedores.
+Este registro acompaña al [Discovery canónico, revisión 4](discovery.md). Conserva los IDs, decisiones e historial de sesiones y funciona como índice de validaciones técnicas para el roadmap. Las alternativas históricas o propuestas no prevalecen sobre R4 ni amplían automáticamente el MVP. El PDF se genera desde ese Discovery; este registro no acredita implementación ni pruebas de proveedores.
 
 **Decisión vigente del 19/11/2026:** API como única fuente de resultados del MVP, sin carga ni corrección manual de marcadores. Reemplaza explícitamente ese fallback y la intervención sobre resultados aprobados en la revisión 2; el historial se conserva debajo.
 

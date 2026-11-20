@@ -177,10 +177,10 @@
       ]
     },
     "vision_comercial": "B2B para empresas y sus empleados, y B2C público general con suscripciones; planes, precios y funciones por definir.",
-    "revision": 3,
-    "updated_on": "2026-11-19",
+    "revision": 4,
+    "updated_on": "2026-11-20",
     "update_authorized_by": "user",
-    "update_scope": "Cierre aprobado del MVP argentino anual, calendario público, resultados sólo API, 90 minutos, ranking final, Google y Web Push configurable; roadmap directo sin KB redundante.",
+    "update_scope": "Ampliacion tecnica solicitada de proveedores de despliegue y APIs: limites, pros/contras, alternativas y recomendaciones condicionadas; reglas aprobadas sin cambios y sin adopcion de servicios.",
     "autenticacion": {
       "status": "approved",
       "approved_on": "2026-11-18",
