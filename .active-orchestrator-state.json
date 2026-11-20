@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "step": "find-skill",
+  "step": "registry",
   "owner": "active-orchestrator",
   "discovery": {
     "created_by": "discovery-research",
@@ -336,5 +336,12 @@
       "playwright-cli"
     ],
     "evidence": "discovery/discovery.md + CHANGES.md"
+  },
+  "registry": {
+    "created_by": "skill-registry",
+    "file": ".atl/skill-registry.md",
+    "skill_count": 14,
+    "scope": "project",
+    "skills_dir": ".agents/skills"
   }
 }
