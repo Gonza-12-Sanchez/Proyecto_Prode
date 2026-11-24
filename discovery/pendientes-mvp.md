@@ -1,12 +1,12 @@
 # PRODE — Dudas, decisiones y pruebas del MVP
 
-**Actualizado:** 19 de noviembre de 2026.  
+**Actualizado:** 24 de noviembre de 2026.
 **Estado:** Discovery cerrado y resumen final aprobado el 19 de noviembre de 2026; validaciones técnicas pendientes en el roadmap.  
 **Propósito:** retomar el trabajo en distintas sesiones sin perder dudas, propuestas ni decisiones.
 
-Este registro acompaña al [Discovery canónico, revisión 4](discovery.md). Conserva los IDs, decisiones e historial de sesiones y funciona como índice de validaciones técnicas para el roadmap. Las alternativas históricas o propuestas no prevalecen sobre R4 ni amplían automáticamente el MVP. El PDF se genera desde ese Discovery; este registro no acredita implementación ni pruebas de proveedores.
+Este registro acompaña al [Discovery canónico, revisión 5](discovery.md). Conserva los IDs, decisiones e historial de sesiones y funciona como índice de validaciones técnicas para el roadmap. Las alternativas históricas o propuestas no prevalecen sobre R5 ni amplían automáticamente el MVP. El PDF se genera desde ese Discovery; este registro no acredita implementación ni pruebas de proveedores.
 
-**Decisión vigente del 19/11/2026:** API como única fuente de resultados del MVP, sin carga ni corrección manual de marcadores. Reemplaza explícitamente ese fallback y la intervención sobre resultados aprobados en la revisión 2; el historial se conserva debajo.
+**Decisión vigente del 24/11/2026:** la API es la fuente habitual. RN-16/RN-24 permiten una intervención excepcional y auditada por personal autorizado. Las políticas anteriores quedan como historial.
 
 ## 1. Cómo usar este documento
 
@@ -29,11 +29,11 @@ Este registro acompaña al [Discovery canónico, revisión 4](discovery.md). Con
 | Calendario | Público: fixture y marcadores sin login, por días con hoy, mañana y selector de fecha; no navegación principal por jornada deportiva. |
 | Carga | Jornada completa con botón «Guardar pronósticos», confirmación y aviso al salir con cambios pendientes. Si un encuentro cerró antes de guardar, guardar los pronósticos válidos de partidos aún abiertos e informar guardados/rechazados; manda la hora del servidor. No se adopta autosave ni persistencia automática en navegador; recuperación ante fallos pendiente. |
 | Seguimiento | Elegido por el usuario: marcadores durante los partidos, aceptando hasta cinco minutos de demora para intentar costo cero. Fuente y demora real de extremo a extremo por medir; no es una garantía de servicio. |
-| Acceso | Calendario/fixture/marcadores públicos sin login. Crear o unirse a prodes privados y pronosticar requiere Google mediante Supabase Auth; FastAPI valida identidad, membresía y permisos para contenido/operaciones privadas. Administrar la sincronización requiere personal autorizado de PRODE, sin permiso para editar marcadores. Sin contraseña propia. |
+| Acceso | Calendario/fixture/marcadores públicos sin login. Crear o unirse a prodes privados y pronosticar requiere Google mediante Supabase Auth; FastAPI valida identidad, membresía y permisos para contenido/operaciones privadas. Administrar la sincronización requiere personal autorizado de PRODE, con permiso de intervención separado según RN-24. Sin contraseña propia. |
 | Stack | Aprobado: React + TypeScript + Vite, Python + FastAPI y PostgreSQL. Proveedores de alojamiento y base pendientes. |
 | Juego | Pronósticos independientes por torneo; marcador de 90 minutos más descuento, sin alargue/tanda, con 3 puntos por exacto o 1 por ganador/empate sin acumular. Ranking sólo con partidos finalizados y ese marcador confirmado: puntos descendentes, luego exactos descendentes; igualdad en ambos comparte puesto y el siguiente es consecutivo (1.º, 1.º, 2.º). Cierre/revelación al inicio. |
 | Invitaciones | Regla previa: torneo privado; ingreso por enlace/código, incluso iniciado, sólo para partidos futuros y sin puntos retroactivos. |
-| Resultados | API como única fuente: estado final y marcador completo de 90 minutos más descuento habilitan puntuación automática; correcciones posteriores de la API recalculan sin duplicación. Información incompleta/inconsistente o errores quedan pendientes para reintentar. Admin revisa estado/registros y reintenta sincronización, sin editar marcadores ni puntuar resultados manuales. |
+| Resultados | La API es la fuente habitual. Un marcador final válido de los 90 minutos más descuento habilita puntos automáticos, también cuando se confirma según RN-16. Las correcciones recalculan sin duplicar. |
 | Recordatorios | Web Push, con anticipación configurable por usuario y opción de desactivar; 30 minutos queda como valor inicial propuesto, no fijo común. Un aviso por participante/partido agrupa sólo sus torneos con pronóstico faltante al enviar; si completó todos, no se avisa. Sin correo en el MVP; entrega/compatibilidad y operación gratuitas por validar. |
 | Alcance anterior | La revisión 2 contemplaba multiliga y selección flexible de jornadas/partidos. Falta reconciliar ese alcance con la simplificación reciente, tras confirmar el resumen. |
 
@@ -58,11 +58,11 @@ Estos puntos orientan ensayos progresivos; cada función necesita su decisión a
 |---|---|---|---|
 | MVP-09 | Media · Pendiente (guardado parcial definido) | Jornada con botón explícito: si un partido cerró antes de guardar, guardar los pronósticos válidos de los que sigan abiertos según el servidor e informar cuáles guardó y cuáles rechazó. Confirmación y aviso al salir conservados. | Probar el caso parcial y permisos; resolver recuperación ante fallos y navegación. Conservar campos con la pantalla abierta y reintentar sigue como propuesta, sin aprobar persistencia automática del navegador. No generalizar a otros campos inválidos; no se acredita implementación. |
 | MVP-10 | Alta · Pendiente (tratamiento del cierre definido) | Guardar pronósticos válidos abiertos según la hora del servidor y rechazar cerrados sin borrar guardados previos ni reabrir edición; cierre/revelación al inicio conservados, sin puntos extra. Reglas, temporada y criterio de fases congelados al primer partido; completar cruces oficiales y actualizar reprogramaciones no autoriza cambios selectivos del creador. | Definir zona horaria y detalles de actualización; probar permisos, guardado parcial y cierre/revelación ante reprogramaciones y cruces incorporados. Decisiones de producto confirmadas; implementación y validación pendientes. |
-| MVP-11 | Alta · Resuelto (definición) | API única: puntuar al recibir estado final y marcador completo de 90 minutos más descuento; corrección posterior de la API recalcula sin duplicación. Datos incompletos/inconsistentes o error de fuente quedan pendientes, sin resultado manual. Ranking final por puntos y exactos descendentes; igualdad en ambos comparte puesto consecutivo (1.º, 1.º, 2.º); sin provisional. | Validar implementación/pruebas, explicación detallada de puntos, rastro de cambios del proveedor y presentación de empatados sin otro desempate deportivo. No puntuar sólo por alcanzar el minuto 90 si sigue el alargue; no se acredita software probado. |
+| MVP-11 | Alta · Resuelto (definición) | Ranking final con marcador válido de 90 minutos más descuento. Orden por puntos y exactos. Empate persistente comparte posición (1.º, 1.º, 2.º). | Validar tanto los cambios de API como las excepciones de RN-16, con recálculo y trazabilidad. |
 | MVP-12 | Media · Pendiente | ¿Qué ocurre al abrir una invitación sin sesión, con código inválido o siendo ya miembro? | Recorrido probado desde enlace hasta ingreso, con destino conservado tras Google y sin duplicar membresía. |
 | MVP-13 | Alta · Pendiente | ¿Cómo se representan estados, reprogramaciones y fallos de fuente/conexión sin presentar un dato viejo como actual? Calendario y prode deben coincidir. | Mismo partido/horario/resultado en ambas vistas; reglas de aplazamiento/suspensión y recuperación probadas; última actualización y reintento acordados. |
 | MVP-14 | Alta · Pendiente (producto definido, validación técnica abierta) | Confirmados Web Push sin correo, anticipación por usuario y desactivación. Un único aviso por participante/partido enumera sólo sus torneos sin pronóstico guardado, validando pendientes al enviar; ninguno si completó todo. Los 30 minutos previos quedan como valor inicial propuesto. | Definir rango/control de minutos sin adoptar uno por defecto implícito; validar permisos, desactivación, compatibilidad iPhone/PWA, reprogramaciones, programación/cuotas, reintentos, entrega y deduplicación mediante pruebas. No se garantiza puntualidad ni viabilidad gratuita antes del ensayo. |
-| MVP-15 | Alta · Resuelto (definición) | Usuario confirma API como única fuente de resultados del MVP, reemplazando fallback/corrección manual anteriores. Admin sólo revisa registros/estado y reintenta sincronización: no edita marcadores ni puntúa resultados manuales. Correcciones provienen del proveedor único y disparan recálculo. | Proveedor aún no adoptado/validado (MVP-02; ensayo OpenFootAPI inconcluso). Gestión de errores, permisos, reintentos, rastro de cambios del proveedor e implementación/pruebas quedan para el roadmap; no se acredita software probado. |
+| MVP-15 | Alta · Resuelto (definición) | API habitual. Personal calificado con permiso específico puede cargar o corregir un marcador final excepcionalmente y con evidencia. | Diseñar en C-14 autorización, auditoría, precedencia y retiro explícito. C-01 sigue pendiente. |
 | MVP-16 | Alta · Pendiente | ¿Podemos actualizar, detectar errores, volver a una versión anterior y recuperar los datos? | Ensayo documentado de publicación y restauración en destino separado antes del piloto, con límites de recuperación conocidos. |
 
 ## 5. Mejoras pequeñas que conviene evaluar
@@ -235,10 +235,15 @@ Cada ensayo termina con evidencia y una decisión: conservar, ajustar, investiga
 #### 19/11/2026 — API como única fuente de resultados confirmada
 
 - **Respuesta explícita:** “API como única fuente de resultados”. Reemplaza para el MVP el fallback manual y la corrección administrativa de marcadores de la revisión 2; esos acuerdos anteriores quedan sólo como historial.
-- **Política vigente:** estado final y marcador completo de 90 minutos más descuento de la API habilitan puntos automáticos; correcciones posteriores del proveedor recalculan sin duplicación. Información incompleta/inconsistente o errores quedan pendientes para reintentar, sin introducir un resultado manual.
+- **Política acordada en esa fecha:** estado final y marcador completo de 90 minutos más descuento de la API habilitan puntos automáticos; correcciones posteriores del proveedor recalculan sin duplicación. Información incompleta/inconsistente o errores quedan pendientes para reintentar, sin introducir un resultado manual.
 - **Límite administrativo:** revisar registros/estado y reintentar sincronización; no editar marcadores ni puntuar manualmente. Una intervención manual futura sería sólo evolución posible, fuera del MVP.
 - **MVP-15:** resuelto en definición; errores, permisos, reintentos, rastro de cambios del proveedor y pruebas van al roadmap. MVP-02 sigue sin fuente adoptada o validada y la prueba de OpenFootAPI fue inconclusa.
 - **Próximo checkpoint:** confirmar el resumen final del Discovery y después adaptar el roadmap desde ese insumo, sin la KB de diez archivos solicitada previamente por el flujo. Esta actualización no cambia Discovery principal, PDF, estado ni roadmap, y no realiza operaciones git.
+
+#### 24/11/2026 — Intervención excepcional sobre resultados
+
+- Se aclararon RN-07 y RN-11 con ejemplos.
+- RN-16 y RN-24 habilitan la intervención excepcional de personal calificado con permiso específico y evidencia. RN-08 y RN-15 se alinearon con el recálculo automático y la trazabilidad.
 
 ### Plantilla para copiar en la próxima sesión
 
@@ -252,7 +257,7 @@ Cada ensayo termina con evidencia y una decisión: conservar, ajustar, investiga
 
 ## 10. Referencias para retomar
 
-- [Discovery aprobado, revisión 2](discovery.md): reglas y decisiones anteriores; debe reconciliarse con el nuevo resumen confirmado.
+- [Discovery vigente](discovery.md): reglas y decisiones actuales.
 - [Guía de despliegue y aprendizaje](despliegue-y-aprendizaje.md): investigación de opciones, no garantía de costo cero ni selección de proveedor.
 - [Ficha de Promiedos](sources/promiedos.md): calendario y seguimiento como referencia; preferencia del usuario por otra dirección visual.
 - [Ficha de Potrero](sources/potrero.md): minijuegos y evolución de entretenimiento como referencia.

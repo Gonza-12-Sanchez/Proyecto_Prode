@@ -2,9 +2,9 @@
 
 **Fecha de consulta de esta investigación:** 18 de noviembre de 2026. **Precedencia actualizada:** 20 de noviembre de 2026.  
 **Estado:** anexo educativo de investigación y alternativas; proveedores de alojamiento, PostgreSQL y datos de fútbol todavía no elegidos.  
-**Fuente de decisiones vigente:** [Discovery, revisión 4](discovery.md), con producto aprobado el 19 de noviembre y ampliación técnica del 20 de noviembre de 2026. Esta guía se subordina a ese alcance; no acredita implementación ni despliegue.
+**Fuente de decisiones vigente:** [Discovery, revisión 5](discovery.md).
 
-**Decisiones vigentes:** API como única fuente de resultados del MVP, sin carga ni corrección manual de marcadores. Sólo Google mediante Supabase Auth; sin correo/contraseña propia. El roadmap se elaborará directamente desde Discovery, sin crear una Knowledge Base de diez archivos. Los detalles técnicos de sesión y los proveedores siguen pendientes.
+**Decisiones vigentes:** API deportiva como fuente habitual e intervención administrativa excepcional conforme a RN-16/RN-24. Google mediante Supabase Auth es el único acceso del MVP. El roadmap se nutre del Discovery.
 
 Las comparaciones, precios, cuotas y referencias de datos siguientes conservan su fecha y contexto histórico de investigación. La comparación actualizada de proveedores, Railway Free y APIs está en la sección 8 del Discovery R4 (20/11/2026) y prevalece ante diferencias; no duplicamos sus tablas aquí. Todo debe verificarse antes de adoptar un servicio. No demuestran cobertura actual, operación desplegada ni viabilidad gratuita garantizada.
 
@@ -217,7 +217,7 @@ Para clientes o suscriptores propondría servicios gestionados con recursos y co
 
 **Servicios gestionados frente a VPS:** un VPS puede reducir el precio nominal de alojar varias piezas, pero agrega administración del sistema y responsabilidad de recuperación. Para nuestra etapa, evaluaría primero servicios gestionados. Docker puede ayudar a empaquetar la API de manera reproducible; no es obligatorio para el primer despliegue ni sustituye copias o monitoreo.
 
-La API de fútbol y sus derechos de uso/cobertura son un tema separado del alojamiento. Tener web, API y base gratuitas no garantiza que los resultados deportivos también lo sean. El alcance vigente usa la API como única fuente de resultados: si sus datos faltan, son inconsistentes o hay un fallo, el partido queda pendiente y se reintenta la sincronización. La carga/corrección manual discutida antes fue reemplazada explícitamente para el MVP; tampoco se introducen resultados ficticios como reales.
+La cobertura y los derechos de la API deportiva requieren validación independiente del hosting. Ante un fallo, quedan resultados pendientes y se reintenta. RN-16 permite confirmar excepcionalmente un marcador con evidencia y permisos específicos, con rastro y recálculo automático.
 
 Las suscripciones también necesitarán su propia decisión de producto y cobro. Antes de integrar pagos móviles habrá que revisar las reglas de las tiendas aplicables al producto y a su región; todavía no elegimos proveedor, comisión ni modalidad. Vender a empresas tampoco significa automáticamente necesitar un programa de distribución empresarial de Apple.
 

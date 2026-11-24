@@ -275,7 +275,7 @@ def main():
              Paragraph("<b>Base tecnológica confirmada</b><br/>React + TypeScript + Vite / FastAPI / PostgreSQL", styles["quote"]),
              Paragraph("<b>Acceso del MVP</b><br/>Calendario y marcadores públicos. Prodes privados con Google mediante Supabase Auth.", styles["quote"]),
              Spacer(1, 12*mm), Paragraph(f"Actualizado: {updated} · Revisión {revision}", styles["body"]),
-             Paragraph("Estado: decisiones de producto aprobadas el 19/11/2026. Comparativa técnica ampliada por pedido del usuario el 20/11/2026; proveedores pendientes de validación. El roadmap parte de este documento sin una KB de diez archivos. Arquitectura y diseño se resolverán antes de implementar.", styles["small"]),
+             Paragraph("El roadmap parte de este Discovery. La revisión 5 aclara el puntaje y el alcance del prode e incorpora la intervención excepcional sobre resultados. Los proveedores siguen pendientes de validación.", styles["small"]),
              PageBreak(), Paragraph("Contenido", styles["h1"])]
     toc = TableOfContents()
     toc.levelStyles = [styles["toc"]]

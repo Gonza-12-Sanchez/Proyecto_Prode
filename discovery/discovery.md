@@ -1,9 +1,9 @@
 # PRODE - Discovery aprobado
 
 **Fecha original:** 17 de noviembre de 2026  
-**Actualización:** 20 de noviembre de 2026  
-**Revisión:** 4  
-**Estado:** decisiones de producto cerradas y aprobadas el 19 de noviembre de 2026. Ampliación técnica de proveedores y APIs solicitada el 20 de noviembre de 2026; alternativas pendientes de validación, sin adopción de servicios.  
+**Actualización:** 24 de noviembre de 2026  
+**Revisión:** 5  
+**Estado:** producto aprobado el 19 de noviembre de 2026, con ampliación técnica el 20 de noviembre y revisión de reglas el 24 de noviembre. La validación del proveedor sigue pendiente.
 **Alcance del documento:** fuente canónica de producto para el roadmap del MVP. La aprobación define qué construir; no acredita integraciones operativas, software implementado ni finalización de toda la fundación.
 
 ## Resumen ejecutivo
@@ -14,7 +14,7 @@ El MVP será una web cómoda en celular y computadora, jugable por un grupo real
 
 El calendario se navega por días: hoy, mañana y selector de fecha. Los marcadores se muestran durante los encuentros, con una tolerancia objetivo de hasta cinco minutos de demora total por validar. El juego usa pronósticos propios de cada torneo, carga de una jornada completa, guardado explícito, puntuación por resultados confirmados y ranking. El acceso para jugar es sólo Google mediante Supabase Auth. Los recordatorios son notificaciones web, configurables por usuario y agrupadas por partido.
 
-La API deportiva será la única fuente de resultados. No se habilitan carga manual, edición administrativa de marcadores ni puntuación manual como alternativa. Información incompleta o inconsistente queda pendiente; correcciones del proveedor recalculan automáticamente los puntos. Todavía no se eligió ni validó ese proveedor. Tampoco se confirmó la combinación de alojamiento y ejecución de tareas necesaria para sostener costo cero.
+La API deportiva será la fuente habitual. Ante un fallo, el resultado queda pendiente y se reintenta la sincronización. Un administrador calificado y autorizado puede intervenir de forma excepcional con evidencia verificable. El sistema recalcula puntos y ranking a partir del marcador vigente. La fuente y la combinación de alojamiento siguen pendientes de validación.
 
 El stack aprobado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. Por decisión del usuario, se pasa de este Discovery al roadmap sin generar la KB de diez archivos. Este documento conserva las decisiones de producto; el roadmap referenciará sus secciones y cada change detallará la arquitectura, contratos y verificaciones que necesite. La política y el sistema visual deben resolverse antes de implementar UI; no se consideran desactivados ni aprobados por esta simplificación documental.
 
@@ -26,8 +26,9 @@ El stack aprobado es React + TypeScript + Vite, Python + FastAPI y PostgreSQL. P
 | 2 | 18/11/2026 | Despliegue, aprendizaje y producción móvil; Google mediante Supabase Auth como único login. |
 | 3 | 19/11/2026 | MVP de una liga argentina, calendario público, alcance anual, reglas de 90 minutos, guardado, ranking, recordatorios y API como única fuente de resultados; cierre aprobado y roadmap directo. |
 | 4 | 20/11/2026 | Ampliación técnica solicitada: proveedores de alojamiento y APIs, límites, ventajas, riesgos y combinaciones recomendadas de forma condicional. No modifica las reglas aprobadas ni acredita servicios elegidos. |
+| 5 | 24/11/2026 | Ejemplos de puntuación y alcance del prode. Intervención excepcional y auditada sobre marcadores. |
 
-La revisión 3 reemplaza para el MVP la configuración multiliga, la selección arbitraria de jornadas/partidos, la elección del creador sobre alargue y el fallback o edición manual de resultados de versiones anteriores. El [registro de pendientes](pendientes-mvp.md) conserva el historial; sus entradas antiguas no prevalecen sobre este documento ni vuelven a abrir acuerdos confirmados. Las comprobaciones técnicas identificadas permanecen pendientes de ejecución.
+La revisión 3 simplificó el alcance a una liga y fijó el criterio de 90 minutos. La revisión 5 incorpora una intervención excepcional sobre resultados y aclara el puntaje por partido y el alcance fijo del prode. El [registro de pendientes](pendientes-mvp.md) conserva el historial.
 
 ## 1. Problema que resuelve
 
@@ -44,7 +45,7 @@ Cada persona decide sus marcadores. No se incluyen pronósticos automáticos por
 | Visitante | Consultar calendario, fixture y marcadores públicos sin iniciar sesión. |
 | Participante | Acceder con Google, unirse por enlace/código, consultar sus grupos, guardar y editar sus pronósticos antes del cierre, consultar resultados revelados, puntos y ranking. |
 | Creador del prode | Crear y organizar el torneo de la competencia habilitada e invitar al grupo. No modifica marcadores, puntajes ni el criterio de alcance congelado. |
-| Administración técnica de PRODE | Operar el servicio, revisar registros y estados, y reintentar sincronización cuando corresponda. No edita resultados ni adjudica puntos manualmente. |
+| Administración técnica de PRODE | Opera el servicio y reintenta la sincronización. La intervención excepcional sobre marcadores requiere un permiso específico y evidencia verificable. |
 | Empresa o suscriptor futuro | Visión posterior; planes, aislamiento organizacional, roles internos y contratación quedan fuera del MVP. |
 
 El rol de creador pertenece a un prode concreto; iniciar sesión no concede acceso a todos los torneos. Los datos y las operaciones privadas requieren identidad válida, membresía y permisos comprobados por FastAPI. Ser creador no otorga funciones de administración técnica.
@@ -103,9 +104,9 @@ La búsqueda posterior encontró anuncios de puntos o clasificaciones en vivo en
 
 ### Resultados, puntos y recordatorios
 
-- Integración de una API deportiva como única fuente de resultados. Estado final y marcador completo de 90 minutos más descuento habilitan puntuación automática.
+- La API deportiva es la fuente habitual. Un partido finalizado con marcador válido y completo habilita la puntuación automática, incluida una intervención excepcional conforme a RN-16.
 - Pronósticos independientes por torneo, reglas simples de 3/1/0 y ranking sólo con partidos finalizados. Consulta del resultado válido y motivo de los puntos.
-- Correcciones posteriores de la API actualizan los puntos y el ranking sin duplicación, con rastro de cambios de la fuente. No hay carga manual ni corrección administrativa de marcadores.
+- Los cambios al resultado vigente recalculan los puntos y el ranking sin duplicarlos. Las intervenciones excepcionales quedan registradas y se identifican como tales.
 - Web Push para partidos sin pronóstico guardado, con anticipación ajustable por usuario, 30 minutos iniciales y opción de desactivar.
 - Un aviso por persona y partido agrupa sólo los prodes pendientes. Antes del envío se verifica si aún faltan pronósticos; si ya están completos, no se avisa. No se incorpora correo al MVP.
 - Guías de publicación, actualización, diagnóstico, reversión y respaldo/restauración; recuperación probada antes de invitar al piloto.
@@ -128,16 +129,16 @@ Estas reglas reemplazan las alternativas incompatibles del historial. Los contro
 | RN-04 | El calendario y los marcadores son públicos. Crear, unirse, pronosticar y consultar información privada requiere Google mediante Supabase Auth y autorización sobre el prode. |
 | RN-05 | Cada pronóstico pertenece a una persona, partido y prode. Es independiente de los pronósticos del mismo encuentro en otros torneos; no se propagan cambios automáticamente. |
 | RN-06 | Sólo cuenta el marcador a los 90 minutos más descuento. Se excluyen alargue y tanda de penales, también en eliminatorias. No es una opción configurable del creador en el MVP. |
-| RN-07 | Un marcador exacto otorga 3 puntos; acertar ganador o empate sin exactitud otorga 1; el resto, 0. Los premios no se acumulan. |
-| RN-08 | Se puntúa únicamente cuando la API informa un partido finalizado y entrega el marcador válido completo de los 90 minutos. Alcanzar el minuto 90 no basta si el encuentro sigue disputándose. |
+| RN-07 | Cada pronóstico recibe un solo puntaje por partido. Marcador exacto: 3 puntos en total. Acertar sólo el ganador o el empate: 1 punto. Si no acierta ninguno: 0 puntos. |
+| RN-08 | Se puntúa cuando el partido finalizó y existe un marcador válido y completo de los 90 minutos más descuento, obtenido por la API o confirmado según RN-16. Alcanzar el minuto 90 no basta si el encuentro sigue disputándose. |
 | RN-09 | El ranking se ordena por puntos y luego por cantidad de marcadores exactos. Si persiste el empate, comparten posición y se usan puestos consecutivos: 1.º, 1.º, 2.º. No hay ranking provisional en vivo. |
 | RN-10 | Cada pronóstico puede editarse hasta el inicio de su partido, usando la hora del servidor como autoridad. Desde ese momento queda bloqueado y se revelan los pronósticos ajenos de ese encuentro dentro del prode. |
-| RN-11 | Al empezar el primer partido del prode se congelan temporada, fases incluidas y reglas. Se conserva el criterio de selección; no se congela una lista incompleta de encuentros. |
+| RN-11 | Al empezar el primer partido del prode quedan fijas la temporada, las fases incluidas y las reglas. Los cruces oficiales que se definan después se incorporan si pertenecen a ese alcance. También se actualizan las reprogramaciones. |
 | RN-12 | El fixture incorpora los cruces oficiales que se definan y sus reprogramaciones. El creador no agrega ni elimina encuentros selectivamente después del comienzo. |
 | RN-13 | El cierre deportivo corresponde a la final del Clausura. Si quedan encuentros incluidos pendientes, el prode queda «finalizando» hasta su resolución oficial, sin sumar la edición siguiente ni declarar un ganador definitivo antes. |
 | RN-14 | Un encuentro reprogramado que no comenzó conserva sus pronósticos y permite editar hasta el nuevo inicio. Uno suspendido después de comenzar sigue bloqueado y pendiente de resolución. Una cancelación definitiva no otorga puntos. |
-| RN-15 | La API elegida es la única fuente de resultados. Sus correcciones recalculan puntos y ranking de manera consistente, sin duplicarlos y dejando registro del cambio recibido. |
-| RN-16 | Ante información incompleta, inconsistente o caída de la fuente, el resultado queda pendiente y se reintenta. El administrador puede diagnosticar y reintentar sincronizaciones, pero no editar marcadores ni asignar puntos manualmente. |
+| RN-15 | La API elegida es la fuente habitual de resultados. Los cambios válidos en el resultado vigente, tanto de la API como de una intervención excepcional, recalculan puntos y ranking sin duplicarlos y con registro del origen. |
+| RN-16 | Ante datos faltantes, inconsistentes o una caída de la API, el resultado queda pendiente y se reintenta. Un administrador calificado con permiso explícito puede cargar o corregir excepcionalmente el marcador final de los 90 minutos más descuento, con evidencia verificable, motivo, autor, fecha y valores anterior y nuevo. El resultado excepcional prevalece hasta que un administrador autorizado lo retire explícitamente. Los puntos se calculan automáticamente. |
 | RN-17 | La carga por jornada usa «Guardar pronósticos», confirmación de lo guardado y aviso al salir con cambios pendientes. No se presupone guardado automático. |
 | RN-18 | Si algún partido se cierra antes de guardar, se guardan los cambios válidos de los que sigan abiertos y se identifica cada rechazo. Se conserva el pronóstico previamente guardado del encuentro cerrado. |
 | RN-19 | Tras un error de red, se conservan los campos mientras la vista siga abierta y se ofrece reintentar. No se promete persistencia al cerrar el navegador ni operación sin conexión. |
@@ -145,7 +146,11 @@ Estas reglas reemplazan las alternativas incompatibles del historial. Los contro
 | RN-21 | El calendario muestra la última actualización y un estado de datos desactualizados cuando corresponda. No inventa resultados ante fallos. La tolerancia solicitada es hasta 5 minutos de demora total, sujeta a validación técnica. |
 | RN-22 | Los recordatorios son Web Push sólo para encuentros sin pronóstico guardado. Cada persona puede ajustar su anticipación, inicialmente 30 minutos, o desactivarlos. Los controles y límites concretos se diseñarán; no se acordó otro rango. |
 | RN-23 | Se emite un aviso por persona y partido, agrupando los prodes pendientes. Antes de enviar se revisa que aún falten pronósticos; si se completaron todos, no se envía. No se incorpora correo al MVP. |
-| RN-24 | El creador organiza e invita; el participante pronostica y consulta su prode; la administración técnica observa y mantiene las integraciones. Los permisos se verifican en servidor y no habilitan manipular resultados. |
+| RN-24 | El creador organiza e invita y el participante pronostica y consulta su prode. La administración técnica mantiene las integraciones. Sólo administradores calificados con permiso específico, verificado en el servidor, pueden intervenir sobre resultados según RN-16. |
+**Ejemplo RN-07.** El partido termina 2-1. Pronosticar 2-1 da 3 puntos en total. Pronosticar 1-0 da 1 punto por acertar el ganador. Pronosticar 1-1 da 0 puntos.
+
+**Ejemplo RN-11.** Si el prode incluye Apertura y Clausura con eliminatorias, los cruces de cuartos entran cuando se anuncian. El organizador no puede sumar una copa ajena ni cambiar la puntuación después del primer partido del prode.
+
 ## 8. Integraciones y orientación técnica
 
 ### 8.1. Qué servicio necesitamos y cómo se conectan
@@ -285,7 +290,7 @@ Con 100 consultas al día, 24 horas consultando cada cinco minutos ya serían 28
 
 **Frecuencia de consulta no equivale a demora total:** si el dato tarda dos minutos en aparecer en origen, el siguiente polling espera otros cinco y la API despierta durante uno, el usuario puede verlo unos ocho minutos después. Para apuntar a los cinco aceptados hay que medir origen, ejecución, consulta y refresco de pantalla conjuntamente y reservar margen. No se asegura ese objetivo a partir de una cuota anunciada.
 
-**Recomendación de fuente:** empezar C-01 por una prueba verificable de OpenFoot por su oferta gratuita anunciada, resolviendo antes las dudas de catálogo/paginación y derechos. API-Football y Sportmonks son alternativas pagas para comparar si la prueba gratuita no cumple. football-data.org no es candidata gratuita adecuada para Argentina según lo publicado. Si ninguna cumple temporada vigente, vivo, 90 minutos, licencia y costo cero, se presentan opciones de presupuesto o alcance al usuario: no se activa carga manual ni se sustituyen datos reales por históricos para aparentar cumplimiento.
+**Recomendación de fuente:** empezar C-01 con una prueba verificable de OpenFoot. API-Football y Sportmonks son alternativas pagas si la opción gratuita no cumple. football-data.org queda fuera de la evaluación gratuita para Argentina por la cobertura publicada. Si ninguna opción cumple los requisitos, presentar al usuario evidencia y alternativas de alcance o presupuesto. La intervención excepcional cubre casos puntuales y no sustituye la validación de C-01.
 
 Antes de elegir se debe conservar evidencia de: temporada y fases incluidas; fixtures/cruces nuevos/reprogramaciones; partido finalizado con score de 90 minutos; cuota calculada y retraso observado; correcciones/cancelaciones; persistencia, atribución y exhibición pública/comercial. Una API técnicamente accesible puede no aprobar esas condiciones. La matriz y pruebas de C-01/C-02 son el punto de decisión, no esta comparación documental.
 
@@ -308,7 +313,7 @@ El [anexo de despliegue y aprendizaje](despliegue-y-aprendizaje.md) conserva exp
 | Datos gratuitos sin cobertura vigente, eliminatorias o marcador separado a 90 minutos | Probar la edición real y casos de tiempo extra/penales con respuestas verificables. Si no cumple, presentar opciones de alcance o presupuesto al usuario. |
 | Cuotas y demora en vivo | Medir demora de origen, sincronización y presentación en conjunto; una consulta cada cinco minutos no garantiza una demora total de cinco. Modelar volumen de consultas compartidas y picos. |
 | Derechos de uso | Verificar licencia, persistencia, caché, exhibición pública y condiciones del futuro uso comercial. Un endpoint accesible no acredita esos derechos. |
-| API interrumpida o correcciones tardías | Mostrar última actualización, mantener pendientes, reintentar y recalcular desde la fuente con trazabilidad. Sin reemplazo manual de marcadores. |
+| API interrumpida o correcciones tardías | Mostrar última actualización, mantener pendientes y reintentar. Cuando haya evidencia verificable, aplicar RN-16 y recalcular con trazabilidad. |
 | Servicios gratuitos que duermen, pausan o cambian condiciones | Ensayar arranque, persistencia, conexión y ejecución programada. Registrar límites y revisar alternativas antes de superar cuotas. |
 | Pérdida o exposición de datos | Validar autorización de prodes privados, secretos y sesiones; respaldar y ensayar restauración de PostgreSQL. No confiar sólo en que el proveedor aloja la base. |
 | Web Push incompatible, sin permiso o duplicado | Probar navegadores/dispositivos previstos, anticipación configurable, comprobación previa al envío y agrupación. Comunicar los estados de permiso sin prometer recepción universal. |
@@ -327,11 +332,11 @@ El Discovery queda cerrado en sus decisiones de producto. Estas incertidumbres s
 6. **Operación y piloto:** practicar migración, respaldo/restauración, actualización y reversión; preparar diagnóstico de datos pendientes y cuotas. Elegir fecha/edición concreta al preparar el piloto y medir uso real antes de ampliar el alcance.
 7. **Diseño:** acordar política y sistema visual antes de implementar pantallas; definir estados vacíos, errores, partidos sin horario confirmado y datos desactualizados en los changes de UI.
 
-Si una prueba demuestra incompatibilidad entre Argentina vigente, vivo y gratuidad, se presentará evidencia y opciones al usuario antes de modificar cualquiera de esas condiciones. La incertidumbre no autoriza un fallback manual ni una ampliación silenciosa del MVP.
+Si una prueba demuestra incompatibilidad entre Argentina vigente, vivo y gratuidad, se presentará evidencia y opciones al usuario antes de modificar esas condiciones. La intervención excepcional de RN-16 se limita a casos puntuales con evidencia verificable.
 
 ## Fuentes y precedencia
 
-- Este documento, **revisión 4**, conserva el cierre de producto aprobado el 19 de noviembre de 2026 e incorpora la ampliación técnica solicitada el 20 de noviembre. No atribuye a esa ampliación una adopción de proveedores. Las reglas de producto reemplazan decisiones incompatibles de revisiones anteriores. El PDF es su representación; ante una divergencia, corregirlo desde este Markdown.
+- Este documento, **revisión 5**, reúne las decisiones del MVP, la ampliación técnica del 20 de noviembre y el ajuste de reglas del 24 de noviembre. El PDF se genera desde este Markdown.
 - [Registro de dudas y decisiones](pendientes-mvp.md): IDs, historial de conversación y pruebas pendientes. Las propuestas históricas no prevalecen sobre las reglas vigentes de esta revisión.
 - [Despliegue y aprendizaje](despliegue-y-aprendizaje.md): investigación técnica, enlaces oficiales, condiciones consultadas y recursos para aprender. Validar nuevamente planes y cobertura antes de su adopción.
 - Referencias de producto: [Prode En Línea](https://prodeenlinea.com/faq/), [Prode.io](https://prode.io/en/faq), [Kicktipp](https://www.kicktipp.com/), [Superbru](https://www.superbru.com/worldcup_predictor/), [Promiedos](https://www.promiedos.com.ar/) y Potrero, investigado a partir del enlace compartido por el usuario. Las notas originales permanecen en [fuentes](sources/); una funcionalidad de referencia no implica incorporarla al MVP.

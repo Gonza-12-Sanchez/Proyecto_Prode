@@ -9,12 +9,12 @@
 ## Cómo usar este documento
 
 1. Identificar el item y comprobar que sus dependencias están verificadas. C-01 es el primer item elegible; las pruebas de factibilidad preceden la construcción extensa.
-2. Leer las referencias de Discovery indicadas en «Leer antes». Fuente: `discovery/discovery.md`, revisión 4, que conserva el producto aprobado el 19/11/2026 y amplía la investigación técnica el 20/11/2026, y su registro `discovery/pendientes-mvp.md`. Por autorización explícita se genera este roadmap desde Discovery, sin crear ni exigir una KB duplicada de diez archivos.
+2. Consultar `discovery/discovery.md` (revisión 5) y `discovery/pendientes-mvp.md` antes de cada change. El roadmap usa el Discovery como fuente directa.
 3. Acordar alcance y verificación en el change OpenSpec correspondiente: consultar `openspec list --json`, luego status/instructions del change que exista. Este índice no crea changes. Modelos y rutas indicados abajo son propuestas operacionales para diseñar por change, no un esquema/API ya aprobado. Cerrar decisiones técnicas allí, sin duplicar una KB.
 4. Implementar sólo tras las aprobaciones aplicables y verificar con evidencia. CRITICO: análisis y aprobación humana explícita antes de código; ALTO: propuesta revisada antes de escritura. MEDIO: checkpoints para decisiones; BAJO: autonomía con comprobaciones. El roadmap aprobado no autoriza automáticamente esas implementaciones. Aplicar TDD estricto a código: baseline, RED, GREEN, triangulación y refactor, registrando evidencia. Antes de la primera UI, resolver la política visual y los gates de C-06; hoy no hay opt-out.
-5. Marcar `[x]` sólo tras verificar el resultado y registrar evidencia en el change; mantener dependencias y este índice coherentes. Conservar `Contexto/` como antecedente. No considerar cerradas fuente gratuita, demora real, hosting ni Push por estar planificados.
+5. Marcar `[x]` sólo tras verificar el resultado y registrar evidencia en el change; mantener dependencias y este índice coherentes. No considerar cerradas fuente gratuita, demora real, hosting ni Push por estar planificados.
 
-**Límites comunes:** web móvil con React/TypeScript/Vite, FastAPI y PostgreSQL; sólo Google vía Supabase Auth. Calendario público por día; prodes privados. Edición argentina vigente al piloto, Apertura/Clausura con eliminatorias, sin Trofeo de Campeones. Sin multiliga, noticias, minijuegos, estadísticas avanzadas, ranking provisional, apps nativas, B2B, suscripciones ni cobros. Las pruebas usan datos separados e identificados, nunca reemplazan el vivo del piloto. No hay resultado manual ni permisos administrativos para editarlo.
+**Límites comunes:** web móvil con React/TypeScript/Vite, FastAPI y PostgreSQL; sólo Google vía Supabase Auth. Calendario público por día; prodes privados. Edición argentina vigente al piloto, Apertura/Clausura con eliminatorias, sin Trofeo de Campeones. Sin multiliga, noticias, minijuegos, estadísticas avanzadas, ranking provisional, apps nativas, B2B, suscripciones ni cobros. Las pruebas usan datos separados e identificados, nunca reemplazan el vivo del piloto. RN-16 y RN-24 definen la excepción administrativa sobre marcadores.
 
 ---
 
@@ -115,7 +115,7 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
   - Producir informe reproducible de proveedor gratuito: edición argentina vigente al piloto, Apertura/Clausura y playoffs, identificadores de equipos/partidos, fixture actualizado y estados. Revisar licencia, persistencia y exhibición pública; conservar enlaces oficiales, fecha y evidencia de respuesta, sin credenciales.
   - Verificar en partidos reales marcador de 90 minutos más descuento separado de alargue/penales y estado final fiable; medir demora total evento→fuente→consulta→pantalla, objetivo aceptado hasta cinco minutos, y presupuesto de peticiones/cuotas en días de máxima concurrencia.
   - Tratar OpenFootAPI sólo como candidata: ensayo anterior falló por DNS en sandbox y timeout de 20 s con red escalada, sin JSON verificable. No hay proveedor adoptado. No confundir frecuencia de polling con demora total.
-  - Entregar decisión go/no-go y casos para contrato de integración. Si cobertura, licencia, marcador, demora o cuota no cumplen, volver al usuario por presupuesto/alcance; no habilitar carga manual ni sustituir el vivo por históricos/mocks. Sin cuentas o compras por este item.
+  - Entregar decisión go/no-go y casos para el contrato de integración. Si el proveedor no cumple los requisitos, presentar alternativas de presupuesto o alcance. La excepción de RN-16 no sustituye esta validación. Sin crear cuentas ni contratar en este item.
 - **Dependencias**: ninguna
 - **Governance**: MEDIO
 - **Leer antes**:
@@ -178,7 +178,7 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
 - **Estado**: `[ ]` pendiente
 - **Scope**: diseño y entregables acotados al item.
   - Presentar diseño y obtener aprobación antes de implementar Google como único acceso mediante Supabase Auth: callbacks por entorno, identidad estable verificada, validación/renovación/revocación de sesión en FastAPI y perfil mínimo User.
-  - Proponer GET /api/me y ciclo de logout; permisos de participante, creador y administrador técnico con mínimo privilegio. Diseñar dependencias de autorización reutilizables; membresía se conecta en C-08.
+  - Proponer GET /api/me y ciclo de logout; permisos de participante, creador y administrador técnico con mínimo privilegio. Separar autorización de sincronización del permiso excepcional de RN-24. Diseñar dependencias de autorización reutilizables; membresía se conecta en C-08.
   - Definir política de sesión y soporte ante pérdida de acceso sin contraseña PRODE ni nuevos canales. Pruebas de token inválido/expirado, identidad ajena, sesión ausente y permisos denegados; ninguna operación privada confía sólo en el frontend.
 - **Dependencias**: C-04
 - **Governance**: CRITICO
@@ -211,7 +211,7 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
 - **Estado**: `[ ]` pendiente
 - **Scope**: diseño y entregables acotados al item.
   - Diseñar adaptador del proveedor aceptado en C-01 y modelos provisionales SyncJob, ProviderSnapshot/Change y Match; registrar rastro de cambios sin exponer tokens. Solicitar aprobación para código de integración/auditoría antes de implementarlo.
-  - Implementar importación idempotente de fixture, cruces y reprogramaciones, conciliación de IDs/horarios y resultados; limitar peticiones/reintentos según cuota, sin múltiples proveedores operativos ni vía manual de marcadores.
+  - Implementar importación idempotente del fixture y resultados, con reintentos según cuota. Conservar el dato del proveedor para conciliación y respetar el resultado excepcional vigente de RN-16.
   - Proponer GET /api/public/matches?date= y GET /api/public/matches/{id}: datos públicos, estado, última actualización y señal de fuente demorada/fallida según umbral diseñado. Nunca presentar un dato viejo como vivo garantizado.
   - Emitir contrato interno de cambio de partido para cierre, puntuación y recordatorios; final + marcador90 completo habilita consumo, faltantes/inconsistencias quedan pendientes. Tests de duplicación, corrección, cuota, timeout, playoffs y cambio de horario.
 - **Dependencias**: C-04
@@ -259,7 +259,7 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
 - **Estado**: `[ ]` pendiente
 - **Scope**: diseño y entregables acotados al item.
   - Diseñar PointAward/RankingEntry o equivalentes y GET /api/prodes/{id}/ranking más detalle de puntos por partido; puntuar automáticamente sólo estado final del proveedor y marcador90 completo, aunque el encuentro haya requerido alargue/tanda.
-  - Implementar 3 puntos por exacto o 1 por ganador/empate sin acumular; sin puntos provisionales. Recalcular idempotentemente ante corrección de API y cancelar puntuación que deje de tener resultado válido según contrato, preservando explicación/rastro de origen.
+  - Implementar 3 puntos por exacto, 1 por acertar únicamente el ganador o el empate y 0 en los demás casos. Recalcular sin duplicar cuando cambie el resultado vigente de la API o de RN-16. Mantener trazabilidad y limitar el ranking a resultados finales válidos.
   - Ordenar por puntos descendentes, luego exactos descendentes; igualdad comparte puesto y siguiente consecutivo 1,1,2 sin tercer desempate deportivo. Mantener sin ganador definitivo un prode finalizando con partidos incluidos pendientes.
   - Tests de exacto/ganador/empate/error, eliminatoria empatada a 90 y decidida luego, resultado incompleto, correction/replay sin doble cómputo, empates densos y finalización diferida.
 - **Dependencias**: C-09, C-07
@@ -326,7 +326,7 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
 - **Estado**: `[ ]` pendiente
 - **Scope**: diseño y entregables acotados al item.
   - Diseñar y aprobar acceso técnico restringido a SyncJob/ProviderChange y estado de recálculo; proponer GET /api/admin/sync-jobs y POST /api/admin/sync-jobs/{id}/retry con límites e idempotencia. Registrar actividad sensible bajo revisión humana.
-  - Entregar herramienta operativa mínima para ver fallos/última sincronización y reintentar; no incluir edición/corrección manual de marcadores, validación manual para puntuar ni privilegios deportivos del creador.
+  - Proponer y obtener aprobación del diseño de la intervención excepcional de RN-16/RN-24. Aplicar permiso específico, evidencia y motivo obligatorios, auditoría, identificación del origen y retiro explícito de la excepción. Verificar la precedencia frente a la sincronización y el recálculo automático.
   - Verificar permiso administrativo separado de Google/membresía, reintentos concurrentes y ausencia de tokens/datos personales innecesarios en logs. Si se añade pantalla, aplicar C-06 antes de implementarla; el diseño técnico concreta CLI o UI mínima.
 - **Dependencias**: C-05, C-07, C-10
 - **Governance**: CRITICO
@@ -340,8 +340,8 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
 ### [C-15] `verificacion-circuito-integrado`
 - **Estado**: `[ ]` pendiente
 - **Scope**: diseño y entregables acotados al item.
-  - Automatizar/ejecutar circuito calendario público→Google→crear/unirse→pronosticar→cierre/revelación→final API→ranking→corrección API con dos usuarios y prodes independientes; usar entornos/datos de ensayo separados.
-  - Probar permisos negativos, guardado parcial, red caída/reintento, fixture reprogramado y cruces nuevos, finalizando sin siguiente edición, Push agrupado/desactivado y retry técnico sin mutar marcadores manualmente.
+  - Automatizar/ejecutar circuito calendario público→Google→crear/unirse→pronosticar→cierre/revelación→final API→ranking→corrección API o intervención excepcional con dos usuarios y prodes independientes; usar entornos/datos de ensayo separados.
+  - Probar permisos negativos, guardado parcial, reintentos, reprogramaciones, cruces nuevos y Push. Verificar que una intervención autorizada quede auditada, que la API no la sobrescriba y que aplicarla o retirarla recalcule sin duplicación.
   - Observar encuentros reales de fuente aceptada para medir extremo a extremo el vivo y consumo en condiciones del piloto; verificar consistencia entre calendario/prode y señalización de atraso/fallo. Mocks son válidos en tests aislados, no evidencia de cobertura/vivo.
   - Comparar cada pantalla/estado con diseño aprobado a 390×844 y 1440×900, consola y red; registrar comprobado/no comprobado, diferencias y evidencia. Sin navegador declarar revisión manual. Corregir bloqueantes antes de completar.
 - **Dependencias**: C-11, C-12, C-13, C-14

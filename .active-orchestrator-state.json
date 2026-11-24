@@ -1,6 +1,6 @@
 {
   "version": 5,
-  "step": "agents",
+  "step": "done",
   "owner": "active-orchestrator",
   "discovery": {
     "created_by": "discovery-research",
@@ -38,7 +38,7 @@
     "usuarios": [
       "Participantes: amigos y conocidos del piloto",
       "Creadores de prodes privados",
-      "Administrador técnico: observa y reintenta sincronización; no edita resultados",
+      "Administrador técnico opera la sincronización; el permiso específico habilita intervención excepcional",
       "Empresas y público general como evolución comercial"
     ],
     "casos_de_uso": [
@@ -60,7 +60,7 @@
       "Carga por jornada con botón Guardar, cierre por partido y guardado parcial",
       "Pronósticos independientes; puntuación 3/1/0 a 90 minutos",
       "Ranking final por puntos/exactos, empate denso 1,1,2",
-      "API única de resultados, correcciones automáticas y pendientes ante fallos",
+      "API habitual, correcciones con recálculo e intervención excepcional auditada",
       "Web Push ajustable por usuario, 30 minutos iniciales, desactivable y agrupado por partido",
       "Guías operativas y restauración probada antes del piloto"
     ],
@@ -80,16 +80,16 @@
       "RN-04: El calendario y los marcadores son públicos. Crear, unirse, pronosticar y consultar información privada requiere Google mediante Supabase Auth y autorización sobre el prode.",
       "RN-05: Cada pronóstico pertenece a una persona, partido y prode. Es independiente de los pronósticos del mismo encuentro en otros torneos; no se propagan cambios automáticamente.",
       "RN-06: Sólo cuenta el marcador a los 90 minutos más descuento. Se excluyen alargue y tanda de penales, también en eliminatorias. No es una opción configurable del creador en el MVP.",
-      "RN-07: Un marcador exacto otorga 3 puntos; acertar ganador o empate sin exactitud otorga 1; el resto, 0. Los premios no se acumulan.",
-      "RN-08: Se puntúa únicamente cuando la API informa un partido finalizado y entrega el marcador válido completo de los 90 minutos. Alcanzar el minuto 90 no basta si el encuentro sigue disputándose.",
+      "RN-07: Cada pronóstico recibe un solo puntaje por partido. Marcador exacto: 3 puntos en total. Acertar sólo el ganador o el empate: 1 punto. Si no acierta ninguno: 0 puntos.",
+      "RN-08: Se puntúa cuando el partido finalizó y existe un marcador válido y completo de los 90 minutos más descuento, obtenido por la API o confirmado según RN-16. Alcanzar el minuto 90 no basta si el encuentro sigue disputándose.",
       "RN-09: El ranking se ordena por puntos y luego por cantidad de marcadores exactos. Si persiste el empate, comparten posición y se usan puestos consecutivos: 1.º, 1.º, 2.º. No hay ranking provisional en vivo.",
       "RN-10: Cada pronóstico puede editarse hasta el inicio de su partido, usando la hora del servidor como autoridad. Desde ese momento queda bloqueado y se revelan los pronósticos ajenos de ese encuentro dentro del prode.",
-      "RN-11: Al empezar el primer partido del prode se congelan temporada, fases incluidas y reglas. Se conserva el criterio de selección; no se congela una lista incompleta de encuentros.",
+      "RN-11: Al empezar el primer partido del prode quedan fijas la temporada, las fases incluidas y las reglas. Los cruces oficiales que se definan después se incorporan si pertenecen a ese alcance. También se actualizan las reprogramaciones.",
       "RN-12: El fixture incorpora los cruces oficiales que se definan y sus reprogramaciones. El creador no agrega ni elimina encuentros selectivamente después del comienzo.",
       "RN-13: El cierre deportivo corresponde a la final del Clausura. Si quedan encuentros incluidos pendientes, el prode queda «finalizando» hasta su resolución oficial, sin sumar la edición siguiente ni declarar un ganador definitivo antes.",
       "RN-14: Un encuentro reprogramado que no comenzó conserva sus pronósticos y permite editar hasta el nuevo inicio. Uno suspendido después de comenzar sigue bloqueado y pendiente de resolución. Una cancelación definitiva no otorga puntos.",
-      "RN-15: La API elegida es la única fuente de resultados. Sus correcciones recalculan puntos y ranking de manera consistente, sin duplicarlos y dejando registro del cambio recibido.",
-      "RN-16: Ante información incompleta, inconsistente o caída de la fuente, el resultado queda pendiente y se reintenta. El administrador puede diagnosticar y reintentar sincronizaciones, pero no editar marcadores ni asignar puntos manualmente.",
+      "RN-15: La API elegida es la fuente habitual de resultados. Los cambios válidos en el resultado vigente, tanto de la API como de una intervención excepcional, recalculan puntos y ranking sin duplicarlos y con registro del origen.",
+      "RN-16: Ante datos faltantes, inconsistentes o una caída de la API, el resultado queda pendiente y se reintenta. Un administrador calificado con permiso explícito puede cargar o corregir excepcionalmente el marcador final de los 90 minutos más descuento, con evidencia verificable, motivo, autor, fecha y valores anterior y nuevo. El resultado excepcional prevalece hasta que un administrador autorizado lo retire explícitamente. Los puntos se calculan automáticamente.",
       "RN-17: La carga por jornada usa «Guardar pronósticos», confirmación de lo guardado y aviso al salir con cambios pendientes. No se presupone guardado automático.",
       "RN-18: Si algún partido se cierra antes de guardar, se guardan los cambios válidos de los que sigan abiertos y se identifica cada rechazo. Se conserva el pronóstico previamente guardado del encuentro cerrado.",
       "RN-19: Tras un error de red, se conservan los campos mientras la vista siga abierta y se ofrece reintentar. No se promete persistencia al cerrar el navegador ni operación sin conexión.",
@@ -97,11 +97,11 @@
       "RN-21: El calendario muestra la última actualización y un estado de datos desactualizados cuando corresponda. No inventa resultados ante fallos. La tolerancia solicitada es hasta 5 minutos de demora total, sujeta a validación técnica.",
       "RN-22: Los recordatorios son Web Push sólo para encuentros sin pronóstico guardado. Cada persona puede ajustar su anticipación, inicialmente 30 minutos, o desactivarlos. Los controles y límites concretos se diseñarán; no se acordó otro rango.",
       "RN-23: Se emite un aviso por persona y partido, agrupando los prodes pendientes. Antes de enviar se revisa que aún falten pronósticos; si se completaron todos, no se envía. No se incorpora correo al MVP.",
-      "RN-24: El creador organiza e invita; el participante pronostica y consulta su prode; la administración técnica observa y mantiene las integraciones. Los permisos se verifican en servidor y no habilitan manipular resultados."
+      "RN-24: El creador organiza e invita y el participante pronostica y consulta su prode. La administración técnica mantiene las integraciones. Sólo administradores calificados con permiso específico, verificado en el servidor, pueden intervenir sobre resultados según RN-16."
     ],
     "integraciones": [
       "Google mediante Supabase Auth aprobado; PostgreSQL y hosting no adoptados",
-      "API deportiva por validar: única fuente de resultados, sin fallback manual",
+      "API deportiva por validar: fuente habitual de resultados con excepción auditada",
       "OpenFoot candidato: consulta demo inconclusa por DNS/timeout20s; no cobertura operativa acreditada",
       "API-Football Free consultada para 2026 limita temporadas a históricas 2022–2024; verificar condiciones antes de adopción",
       "Frontend/FastAPI/PostgreSQL y scheduler gratuitos por seleccionar y demostrar",
@@ -114,7 +114,7 @@
       "Una liga, temporada vigente al piloto, Apertura/Clausura con eliminatorias",
       "Stack aprobado React/TypeScript/Vite/Python/FastAPI/PostgreSQL",
       "Sin fecha, equipo ni límites comerciales inventados",
-      "Sin carga manual, datos históricos o ficticios como reemplazo silencioso",
+      "Sin históricos ni datos ficticios como reemplazo del vivo; excepción documentada por partido",
       "Discovery canónico directo a CHANGES; omitir KB de diez archivos por pedido explícito",
       "Política visual pendiente antes de UI",
       "Contexto se conserva hasta completar toda la fundación"
@@ -177,10 +177,10 @@
       ]
     },
     "vision_comercial": "B2B para empresas y sus empleados, y B2C público general con suscripciones; planes, precios y funciones por definir.",
-    "revision": 4,
-    "updated_on": "2026-11-20",
+    "revision": 5,
+    "updated_on": "2026-11-24",
     "update_authorized_by": "user",
-    "update_scope": "Ampliacion tecnica solicitada de proveedores de despliegue y APIs: limites, pros/contras, alternativas y recomendaciones condicionadas; reglas aprobadas sin cambios y sin adopcion de servicios.",
+    "update_scope": "Aclaraciones RN-07 y RN-11 e intervención excepcional en resultados según RN-08, RN-15, RN-16 y RN-24.",
     "autenticacion": {
       "status": "approved",
       "approved_on": "2026-11-18",

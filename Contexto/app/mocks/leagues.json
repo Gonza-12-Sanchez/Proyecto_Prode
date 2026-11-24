@@ -1,7 +1,0 @@
-[
-  {"id": 39, "name": "Premier League", "country": "England", "logo_url": "https://media.api-sports.io/football/leagues/39.png", "api_id": 39},
-  {"id": 140, "name": "La Liga", "country": "Spain", "logo_url": "https://media.api-sports.io/football/leagues/140.png", "api_id": 140},
-  {"id": 135, "name": "Serie A", "country": "Italy", "logo_url": "https://media.api-sports.io/football/leagues/135.png", "api_id": 135},
-  {"id": 78, "name": "Bundesliga", "country": "Germany", "logo_url": "https://media.api-sports.io/football/leagues/78.png", "api_id": 78},
-  {"id": 61, "name": "Ligue 1", "country": "France", "logo_url": "https://media.api-sports.io/football/leagues/61.png", "api_id": 61}
-]
