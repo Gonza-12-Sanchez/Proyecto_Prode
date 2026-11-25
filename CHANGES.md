@@ -8,7 +8,7 @@
 
 ## Cómo usar este documento
 
-1. Identificar el item y comprobar que sus dependencias están verificadas. C-01 es el primer item elegible; las pruebas de factibilidad preceden la construcción extensa.
+1. Identificar el item y comprobar que sus dependencias están verificadas. C-01 y C-06 pueden empezar en paralelo. C-06 es diseño y prototipo con datos de ejemplo. La integración sigue las dependencias de cada change.
 2. Consultar `discovery/discovery.md` (revisión 5) y `discovery/pendientes-mvp.md` antes de cada change. El roadmap usa el Discovery como fuente directa.
 3. Acordar alcance y verificación en el change OpenSpec correspondiente: consultar `openspec list --json`, luego status/instructions del change que exista. Este índice no crea changes. Modelos y rutas indicados abajo son propuestas operacionales para diseñar por change, no un esquema/API ya aprobado. Cerrar decisiones técnicas allí, sin duplicar una KB.
 4. Implementar sólo tras las aprobaciones aplicables y verificar con evidencia. CRITICO: análisis y aprobación humana explícita antes de código; ALTO: propuesta revisada antes de escritura. MEDIO: checkpoints para decisiones; BAJO: autonomía con comprobaciones. El roadmap aprobado no autoriza automáticamente esas implementaciones. Aplicar TDD estricto a código: baseline, RED, GREEN, triangulación y refactor, registrando evidencia. Antes de la primera UI, resolver la política visual y los gates de C-06; hoy no hay opt-out.
@@ -26,20 +26,22 @@ Las ramas repetidas remiten al mismo item; «+» exige todas las dependencias in
 C-01 fuente-gratuita-argentina
 └── C-02 ensayo-operacion-gratuita
     └── C-03 base-tecnica
-        ├── C-04 modelos-core
-        │   ├── C-05 identidad-google
-        │   │   └── C-08 prodes-invitaciones [+ C-07]
-        │   │       └── C-09 pronosticos-por-jornada
-        │   │           ├── C-10 puntuacion-ranking [+ C-07]
-        │   │           │   ├── C-12 interfaz-prodes [+ C-06, C-09]
-        │   │           │   └── C-14 supervision-sincronizacion [+ C-05, C-07]
-        │   │           └── C-13 recordatorios-web-push [+ C-05, C-06]
-        │   └── C-07 sincronizacion-fixture-resultados
-        │       ├── C-08 (referencia)
-        │       └── C-11 calendario-publico [+ C-06]
-        └── C-06 politica-y-diseno-visual
-            ├── C-11 (referencia)
-            └── C-12 (referencia)
+        └── C-04 modelos-core
+            ├── C-05 identidad-google
+            │   └── C-08 prodes-invitaciones [+ C-07]
+            │       └── C-09 pronosticos-por-jornada
+            │           ├── C-10 puntuacion-ranking [+ C-07]
+            │           │   ├── C-12 interfaz-prodes [+ C-06, C-09]
+            │           │   └── C-14 supervision-sincronizacion [+ C-05, C-07]
+            │           └── C-13 recordatorios-web-push [+ C-05, C-06]
+            └── C-07 sincronizacion-fixture-resultados
+                ├── C-08 (referencia)
+                └── C-11 calendario-publico [+ C-06]
+
+C-06 politica-y-diseno-visual
+├── C-11 (requiere también C-07)
+├── C-12 (requiere también C-09 y C-10)
+└── C-13 (requiere también C-05 y C-09)
 
 C-11 + C-12 + C-13 + C-14
 └── C-15 verificacion-circuito-integrado
@@ -50,32 +52,32 @@ C-11 + C-12 + C-13 + C-14
 
 ```text
 GATE 0: ninguna
-  → C-01 fuente-gratuita-argentina                  [Agente A]
+  → C-01 fuente-gratuita-argentina                  [En paralelo]
+  → C-06 politica-y-diseno-visual                   [En paralelo]
 GATE 1: C-01 ✓, factibilidad de fuente acreditada
-  → C-02 ensayo-operacion-gratuita                  [Agente B]
+  → C-02 ensayo-operacion-gratuita
 GATE 2: C-02 ✓, operación mínima acreditada
-  → C-03 base-tecnica                              [Agente A]
-GATE 3: C-03 ✓ — primer fork
-  → C-04 modelos-core                              [Agente A]
-  → C-06 politica-y-diseno-visual                   [Agente C]
+  → C-03 base-tecnica
+GATE 3: C-03 ✓
+  → C-04 modelos-core
 GATE 4: C-04 ✓
-  → C-05 identidad-google                          [Agente A]
-  → C-07 sincronizacion-fixture-resultados          [Agente B]
+  → C-05 identidad-google
+  → C-07 sincronizacion-fixture-resultados
 GATE 5: C-05 + C-07 ✓
-  → C-08 prodes-invitaciones                        [Agente A]
-  → C-11 calendario-publico                        [Agente C — si C-06 ✓]
+  → C-08 prodes-invitaciones
+  → C-11 calendario-publico (si C-06 ✓)
 GATE 6: C-08 ✓
-  → C-09 pronosticos-por-jornada                    [Agente A]
+  → C-09 pronosticos-por-jornada
 GATE 7: C-09 ✓
-  → C-10 puntuacion-ranking                        [Agente A — si C-07 ✓]
-  → C-13 recordatorios-web-push                     [Agente B — si C-05 + C-06 ✓]
+  → C-10 puntuacion-ranking (si C-07 ✓)
+  → C-13 recordatorios-web-push (si C-05 + C-06 ✓)
 GATE 8: C-10 ✓
-  → C-12 interfaz-prodes                           [Agente C — si C-06 + C-09 ✓]
-  → C-14 supervision-sincronizacion                [Agente B — si C-05 + C-07 ✓]
+  → C-12 interfaz-prodes (si C-06 + C-09 ✓)
+  → C-14 supervision-sincronizacion (si C-05 + C-07 ✓)
 GATE 9: C-11 + C-12 + C-13 + C-14 ✓
-  → C-15 verificacion-circuito-integrado            [Agente A]
+  → C-15 verificacion-circuito-integrado
 GATE 10: C-15 ✓
-  → C-16 preparacion-y-piloto                       [Agente A]
+  → C-16 preparacion-y-piloto
 ```
 
 Los gates de factibilidad y revisión humana no son bloqueos de fase arbitrarios: sus resultados condicionan la viabilidad o la autorización del trabajo afectado. Si C-01 falla, volver al usuario para revisar presupuesto/alcance; no sustituir el vivo por históricos, carga manual o mocks.
@@ -88,26 +90,27 @@ C-01 → C-02 → C-03 → C-04 → C-05 → C-08 → C-09 → C-10 → C-12 →
 
 C-07 puede ocupar el lugar de C-05, y C-14 el de C-12: existen cadenas de igual longitud. Sin duraciones medidas, éste es el camino crítico por profundidad del grafo, no una predicción de fechas. Todos los items incluidos son requisitos del MVP; el camino no omite las otras ramas necesarias.
 
-### Plan óptimo con 3 agentes
+### Plan de trabajo para dos personas
 
-Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aprobaciones pueden cambiar su duración. Reservar archivos de contrato compartidos y evitar ediciones concurrentes sobre migraciones/estado.
+Reparto sugerido para dos personas. Cada trabajo se puede tomar cuando estén verificadas sus propias dependencias. Si C-06 lleva más de un paso, el trabajo técnico puede seguir cuando estén listos sus requisitos. Coordinen los contratos y las migraciones compartidos.
 
-| Paso | Agente A (Backend Core) | Agente B (Backend Aux) | Agente C (Frontend) |
-|---|---|---|---|
-| 1 | C-01 fuente | — | — |
-| 2 | — | C-02 ensayo operativo | — |
-| 3 | C-03 base | — | — |
-| 4 | C-04 core | — | C-06 política/diseño |
-| 5 | C-05 identidad | C-07 sincronización | — |
-| 6 | C-08 prodes | — | C-11 calendario |
-| 7 | C-09 pronósticos | — | — |
-| 8 | C-10 ranking | C-13 Push | — |
-| 9 | — | C-14 supervisión | C-12 prodes UI |
-| 10 | C-15 integración | — | — |
-| 11 | C-16 piloto | — | — |
+| Paso | Persona 1 | Persona 2 |
+|---|---|---|
+| 1 | C-01 fuente | C-06 diseño y prototipo |
+| 2 | C-02 ensayo operativo | — |
+| 3 | C-03 base | — |
+| 4 | C-04 core | — |
+| 5 | C-05 identidad | C-07 sincronización |
+| 6 | C-08 prodes | C-11 calendario |
+| 7 | C-09 pronósticos | — |
+| 8 | C-10 ranking | C-13 Push |
+| 9 | C-14 supervisión | C-12 prodes UI |
+| 10 | C-15 integración | — |
+| 11 | C-16 piloto | — |
+
 
 ---
-## FASE 0 — Factibilidad antes de construir
+## FASE 0 — Factibilidad y prototipo visual
 
 ### [C-01] `fuente-gratuita-argentina`
 - **Estado**: `[ ]` pendiente
@@ -141,13 +144,28 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
 
 ---
 
+### [C-06] `politica-y-diseno-visual`
+- **Estado**: `[ ]` pendiente
+- **Scope**: diseño y prototipo navegable, en paralelo con C-01.
+  - Invocar la skill local design-system para acordar la política visual y definir los componentes compartidos. Obtener la aprobación visual que corresponda según la política elegida.
+  - Armar un prototipo HTML navegable con datos ficticios para el calendario público y la carga de pronósticos. Probar que se pueda encontrar un partido, entrar al prode, guardar una jornada y entender qué pasó si un partido cerró mientras se guardaba. Incluir estados de datos pendientes o desactualizados.
+  - Probar el recorrido en móvil y escritorio. Registrar el enlace al prototipo, los escenarios probados y los ajustes resultantes en el change o PR. La integración con React y los endpoints se realiza en C-11 y C-12.
+- **Dependencias**: ninguna
+- **Governance**: MEDIO
+- **Leer antes**:
+  - `discovery/discovery.md` §3. Casos de uso
+  - `discovery/discovery.md` §5. Funcionalidades necesarias para la primera versión
+  - `discovery/pendientes-mvp.md` §5. Mejoras pequeñas que conviene evaluar
+
+---
+
 ## FASE 1 — Cimientos y contratos
 
 ### [C-03] `base-tecnica`
 - **Estado**: `[ ]` pendiente
 - **Scope**: diseño y entregables acotados al item.
   - Proponer en OpenSpec la estructura React/TypeScript/Vite + FastAPI/PostgreSQL, herramientas de paquetes, ORM/migraciones y pruebas que aún no están elegidas; adoptar sólo tras revisar su diseño.
-  - Generar base técnica mínima, configuración por entorno sin secretos versionados, health check propuesto GET /api/health, conexión de ensayo y pipeline de checks/build. Sin diseño de pantallas de producto antes de C-06.
+  - Generar base técnica mínima, configuración por entorno sin secretos versionados, health check propuesto GET /api/health, conexión de ensayo y pipeline de checks/build. El prototipo de C-06 se prueba por separado.
   - Configurar ejecución reproducible de pruebas y documentación local; probar health/conexión y fallo de configuración sin exponer secretos. No inventar numeración de migración antes de elegir convención.
 - **Dependencias**: C-02
 - **Governance**: BAJO
@@ -186,22 +204,6 @@ Pasos topológicos sin horas; cada paso espera la evidencia del anterior. Aproba
   - `discovery/discovery.md` §8. Integraciones y orientación técnica
   - `discovery/discovery.md` §2. Usuarios y roles
   - `discovery/pendientes-mvp.md` §3. Resolver antes de comprometer la función afectada (MVP-07); §4. Diseñar y comprobar durante la construcción (MVP-12/15)
-
----
-
-### [C-06] `politica-y-diseno-visual`
-- **Estado**: `[ ]` pendiente
-- **Scope**: diseño y entregables acotados al item.
-  - Invocar design-system antes de primera implementación visual y resolver una vez política system-and-mockups, system-only u off; no hay renuncia vigente. Auditar antecedentes/referencias sin asumirlos diseño aprobado y preservar estado previo.
-  - Según política elegida, generar y mostrar fundación local/tokens/componentes, capturas móvil/escritorio y obtener aprobación; crear mockups requeridos de calendario, Google/invitación, prode/carga, ranking, preferencias Push y estados de error. Si la política exige aprobación, no avanzar UI antes de obtenerla.
-  - Registrar revisión, fuentes, decisiones y gates en diseños de changes UI; propuesta de dirección propia, no copiar Promiedos por ser referencia. Incluir accesibilidad, carga, vacío, desactualizado, guardado parcial, fallo y permisos Push.
-  - Verificar renders 390×844 y 1440×900 cuando haya navegador, o declarar revisión manual. Este item resuelve diseño; no implementa pantallas acopladas a endpoints aún inexistentes.
-- **Dependencias**: C-03
-- **Governance**: MEDIO
-- **Leer antes**:
-  - `discovery/discovery.md` §3. Casos de uso
-  - `discovery/discovery.md` §5. Funcionalidades necesarias para la primera versión
-  - `discovery/pendientes-mvp.md` §5. Mejoras pequeñas que conviene evaluar
 
 ---
 
