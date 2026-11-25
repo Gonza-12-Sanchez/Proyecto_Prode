@@ -96,3 +96,41 @@ Se evaluarán OpenLigaDB y football-data.org Free con una cadencia inicial de un
 Ventana prevista: cuatro partidos de Bundesliga el 28/11/2026 a las 11:30 ART, sujeta a la programación oficial. Al preparar el ensayo no se detectó un token de football-data.org configurado en el entorno. La prueba pública de OpenLigaDB está disponible. El usuario ejecutó la prueba autenticada de Premier League desde PowerShell. La captura de salida confirma que GET /v4/competitions/PL/matches devolvió 380 partidos. La evidencia acredita acceso al listado, sin verificar cada partido ni su demora. Una segunda captura del usuario confirma que el listado autenticado de Bundesliga (GET /v4/competitions/BL1/matches) devolvió 306 partidos, el mismo total observado en OpenLigaDB. Se verificó acceso a ambos listados, pero el conteo no comprueba igualdad de registros ni latencia. Queda pendiente la medición en vivo con ambas fuentes.
 
 Referencias: [uso de OpenLigaDB](https://www.openligadb.de/en/terms-of-use), [partidos por competición](https://docs.football-data.org/general/v4/competition.html), [cabeceras de autenticación y cuota](https://docs.football-data.org/general/v4/lookup_tables.html).
+
+
+### Prueba de preparación (25/11/2026)
+
+Desde la raíz del repositorio, ejecutar el [script de medición](medir-apis.ps1) en PowerShell. Si `FOOTBALL_DATA_TOKEN` está disponible, se toma del entorno. Si falta, el script lo pide por consola con entrada oculta. El CSV se genera en la carpeta temporal y guarda proveedor, hora UTC de respuesta, ID, equipos, hora del partido, estado y marcador.
+
+```powershell
+& .\openspec\changes\fuente-gratuita-argentina\medir-apis.ps1 -Jornada 10
+& .\openspec\changes\fuente-gratuita-argentina\medir-apis.ps1 -Jornada 11
+# Durante los partidos, una muestra por minuto durante aproximadamente 2 h 20 min
+& .\openspec\changes\fuente-gratuita-argentina\medir-apis.ps1 -Jornada 11 -Muestras 140
+```
+
+`-SoloOpenLiga` permite probar sin token. Para medir la demora de un gol, comparar la hora UTC en que cambió el marcador en el CSV con una referencia en vivo que tenga hora de reloj. El minuto de juego por sí solo no basta. El CSV deja vacío un resultado incompleto y registra la primera observación que refleja cada cambio.
+
+| Evidencia | Resultado |
+|---|---|
+| OpenLigaDB, jornada 10 | 9 partidos. Bremen–Hamburgo importado como `FINALIZADO`, marcador `4-0`, ID `83243`, inicio `2026-11-22T16:30:00Z`. |
+| OpenLigaDB, jornada 11 | 9 partidos y 4 simultáneos en `2026-11-28T14:30:00Z`. Dos sondeos antes de los partidos devolvieron 9 filas por muestra, con 60 segundos de diferencia. |
+| PowerShell 5.1 y 7 | Normalización y sondeo combinado simulados superados. Se comprobó que el CSV no contiene el token. |
+| football-data.org | La captura del ensayo autenticado del 25/11/2026 a las 19:03 UTC muestra 18 filas: 9 de cada API. Coinciden los cruces y horarios UTC de la jornada 11, con variantes de nombres e IDs. Los partidos futuros aparecen con el marcador vacío. Queda pendiente medir la demora en vivo. |
+| Comparación de resultados, jornada 10 | La captura autenticada del 25/11/2026 a las 19:06 UTC muestra 18 filas, 9 por API. Al cotejar equipos y horarios UTC, coinciden los nueve marcadores finales. Ejemplos: Bremen–Hamburgo 4–0 y Schalke–Stuttgart 0–0. OpenLigaDB y football-data.org usan respectivamente FINALIZADO y FINISHED en el CSV. |
+
+C-01 sigue en 8/9. Los sondeos previos al partido prueban el procedimiento y no miden el tiempo de actualización de goles o finales.
+
+
+### Guardado y publicación de datos para el piloto (25/11/2026)
+
+| Proveedor | Guardado en PostgreSQL | Calendario y marcadores públicos |
+|---|---|---|
+| OpenLigaDB | ODbL 1.0 permite copiar y conservar datos. Los términos de acceso recomiendan una caché central. | Permite mostrar los datos con atribución visible y permite el uso comercial bajo ODbL. Si la vista pública se genera a partir de una base derivada, revisar si aplican las obligaciones de compartir esa base o sus cambios en formato legible por máquina. |
+| football-data.org Free | La documentación menciona la caché como solución para reducir consultas. Los términos publicados no aclaran un plazo de retención ni el guardado de una temporada completa. Confirmar con el proveedor antes de usar PostgreSQL como repositorio duradero de resultados. | Los términos contemplan la atribución en la aplicación, limitan la clave a una aplicación y a un dominio web, e indican que después de cancelar la suscripción no se pueden seguir mostrando los datos obtenidos. Confirmar cómo aplica al nivel Free, al calendario público y a los rankings históricos. |
+
+Fuentes oficiales: [licencia de OpenLigaDB](https://www.openligadb.de/en/license), [términos de acceso de OpenLigaDB](https://www.openligadb.de/en/terms-of-use), [ODbL 1.0, §§ 4.3–4.6](https://opendatacommons.org/licenses/odbl/1-0/), [términos de football-data.org, §§ 2.3, 7.1 y 9.1–9.2](https://www.football-data.org/about) y [documentación de caché de football-data.org](https://www.football-data.org/docs/latest/index.html).
+
+Propuesta para PRODE: guardar sólo ID y origen del partido, equipos, horario, estado, marcador y fecha de sincronización. Mantener separados los datos del proveedor de cuentas, pronósticos y puntos. Mostrar la fuente de los partidos junto al calendario. Usar texto para los equipos y omitir escudos y fotos hasta comprobar sus permisos.
+
+Si se elige football-data.org, pedir confirmación por escrito sobre estos cuatro puntos: guardar esos campos en PostgreSQL, publicarlos en el dominio de PRODE con atribución, mantener el historial mientras el plan Free siga activo y qué datos o rankings se pueden mostrar después de cancelar o migrar. La verificación de términos no elige el proveedor ni reemplaza la medición de latencia.
